@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "easy_homes",
+  "version": "${version}",
+  "name": "Easy Homes",
+  "description": "Easy and lightweight /sethome mod",
+  "authors": [
+    "ivkond"
+  ],
+  "contact": {
+    "homepage": "TODO",
+    "sources": "TODO"
+  },
+  "license": "MIT",
+  "icon": "assets/easy_homes/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "ru.ivkond.md.mods.easy_homes.fabric.SimpleHomesModFabric"
+    ],
+    "client": [
+      "ru.ivkond.md.mods.easy_homes.fabric.client.ExampleModFabricClient"
+    ]
+  },
+  "mixins": [
+    "easy_homes.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.9",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
