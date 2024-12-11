@@ -20,6 +20,9 @@
     ],
     "client": [
       "ru.ivkond.md.mods.easy_homes.fabric.client.ExampleModFabricClient"
+    ],
+    "modmenu": [
+      "ru.ivkond.md.mods.easy_homes.fabric.client.ModMenuConfiguration"
     ]
   },
   "mixins": [
