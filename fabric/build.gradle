@@ -39,6 +39,8 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version"
     modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
+    modImplementation include ("maven.modrinth:midnightlib:${project.midnightlib_version}-fabric")
+
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 }
