@@ -17,6 +17,7 @@
 * Icon
 * Teleportation effects & sounds
 * Key bindings
+* (?) XP consumption based on distance
 
 
 Untranslated keys:
