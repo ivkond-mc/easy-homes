@@ -19,7 +19,7 @@
       "ru.ivkond.md.mods.easy_homes.fabric.SimpleHomesModFabric"
     ],
     "client": [
-      "ru.ivkond.md.mods.easy_homes.fabric.client.ExampleModFabricClient"
+      "ru.ivkond.md.mods.easy_homes.fabric.client.SimpleHomesModFabricClient"
     ],
     "modmenu": [
       "ru.ivkond.md.mods.easy_homes.fabric.client.ModMenuConfiguration"
