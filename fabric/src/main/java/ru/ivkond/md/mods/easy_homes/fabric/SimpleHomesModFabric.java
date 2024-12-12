@@ -15,7 +15,7 @@ public final class SimpleHomesModFabric implements ModInitializer {
 
         CommandRegistrationCallback.EVENT.register(
                 (dispatcher, buildContext, commandSelection) ->
-                        SimpleHomesMod.registerCommands(dispatcher, buildContext)
+                        SimpleHomesMod.registerCommands(dispatcher)
         );
     }
 }

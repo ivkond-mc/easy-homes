@@ -37,10 +37,10 @@ public final class SimpleHomesMod {
         return MidnightConfig.getScreen(parent, MOD_ID);
     }
 
-    public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext buildContext) {
+    public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
         HomeCommand.register(dispatcher);
-        HomesCommand.register(dispatcher, buildContext);
-        SetHomeCommand.register(dispatcher, buildContext);
-        DelHomeCommand.register(dispatcher, buildContext);
+        HomesCommand.register(dispatcher);
+        SetHomeCommand.register(dispatcher);
+        DelHomeCommand.register(dispatcher);
     }
 }
