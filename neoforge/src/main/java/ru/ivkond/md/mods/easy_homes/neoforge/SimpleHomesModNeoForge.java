@@ -7,7 +7,10 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import ru.ivkond.md.mods.easy_homes.SimpleHomesMod;
 
 @Mod(SimpleHomesMod.MOD_ID)
@@ -16,19 +19,30 @@ public final class SimpleHomesModNeoForge {
         // Run our common setup.
         SimpleHomesMod.init();
 
-        // TODO: Migrate to MidnightLib
-        //container.registerConfig(ModConfig.Type.SERVER, SimpleHomesForgeConfiguration.CONFIG_SPEC);
-        //container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+        if (FMLEnvironment.dist.isClient()) {
+            initConfigurationScreen(container);
+        }
     }
 
-    @EventBusSubscriber
-    public static class EventListener {
+    private static void initConfigurationScreen(ModContainer container) {
+        container.registerExtensionPoint(
+                IConfigScreenFactory.class,
+                (c, parent) -> SimpleHomesMod.createConfigurationScreen(parent)
+        );
+    }
 
+    @EventBusSubscriber(modid = SimpleHomesMod.MOD_ID)
+    public static class CommonEventBusSubscriber {
         @SubscribeEvent
         public static void registerCommands(RegisterCommandsEvent event) {
             CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
             CommandBuildContext buildContext = event.getBuildContext();
             SimpleHomesMod.registerCommands(dispatcher, buildContext);
+        }
+
+        @SubscribeEvent
+        public static void registerCommands(ServerStartedEvent event) {
+            SimpleHomesMod.onServerStared(event.getServer());
         }
     }
 }
