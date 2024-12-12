@@ -13,8 +13,9 @@ public final class SimpleHomesModFabric implements ModInitializer {
 
         ServerLifecycleEvents.SERVER_STARTED.register(SimpleHomesMod::onServerStared);
 
-        CommandRegistrationCallback.EVENT.register((dispatcher, buildContext, commandSelection) -> {
-            SimpleHomesMod.registerCommands(dispatcher, buildContext);
-        });
+        CommandRegistrationCallback.EVENT.register(
+                (dispatcher, buildContext, commandSelection) ->
+                        SimpleHomesMod.registerCommands(dispatcher, buildContext)
+        );
     }
 }
