@@ -1,11 +1,12 @@
 {
   "easy_homes.commands.home.success": "Welcome back to the %s",
-  "easy_homes.commands.home.too_fast": "Too fast, buddy!\nNext teleportation in %s second(s)",
+  "easy_homes.commands.home.too_fast": "Next teleportation in %s second(s)",
   "easy_homes.commands.list_homes.empty": "You have no any home yet.\nCreate one with command %s",
   "easy_homes.commands.list_homes.header": "Homes",
   "easy_homes.commands.list_homes.item": "%s in %s at %s",
   "easy_homes.commands.set_home.success.new": "Home %s successfully created!",
   "easy_homes.commands.set_home.success.existing": "Home %s successfully updated!",
+  "easy_homes.commands.set_home.max_homes_reached": "Homes limit exceeded :(",
   "easy_homes.commands.del_home.success": "Home %s successfully deleted!",
   "easy_homes.commands.errors.home_not_found": "Home %s is not found",
   "easy_homes.commands.errors.level_not_found": "Level %s is not found",

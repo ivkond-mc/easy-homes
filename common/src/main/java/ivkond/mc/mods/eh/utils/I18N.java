@@ -17,6 +17,13 @@ public class I18N {
         return Component.translatable("easy_homes.commands.home.success", formatHome(name));
     }
 
+    public static Component commandHomeLocked(Duration lockDuration) {
+        String expiration = Long.toString(lockDuration.negated().getSeconds());
+        Component expirationComponent = Component.literal(expiration).withStyle(ChatFormatting.GOLD);
+        return Component.translatable("easy_homes.commands.home.too_fast", expirationComponent)
+                .withStyle(ChatFormatting.RED);
+    }
+
     public static Component commandHomesList(PlayerHomes playerHomes) {
         Map<String, HomeLocation> homes = playerHomes.getAllHomes();
 
@@ -47,6 +54,11 @@ public class I18N {
         );
     }
 
+    public static Component commandSetHomeMaxHomesReached() {
+        return Component.translatable("easy_homes.commands.set_home.max_homes_reached")
+                .withStyle(ChatFormatting.RED);
+    }
+
     public static Component commandDelHomeSuccess(String homeName) {
         return Component.translatable("easy_homes.commands.del_home.success", formatHome(homeName));
     }
@@ -69,11 +81,5 @@ public class I18N {
 
     public static Component formatHome(String homeName) {
         return Component.literal(homeName).withStyle(ChatFormatting.GOLD);
-    }
-
-    public static Component commandHomeLocked(Duration lockDuration) {
-        String expiration = Long.toString(lockDuration.negated().getSeconds());
-        Component expirationComponent = Component.literal(expiration).withStyle(ChatFormatting.GOLD);
-        return Component.translatable("easy_homes.commands.home.too_fast", expirationComponent);
     }
 }

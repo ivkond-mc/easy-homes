@@ -6,6 +6,7 @@ import ivkond.mc.mods.eh.config.EasyHomesConfig;
 import ivkond.mc.mods.eh.domain.HomeLocation;
 import ivkond.mc.mods.eh.domain.PlayerHomes;
 import ivkond.mc.mods.eh.utils.Log;
+import ivkond.mc.mods.eh.utils.OffsetDateTimeGsonAdapter;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -23,6 +24,7 @@ public class HomeRepository {
     private static final Gson GSON = new GsonBuilder()
             .disableHtmlEscaping()
             .setPrettyPrinting()
+            .registerTypeAdapter(OffsetDateTime.class, OffsetDateTimeGsonAdapter.INSTANCE)
             .create();
 
     // Map<Player, Homes>
@@ -60,6 +62,10 @@ public class HomeRepository {
         Path configPath = getConfigPath(playerId);
         try (BufferedReader reader = Files.newBufferedReader(configPath)) {
             PlayerHomes homes = GSON.fromJson(reader, PlayerHomes.class);
+            if (homes == null) {
+                Log.error("Malformed player {} homes config file", playerId);
+                return;
+            }
             DATA.put(playerId, homes);
         } catch (NoSuchFileException e) {
             DATA.put(playerId, new PlayerHomes());
@@ -97,6 +103,11 @@ public class HomeRepository {
     public void updateLockDuration(String playerId) {
         PlayerHomes homes = getHomes(playerId);
         homes.setLastTeleportation(OffsetDateTime.now());
+    }
+
+    public boolean isMaxHomesReached(String playerId) {
+        PlayerHomes homes = getHomes(playerId);
+        return homes.getAllHomes().size() >= EasyHomesConfig.maxHomes;
     }
 
     private Path getConfigPath(String playerId) {

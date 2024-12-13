@@ -49,6 +49,11 @@ public class SetHomeCommand {
 
         boolean existingHome = homes.exists(playerId, homeName);
 
+        if (!existingHome && homes.isMaxHomesReached(playerId)) {
+            player.displayClientMessage(I18N.commandSetHomeMaxHomesReached(), true);
+            return 0;
+        }
+
         ResourceKey<Level> levelResourceKey = player.level().dimension();
         String level = levelResourceKey.location().toString();
         HomeLocation location = new HomeLocation(level, player.getX(), player.getY(), player.getZ(), player.getXRot(), player.getYRot());
