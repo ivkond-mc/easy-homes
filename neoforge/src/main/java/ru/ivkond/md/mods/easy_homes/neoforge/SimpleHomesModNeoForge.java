@@ -19,7 +19,6 @@ import ru.ivkond.md.mods.easy_homes.SimpleHomesMod;
 @Mod(SimpleHomesMod.MOD_ID)
 public final class SimpleHomesModNeoForge {
     public SimpleHomesModNeoForge(ModContainer container) {
-        // Run our common setup.
         SimpleHomesMod.init();
 
         if (FMLEnvironment.dist.isClient()) {
