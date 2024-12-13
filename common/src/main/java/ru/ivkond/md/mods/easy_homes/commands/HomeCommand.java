@@ -63,7 +63,6 @@ public class HomeCommand {
             return 0;
         }
 
-        // FIXME: Caching?
         ResourceLocation levelLocation = ResourceLocation.parse(home.dimension());
         ResourceKey<Level> levelKey = ResourceKey.create(Registries.DIMENSION, levelLocation);
         ServerLevel targetLevel = source.getServer().getLevel(levelKey);
