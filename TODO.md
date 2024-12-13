@@ -14,8 +14,9 @@
 * Aliases
 * Translations
 * Icon
-* Teleportation effects & sounds
+* (+) Teleportation effects & sounds
 * Key bindings
+* Respect configuration
 * (?) XP consumption based on distance
 
 
