@@ -27,7 +27,6 @@ public class HomeRepository {
     private Path dataDir;
 
     public void init(Path dataDir) {
-        // TODO: Load data from files
         this.dataDir = dataDir;
 
         try (Stream<Path> files = Files.list(dataDir)) {

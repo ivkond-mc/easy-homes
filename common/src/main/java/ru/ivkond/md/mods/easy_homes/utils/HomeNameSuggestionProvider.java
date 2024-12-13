@@ -13,7 +13,7 @@ import ru.ivkond.md.mods.easy_homes.storage.HomeRepository;
 import java.util.concurrent.CompletableFuture;
 
 public class HomeNameSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
-    public static HomeNameSuggestionProvider INSTANCE = new HomeNameSuggestionProvider();
+    public static final HomeNameSuggestionProvider INSTANCE = new HomeNameSuggestionProvider();
 
     @Override
     public CompletableFuture<Suggestions> getSuggestions(CommandContext<CommandSourceStack> context, SuggestionsBuilder builder) throws CommandSyntaxException {
