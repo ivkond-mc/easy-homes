@@ -6,6 +6,7 @@ import net.minecraft.network.chat.MutableComponent;
 import ivkond.mc.mods.eh.domain.HomeLocation;
 import ivkond.mc.mods.eh.domain.PlayerHomes;
 
+import java.time.Duration;
 import java.util.Map;
 
 public class I18N {
@@ -13,11 +14,11 @@ public class I18N {
     }
 
     public static Component commandHomeSuccess(String name) {
-        return Component.translatable("easy_homes.commands.teleport.success", formatHome(name));
+        return Component.translatable("easy_homes.commands.home.success", formatHome(name));
     }
 
     public static Component commandHomesList(PlayerHomes playerHomes) {
-        Map<String, HomeLocation> homes = playerHomes.getAll();
+        Map<String, HomeLocation> homes = playerHomes.getAllHomes();
 
         if (homes == null || homes.isEmpty()) {
             Component command = Component.literal("/sethome <name>").withStyle(ChatFormatting.DARK_AQUA);
@@ -68,5 +69,11 @@ public class I18N {
 
     public static Component formatHome(String homeName) {
         return Component.literal(homeName).withStyle(ChatFormatting.GOLD);
+    }
+
+    public static Component commandHomeLocked(Duration lockDuration) {
+        String expiration = Long.toString(lockDuration.negated().getSeconds());
+        Component expirationComponent = Component.literal(expiration).withStyle(ChatFormatting.GOLD);
+        return Component.translatable("easy_homes.commands.home.too_fast", expirationComponent);
     }
 }

@@ -6,6 +6,12 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import ivkond.mc.mods.eh.config.EasyHomesConfig;
+import ivkond.mc.mods.eh.domain.HomeLocation;
+import ivkond.mc.mods.eh.storage.HomeRepository;
+import ivkond.mc.mods.eh.utils.HomeNameSuggestionProvider;
+import ivkond.mc.mods.eh.utils.I18N;
+import ivkond.mc.mods.eh.utils.Log;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -18,12 +24,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
-import ivkond.mc.mods.eh.config.EasyHomesConfig;
-import ivkond.mc.mods.eh.domain.HomeLocation;
-import ivkond.mc.mods.eh.storage.HomeRepository;
-import ivkond.mc.mods.eh.utils.HomeNameSuggestionProvider;
-import ivkond.mc.mods.eh.utils.I18N;
-import ivkond.mc.mods.eh.utils.Log;
+
+import java.time.Duration;
 
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
@@ -53,13 +55,20 @@ public class HomeCommand {
     private static int doTeleport(CommandContext<CommandSourceStack> context, String homeName) throws CommandSyntaxException {
         CommandSourceStack source = context.getSource();
         ServerPlayer player = source.getPlayerOrException();
+        String playerId = player.getStringUUID();
         ServerLevel currentLevel = source.getLevel();
 
         Log.info("Teleporting {} to home {}", player.getName().getString(), homeName);
 
-        HomeLocation home = homes.findHome(player.getStringUUID(), homeName);
+        HomeLocation home = homes.findHome(playerId, homeName);
         if (home == null) {
             player.displayClientMessage(I18N.errorHomeNotFound(homeName), true);
+            return 0;
+        }
+
+        Duration lockDuration = homes.getLockExpiration(playerId);
+        if (lockDuration.isNegative()) {
+            player.displayClientMessage(I18N.commandHomeLocked(lockDuration), true);
             return 0;
         }
 
@@ -81,6 +90,8 @@ public class HomeCommand {
         playDecorations(currentLevel, player.blockPosition(), ParticleTypes.PORTAL);
         player.teleportTo(targetLevel, home.x(), home.y(), home.z(), home.rotY(), home.rotX());
         playDecorations(targetLevel, blockPos, ParticleTypes.REVERSE_PORTAL);
+
+        homes.updateLockDuration(playerId);
 
         player.displayClientMessage(I18N.commandHomeSuccess(homeName), true);
 

@@ -22,7 +22,7 @@ public class HomeNameSuggestionProvider implements SuggestionProvider<CommandSou
 
         PlayerHomes homes = HomeRepository.INSTANCE.getHomes(player.getStringUUID());
         boolean useFilter = filter != null && !filter.isBlank();
-        homes.getAll().keySet().forEach(name -> {
+        homes.getAllHomes().keySet().forEach(name -> {
             if (!useFilter || name.toLowerCase().startsWith(filter)) {
                 builder.suggest(name);
             }

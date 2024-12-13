@@ -1,5 +1,6 @@
 {
-  "easy_homes.commands.teleport.success": "Welcome back to the %s",
+  "easy_homes.commands.home.success": "Welcome back to the %s",
+  "easy_homes.commands.home.too_fast": "Too fast, buddy!\nNext teleportation in %s second(s)",
   "easy_homes.commands.list_homes.empty": "You have no any home yet.\nCreate one with command %s",
   "easy_homes.commands.list_homes.header": "Homes",
   "easy_homes.commands.list_homes.item": "%s in %s at %s",

@@ -2,6 +2,7 @@ package ivkond.mc.mods.eh.storage;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import ivkond.mc.mods.eh.config.EasyHomesConfig;
 import ivkond.mc.mods.eh.domain.HomeLocation;
 import ivkond.mc.mods.eh.domain.PlayerHomes;
 import ivkond.mc.mods.eh.utils.Log;
@@ -12,6 +13,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class HomeRepository {
@@ -40,17 +43,17 @@ public class HomeRepository {
 
     public HomeLocation findHome(String playerId, String homeName) {
         PlayerHomes homes = getOrCreateHomes(playerId);
-        return homes.find(homeName);
+        return homes.findHome(homeName);
     }
 
     public void setHome(String playerId, String name, HomeLocation home) {
         PlayerHomes homes = getOrCreateHomes(playerId);
-        homes.set(name, home);
+        homes.setHome(name, home);
     }
 
     public void deleteHome(String playerId, String homeName) {
         PlayerHomes homes = getOrCreateHomes(playerId);
-        homes.remove(homeName);
+        homes.removeHome(homeName);
     }
 
     public void loadPlayerConfig(String playerId) {
@@ -78,15 +81,29 @@ public class HomeRepository {
         DATA.remove(playerId);
     }
 
+    public boolean exists(String playerId, String homeName) {
+        return DATA.get(playerId).findHome(homeName) != null;
+    }
+
+    public Duration getLockExpiration(String playerId) {
+        PlayerHomes homes = getHomes(playerId);
+        if (homes.getLastTeleportation() != null) {
+            OffsetDateTime expiresAt = homes.getLastTeleportation().plusSeconds(EasyHomesConfig.delay);
+            return Duration.between(expiresAt, OffsetDateTime.now());
+        }
+        return Duration.ZERO;
+    }
+
+    public void updateLockDuration(String playerId) {
+        PlayerHomes homes = getHomes(playerId);
+        homes.setLastTeleportation(OffsetDateTime.now());
+    }
+
     private Path getConfigPath(String playerId) {
         return dataDir.resolve(playerId + ".json");
     }
 
     private PlayerHomes getOrCreateHomes(String playerId) {
         return DATA.computeIfAbsent(playerId, id -> new PlayerHomes());
-    }
-
-    public boolean exists(String playerId, String homeName) {
-        return DATA.get(playerId).find(homeName) != null;
     }
 }
