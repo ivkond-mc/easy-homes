@@ -18,19 +18,17 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import ru.ivkond.md.mods.easy_homes.config.SimpleHomesConfig;
 import ru.ivkond.md.mods.easy_homes.domain.HomeLocation;
 import ru.ivkond.md.mods.easy_homes.storage.HomeRepository;
 import ru.ivkond.md.mods.easy_homes.utils.HomeNameSuggestionProvider;
 import ru.ivkond.md.mods.easy_homes.utils.I18N;
+import ru.ivkond.md.mods.easy_homes.utils.Log;
 
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
 public class HomeCommand {
-    private static final Logger log = LogManager.getLogger();
     private static final HomeRepository homes = HomeRepository.INSTANCE;
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -57,7 +55,7 @@ public class HomeCommand {
         ServerPlayer player = source.getPlayerOrException();
         ServerLevel currentLevel = source.getLevel();
 
-        log.info("Teleporting {} to home {}", player.getName().getString(), homeName);
+        Log.info("Teleporting {} to home {}", player.getName().getString(), homeName);
 
         HomeLocation home = homes.findHome(player.getStringUUID(), homeName);
         if (home == null) {

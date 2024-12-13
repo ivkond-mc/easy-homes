@@ -7,16 +7,14 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.level.ServerPlayer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import ru.ivkond.md.mods.easy_homes.domain.PlayerHomes;
 import ru.ivkond.md.mods.easy_homes.storage.HomeRepository;
 import ru.ivkond.md.mods.easy_homes.utils.I18N;
+import ru.ivkond.md.mods.easy_homes.utils.Log;
 
 import static net.minecraft.commands.Commands.literal;
 
 public class HomesCommand {
-    private static final Logger log = LogManager.getLogger();
     private static final HomeRepository homes = HomeRepository.INSTANCE;
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -30,7 +28,7 @@ public class HomesCommand {
         CommandSourceStack source = context.getSource();
         ServerPlayer player = source.getPlayerOrException();
 
-        log.info("List player {} homes", player.getDisplayName().getString());
+        Log.info("List player {} homes", player.getDisplayName().getString());
         PlayerHomes playerHomes = homes.getHomes(player.getStringUUID());
 
         player.sendSystemMessage(I18N.commandHomesList(playerHomes));

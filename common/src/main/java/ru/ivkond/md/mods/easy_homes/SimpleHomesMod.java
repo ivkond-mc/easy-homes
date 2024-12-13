@@ -14,6 +14,7 @@ import ru.ivkond.md.mods.easy_homes.commands.HomesCommand;
 import ru.ivkond.md.mods.easy_homes.commands.SetHomeCommand;
 import ru.ivkond.md.mods.easy_homes.config.SimpleHomesConfig;
 import ru.ivkond.md.mods.easy_homes.storage.HomeRepository;
+import ru.ivkond.md.mods.easy_homes.utils.Log;
 import ru.ivkond.md.mods.easy_homes.utils.PathUtils;
 
 import java.nio.file.Path;
@@ -21,18 +22,17 @@ import java.nio.file.Path;
 public final class SimpleHomesMod {
     public static final String MOD_ID = "easy_homes";
 
-    private static final Logger log = LogManager.getLogger(MOD_ID);
     private static final HomeRepository homes = HomeRepository.INSTANCE;
 
     public static void init() {
-        log.info("Initializing Easy Homes Mod");
+        Log.info("Initializing Easy Homes Mod");
 
         MidnightConfig.init(MOD_ID, SimpleHomesConfig.class);
     }
 
     public static void onServerStared(MinecraftServer server) {
         Path dataDir = PathUtils.getOrCreateDataDir(server);
-        log.info("Initializing Easy Homes storage");
+        Log.info("Initializing Easy Homes storage");
         homes.init(dataDir);
     }
 
@@ -41,12 +41,12 @@ public final class SimpleHomesMod {
     }
 
     public static void onPlayerLoggedIn(ServerPlayer player) {
-        log.debug("Player {} logged in. Now load configuration", () -> player.getDisplayName().getString());
+        Log.debug("Player {} logged in. Now load configuration", player.getDisplayName().getString());
         homes.loadPlayerConfig(player.getStringUUID());
     }
 
     public static void onPlayerLoggedOut(ServerPlayer player) {
-        log.debug("Player {} logged out. Now persist and clear configuration", () -> player.getDisplayName().getString());
+        Log.debug("Player {} logged out. Now persist and clear configuration", player.getDisplayName().getString());
         homes.unloadPlayerConfig(player.getStringUUID());
     }
 

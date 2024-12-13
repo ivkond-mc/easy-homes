@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ru.ivkond.md.mods.easy_homes.domain.HomeLocation;
 import ru.ivkond.md.mods.easy_homes.domain.PlayerHomes;
+import ru.ivkond.md.mods.easy_homes.utils.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -60,6 +61,7 @@ public class HomeRepository {
         } catch (NoSuchFileException e) {
             DATA.put(playerId, new PlayerHomes());
         } catch (IOException e) {
+            Log.error("Unable to load player {} homes", playerId, e);
             throw new RuntimeException(e);
         }
     }
@@ -70,6 +72,7 @@ public class HomeRepository {
             PlayerHomes playerHomes = DATA.get(playerId);
             GSON.toJson(playerHomes, writer);
         } catch (IOException e) {
+            Log.error("Unable to save player {} homes", playerId, e);
             throw new RuntimeException(e);
         }
         DATA.remove(playerId);

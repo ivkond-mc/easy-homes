@@ -10,18 +10,16 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import ru.ivkond.md.mods.easy_homes.config.SimpleHomesConfig;
 import ru.ivkond.md.mods.easy_homes.domain.HomeLocation;
 import ru.ivkond.md.mods.easy_homes.storage.HomeRepository;
 import ru.ivkond.md.mods.easy_homes.utils.I18N;
+import ru.ivkond.md.mods.easy_homes.utils.Log;
 
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
 public class SetHomeCommand {
-    private static final Logger log = LogManager.getLogger();
     private static final HomeRepository homes = HomeRepository.INSTANCE;
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -47,7 +45,7 @@ public class SetHomeCommand {
         ServerPlayer player = source.getPlayerOrException();
         String playerId = player.getStringUUID();
 
-        log.info("Save player {} current position as home {}", player.getDisplayName().getString(), homeName);
+        Log.info("Save player {} current position as home {}", player.getDisplayName().getString(), homeName);
 
         boolean existingHome = homes.exists(playerId, homeName);
 
