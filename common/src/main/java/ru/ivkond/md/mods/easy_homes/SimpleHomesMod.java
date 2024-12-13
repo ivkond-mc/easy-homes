@@ -2,12 +2,12 @@ package ru.ivkond.md.mods.easy_homes;
 
 import com.mojang.brigadier.CommandDispatcher;
 import eu.midnightdust.lib.config.MidnightConfig;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import ru.ivkond.md.mods.easy_homes.client.HomeKeyPressedHandler;
 import ru.ivkond.md.mods.easy_homes.commands.DelHomeCommand;
 import ru.ivkond.md.mods.easy_homes.commands.HomeCommand;
 import ru.ivkond.md.mods.easy_homes.commands.HomesCommand;
@@ -38,6 +38,10 @@ public final class SimpleHomesMod {
 
     public static void onServerStopping() {
         homes.unload();
+    }
+
+    public static void onClientTick(Minecraft minecraft) {
+        HomeKeyPressedHandler.handle(minecraft);
     }
 
     public static void onPlayerLoggedIn(ServerPlayer player) {
