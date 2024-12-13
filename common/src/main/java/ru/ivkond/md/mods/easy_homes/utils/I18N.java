@@ -31,7 +31,7 @@ public class I18N {
             Component coordinatesComponent = Component.literal(home.coordinates()).withStyle(ChatFormatting.DARK_AQUA);
 
             Component item = Component.literal(" - ")
-                    .append(Component.translatable("easy_homes.commands.list_homes.item", formatHome(name), home.dimensionName(), coordinatesComponent))
+                    .append(Component.translatable("easy_homes.commands.list_homes.item", formatHome(name), home.dimension(), coordinatesComponent))
                     .append("\n");
             response.append(item);
         });

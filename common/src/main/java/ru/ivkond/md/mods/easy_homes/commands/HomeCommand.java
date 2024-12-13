@@ -10,10 +10,14 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.ivkond.md.mods.easy_homes.config.SimpleHomesConfig;
@@ -61,10 +65,12 @@ public class HomeCommand {
             return 0;
         }
 
-        ServerLevel targetLevel = source.getServer().getLevel(home.dimension());
+        // FIXME: Caching?
+        ResourceLocation levelLocation = ResourceLocation.parse(home.dimension());
+        ResourceKey<Level> levelKey = ResourceKey.create(Registries.DIMENSION, levelLocation);
+        ServerLevel targetLevel = source.getServer().getLevel(levelKey);
         if (targetLevel == null) {
-            String levelName = home.dimension().location().toString();
-            player.displayClientMessage(I18N.errorUnknownLevel(levelName), true);
+            player.displayClientMessage(I18N.errorUnknownLevel(home.dimension()), true);
             return 0;
         }
 

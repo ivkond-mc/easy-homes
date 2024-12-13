@@ -51,9 +51,9 @@ public class SetHomeCommand {
 
         boolean existingHome = homes.exists(playerId, homeName);
 
-        ResourceKey<Level> dimension = player.level().dimension();
-
-        HomeLocation location = new HomeLocation(dimension, player.getX(), player.getY(), player.getZ(), player.getXRot(), player.getYRot());
+        ResourceKey<Level> levelResourceKey = player.level().dimension();
+        String level = levelResourceKey.location().toString();
+        HomeLocation location = new HomeLocation(level, player.getX(), player.getY(), player.getZ(), player.getXRot(), player.getYRot());
 
         homes.setHome(player.getStringUUID(), homeName, location);
 
