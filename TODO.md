@@ -16,6 +16,8 @@
 * Icon
 * (+) Teleportation effects & sounds
 * Key bindings
+  * `H` - go to default home
+  * `Ctrl + H` - open screen with home selection to teleport
 * Respect configuration
 * (?) XP consumption based on distance
 
