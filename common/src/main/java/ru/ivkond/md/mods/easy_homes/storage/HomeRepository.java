@@ -12,7 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Stream;
 
 public class HomeRepository {
     public static final HomeRepository INSTANCE = new HomeRepository();
@@ -28,16 +27,6 @@ public class HomeRepository {
 
     public void init(Path dataDir) {
         this.dataDir = dataDir;
-
-        try (Stream<Path> files = Files.list(dataDir)) {
-            files.filter(Files::isRegularFile)
-                    .forEach(path -> {
-                        String playerId = path.toFile().getName().substring(0, path.toFile().getName().lastIndexOf("."));
-                        loadPlayerConfig(playerId);
-                    });
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void unload() {
