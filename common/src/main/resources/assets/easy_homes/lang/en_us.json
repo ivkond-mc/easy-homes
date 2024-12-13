@@ -9,6 +9,6 @@
   "easy_homes.commands.errors.home_not_found": "Home %s is not found",
   "easy_homes.commands.errors.level_not_found": "Level %s is not found",
   "easy_homes.commands.errors.invalid_position": "Unable to teleport to %s cause it is in invalid position",
-  "easy_homes.key.category": "Simple Homes",
+  "easy_homes.key.category": "Easy Homes",
   "easy_homes.key.tp_home": "Teleport to default home"
 }

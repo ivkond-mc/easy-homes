@@ -16,13 +16,13 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "ru.ivkond.md.mods.easy_homes.fabric.SimpleHomesModFabric"
+      "ivkond.mc.mods.eh.fabric.EasyHomesModFabric"
     ],
     "client": [
-      "ru.ivkond.md.mods.easy_homes.fabric.client.SimpleHomesModFabricClient"
+      "ivkond.mc.mods.eh.fabric.client.EasyHomesModFabricClient"
     ],
     "modmenu": [
-      "ru.ivkond.md.mods.easy_homes.fabric.client.ModMenuConfiguration"
+      "ivkond.mc.mods.eh.fabric.client.ModMenuConfiguration"
     ]
   },
   "mixins": [
