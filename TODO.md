@@ -1,18 +1,18 @@
 ### Commands
 
-| Command                          | Alias                       | Description                                                  |
-|----------------------------------|-----------------------------|--------------------------------------------------------------|
-| `/home [<name>]`                 | `/ho [<name>]`              | Teleports player to home coordinates.                        |
-| `/homes`                         | `/hl`                       | List player homes.                                           |
-| `/sethome [<name>]`              | `/sh [<name>]`              | Save current player position as home with name `<name>`.     |
-| `/renhome <old_name> <new_name>` | `/rh <old_name> <new_name>` | Change existing home name from `<old_name>` to `<new_name>`. |
-| `/delhome <name>`                | `/dh <name>`                | Delete players home with name `<name>`.                      |
+| Command                          | Description                                                  |
+|----------------------------------|--------------------------------------------------------------|
+| `/home [<name>]`                 | Teleports player to home coordinates.                        |
+| `/homes`                         | List player homes.                                           |
+| `/sethome [<name>]`              | Save current player position as home with name `<name>`.     |
+| `/renhome <old_name> <new_name>` | Change existing home name from `<old_name>` to `<new_name>`. |
+| `/delhome <name>`                | Delete players home with name `<name>`.                      |
 
 ### ToDo
 
 * Features:
-    * Command aliases
-    * Configuration to disable command aliases
+    * (-) Command aliases
+    * (-) Configuration to disable command aliases
     * Translations
     * (+) Rename home command (for auto created homes?)
     * (+) Icon
