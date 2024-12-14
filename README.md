@@ -3,7 +3,8 @@
 ### About
 
 In Minecraft, navigating vast worlds can often be time-consuming and frustrating, especially when managing multiple
-locations. Simple Homes eliminates this frustration by providing a streamlined way to save and revisit key areas. Whether
+locations. Simple Homes eliminates this frustration by providing a streamlined way to save and revisit key areas.
+Whether
 you're mining in a remote cave, working on a distant build, or farming resources in far-off biomes, you can teleport
 between locations instantly, saving time and effort.
 
@@ -34,10 +35,10 @@ Minecraft. It’s the ultimate quality-of-life upgrade for any player!
 
 ### Properties
 
-| Property | Default | Description                        |
-|----------|---------|------------------------------------|
-| Delay    | 5       | Teleportation cooldown in seconds. |
-| MaxHomes | 5       | How many homes may have user.      |
+| Property   | Default | Description                        |
+|------------|---------|------------------------------------|
+| `delay`    | 5       | Teleportation cooldown in seconds. |
+| `maxHomes` | 5       | How many homes may have user.      |
 
 #### Server
 
