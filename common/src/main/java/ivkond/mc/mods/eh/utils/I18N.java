@@ -18,7 +18,7 @@ public class I18N {
     }
 
     public static Component commandHomeLocked(Duration lockDuration) {
-        String expiration = Long.toString(lockDuration.negated().getSeconds());
+        String expiration = Long.toString(lockDuration.getSeconds());
         Component expirationComponent = Component.literal(expiration).withStyle(ChatFormatting.GOLD);
         return Component.translatable("easy_homes.commands.home.too_fast", expirationComponent)
                 .withStyle(ChatFormatting.RED);

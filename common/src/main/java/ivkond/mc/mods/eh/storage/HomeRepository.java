@@ -91,11 +91,11 @@ public class HomeRepository {
         return DATA.get(playerId).findHome(homeName) != null;
     }
 
-    public Duration getLockExpiration(String playerId) {
+    public Duration getCooldown(String playerId) {
         PlayerHomes homes = getHomes(playerId);
         if (homes.getLastTeleportation() != null) {
-            OffsetDateTime expiresAt = homes.getLastTeleportation().plusSeconds(EasyHomesConfig.delay);
-            return Duration.between(expiresAt, OffsetDateTime.now());
+            OffsetDateTime expiresAt = homes.getLastTeleportation().plusSeconds(EasyHomesConfig.cooldown);
+            return Duration.between(OffsetDateTime.now(), expiresAt);
         }
         return Duration.ZERO;
     }

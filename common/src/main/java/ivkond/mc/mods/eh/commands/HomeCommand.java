@@ -66,9 +66,9 @@ public class HomeCommand {
             return 0;
         }
 
-        Duration lockDuration = homes.getLockExpiration(playerId);
-        if (lockDuration.isNegative()) {
-            player.displayClientMessage(I18N.commandHomeLocked(lockDuration), true);
+        Duration cooldown = homes.getCooldown(playerId);
+        if (cooldown.isPositive()) {
+            player.displayClientMessage(I18N.commandHomeLocked(cooldown), true);
             return 0;
         }
 

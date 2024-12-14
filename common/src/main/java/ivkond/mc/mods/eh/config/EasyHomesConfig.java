@@ -7,7 +7,7 @@ public class EasyHomesConfig extends MidnightConfig {
     public static final String MAIN = "main";
 
     @Entry(category = MAIN, min = 1)
-    public static int delay = 5;
+    public static int cooldown = 5;
     @Entry(category = MAIN, min = 1)
     public static int maxHomes = 5;
 }

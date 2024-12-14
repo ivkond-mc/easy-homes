@@ -37,7 +37,7 @@ Minecraft. It’s the ultimate quality-of-life upgrade for any player!
 
 | Property   | Default | Description                        |
 |------------|---------|------------------------------------|
-| `delay`    | 5       | Teleportation cooldown in seconds. |
+| `cooldown` | 5       | Teleportation cooldown in seconds. |
 | `maxHomes` | 5       | How many homes may have user.      |
 
 #### Server
@@ -46,7 +46,7 @@ Place `simple_homes.json` in your server `config` folder with following content:
 
 ```json
 {
-  "delay": 5,
+  "cooldown": 5,
   "maxHomes": 5
 }
 ```
