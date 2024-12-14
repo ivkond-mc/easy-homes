@@ -9,6 +9,7 @@
 ### ToDo
 * Features:
   * Command aliases
+  * Rename home command (for auto created homes?)
   * Translations
   * (+) Icon
   * (+) Teleportation effects & sounds
