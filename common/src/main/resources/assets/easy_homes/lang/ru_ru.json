@@ -1,0 +1,22 @@
+{
+  "easy_homes.commands.home.success": "Добро пожаловать в %s",
+  "easy_homes.commands.home.too_fast": "Секунд до следующей телепортации: %s",
+  "easy_homes.commands.list_homes.empty": "У тебя ещё нет сохранённых домов.\nЧтобы сохранить дом воспользуйся командой %s",
+  "easy_homes.commands.list_homes.header": "Дома",
+  "easy_homes.commands.list_homes.item": "%s в %s %s",
+  "easy_homes.commands.set_home.success.new": "Дом %s успешно создан",
+  "easy_homes.commands.set_home.success.existing": "Дом %s успешно обновлён",
+  "easy_homes.commands.set_home.max_homes_reached": "Лимит домов исчерпан :(",
+  "easy_homes.commands.ren_home.success": "Дом %s успешно переименован в %s",
+  "easy_homes.commands.del_home.success": "Дом %s успешно удалён",
+  "easy_homes.commands.errors.home_not_found": "Дом %s не найден",
+  "easy_homes.commands.errors.level_not_found": "Измерение %s не найдено",
+  "easy_homes.commands.errors.invalid_position": "Не удалось телепортироваться в %s, так как координаты некорректны",
+  "easy_homes.commands.errors.invalid_home_name": "Некорректное имя для дома '%s'.\nМожно использовать латинские буквы, цифры и символы '-', '_', '+'",
+  "easy_homes.midnightconfig.title": "Easy Homes",
+  "easy_homes.midnightconfig.cooldown": "Время восстановления",
+  "easy_homes.midnightconfig.maxHomes": "Лимит домов",
+  "easy_homes.key.category": "Easy Homes",
+  "easy_homes.key.tp_home": "Телепортироваться в основной дом",
+  "easy_homes.key.set_new_home": "Создать новый дом"
+}
