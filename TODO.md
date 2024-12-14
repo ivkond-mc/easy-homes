@@ -13,7 +13,7 @@
 * Features:
     * (-) Command aliases
     * (-) Configuration to disable command aliases
-    * Translations
+    * (+) Translations
     * (+) Rename home command (for auto created homes?)
     * (+) Icon
     * (+) Teleportation effects & sounds
