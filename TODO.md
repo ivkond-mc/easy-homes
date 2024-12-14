@@ -12,13 +12,14 @@
 
 * Features:
     * Command aliases
+    * Configuration to disable command aliases
     * Rename home command (for auto created homes?)
     * Translations
     * (+) Icon
     * (+) Teleportation effects & sounds
     * (+) `/sethome -` - automatically generate name
     * (+) Correct default values in configuration
-    * Update icon & logo: Simple -> Easy
+    * (+) Update icon & logo: Simple -> Easy
     * (+) Rename Delay -> Cooldown
     * Key bindings
         * (+) `H` - go to default home
@@ -27,3 +28,4 @@
 * (+) README.md
 * Documentation
 * Build pipeline (build and publication)
+* Update project metadata in mod loaders configurations
