@@ -73,7 +73,7 @@ subprojects {
             // retrieving dependencies.
             maven {
                 name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/OWNER/REPOSITORY")
+                url = uri("https://maven.pkg.github.com/ivkond-mc/simple-homes")
                 credentials {
                     username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
                     password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
