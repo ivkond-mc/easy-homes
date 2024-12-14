@@ -11,7 +11,7 @@ authors = "ivkond"
 description = '''
 Easy and lightweight /sethome mod
 '''
-#logoFile = ""
+logoFile = "assets/easy_homes/icon.png"
 
 [[dependencies.easy_homes]]
 modId = "neoforge"
