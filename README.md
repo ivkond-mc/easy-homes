@@ -17,12 +17,13 @@ Minecraft. It’s the ultimate quality-of-life upgrade for any player!
 
 ### Commands
 
-| Command             | Alias          | Description                                                                                                                                                              |
-|---------------------|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `/home [<name>]`    | `/ho [<name>]` | Instantly return to your saved homes. If no name is specified, you'll be teleported to your default home.                                                                |
-| `/homes`            | `/hl`          | Keep track of all your saved locations. Lists all your homes by name, dimension and coordinates.                                                                         |
-| `/sethome [<name>]` | `/sh [<name>]` | Mark current location as a home. Name it for easy identification or leave it blank to set a default home. If name equals `-` - home name will be generated automatically |
-| `/delhome <name>`   | `/dh <name>`   | Removes the saved home with the specified name.                                                                                                                          |
+| Command                | Alias             | Description                                                                                                                                                              |
+|------------------------|-------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `/home [<name>]`       | `/ho [<name>]`    | Instantly return to your saved homes. If no name is specified, you'll be teleported to your default home.                                                                |
+| `/homes`               | `/hl`             | Keep track of all your saved locations. Lists all your homes by name, dimension and coordinates.                                                                         |
+| `/sethome [<name>]`    | `/sh [<name>]`    | Mark current location as a home. Name it for easy identification or leave it blank to set a default home. If name equals `-` - home name will be generated automatically |
+| `/renhome <old> <new>` | `/rh <old> <new>` | Change existing home name from `<old>` to `<new>`.                                                                                                                       |
+| `/delhome <name>`      | `/dh <name>`      | Removes the saved home with the specified name.                                                                                                                          |
 
 ### Key Binds
 
