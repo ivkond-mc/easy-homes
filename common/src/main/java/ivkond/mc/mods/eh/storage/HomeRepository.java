@@ -48,6 +48,13 @@ public class HomeRepository {
         return homes.findHome(homeName);
     }
 
+    public void renameHome(String playerId, String oldName, String newName) {
+        PlayerHomes playerHomes = getHomes(playerId);
+        HomeLocation oldHome = playerHomes.findHome(oldName);
+        playerHomes.removeHome(oldName);
+        playerHomes.setHome(newName, oldHome);
+    }
+
     public void setHome(String playerId, String name, HomeLocation home) {
         PlayerHomes homes = getOrCreateHomes(playerId);
         homes.setHome(name, home);

@@ -9,6 +9,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import ivkond.mc.mods.eh.config.EasyHomesConfig;
 import ivkond.mc.mods.eh.domain.HomeLocation;
 import ivkond.mc.mods.eh.storage.HomeRepository;
+import ivkond.mc.mods.eh.utils.HomeUtils;
 import ivkond.mc.mods.eh.utils.I18N;
 import ivkond.mc.mods.eh.utils.Log;
 import net.minecraft.commands.CommandSourceStack;
@@ -48,6 +49,11 @@ public class SetHomeCommand {
 
         if ("-".equals(homeName)) {
             homeName = generateHomeName(player);
+        }
+
+        if (HomeUtils.isInvalidName(homeName)) {
+            player.sendSystemMessage(I18N.errorInvalidHomeName(homeName));
+            return 0;
         }
 
         Log.info("Save player {} current position as home {}", player.getDisplayName().getString(), homeName);

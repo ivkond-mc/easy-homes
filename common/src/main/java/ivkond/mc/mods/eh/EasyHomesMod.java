@@ -2,16 +2,13 @@ package ivkond.mc.mods.eh;
 
 import com.mojang.brigadier.CommandDispatcher;
 import eu.midnightdust.lib.config.MidnightConfig;
+import ivkond.mc.mods.eh.commands.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import ivkond.mc.mods.eh.client.HomeKeyPressedHandler;
-import ivkond.mc.mods.eh.commands.DelHomeCommand;
-import ivkond.mc.mods.eh.commands.HomeCommand;
-import ivkond.mc.mods.eh.commands.HomesCommand;
-import ivkond.mc.mods.eh.commands.SetHomeCommand;
 import ivkond.mc.mods.eh.config.EasyHomesConfig;
 import ivkond.mc.mods.eh.storage.HomeRepository;
 import ivkond.mc.mods.eh.utils.Log;
@@ -62,6 +59,7 @@ public final class EasyHomesMod {
         HomeCommand.register(dispatcher);
         HomesCommand.register(dispatcher);
         SetHomeCommand.register(dispatcher);
+        RenHomeCommand.register(dispatcher);
         DelHomeCommand.register(dispatcher);
     }
 }

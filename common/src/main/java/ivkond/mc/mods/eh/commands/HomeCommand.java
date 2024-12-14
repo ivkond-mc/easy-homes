@@ -10,6 +10,7 @@ import ivkond.mc.mods.eh.config.EasyHomesConfig;
 import ivkond.mc.mods.eh.domain.HomeLocation;
 import ivkond.mc.mods.eh.storage.HomeRepository;
 import ivkond.mc.mods.eh.utils.HomeNameSuggestionProvider;
+import ivkond.mc.mods.eh.utils.HomeUtils;
 import ivkond.mc.mods.eh.utils.I18N;
 import ivkond.mc.mods.eh.utils.Log;
 import net.minecraft.commands.CommandSourceStack;
@@ -59,6 +60,11 @@ public class HomeCommand {
         ServerLevel currentLevel = source.getLevel();
 
         Log.info("Teleporting {} to home {}", player.getName().getString(), homeName);
+
+        if (HomeUtils.isInvalidName(homeName)) {
+            player.sendSystemMessage(I18N.errorInvalidHomeName(homeName));
+            return 0;
+        }
 
         HomeLocation home = homes.findHome(playerId, homeName);
         if (home == null) {

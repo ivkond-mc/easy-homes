@@ -1,10 +1,10 @@
 package ivkond.mc.mods.eh.utils;
 
+import ivkond.mc.mods.eh.domain.HomeLocation;
+import ivkond.mc.mods.eh.domain.PlayerHomes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import ivkond.mc.mods.eh.domain.HomeLocation;
-import ivkond.mc.mods.eh.domain.PlayerHomes;
 
 import java.time.Duration;
 import java.util.Map;
@@ -59,6 +59,10 @@ public class I18N {
                 .withStyle(ChatFormatting.RED);
     }
 
+    public static Component commandRenHomeSuccess(String oldName, String newName) {
+        return Component.translatable("easy_homes.commands.ren_home.success", formatHome(oldName), formatHome(newName));
+    }
+
     public static Component commandDelHomeSuccess(String homeName) {
         return Component.translatable("easy_homes.commands.del_home.success", formatHome(homeName));
     }
@@ -76,6 +80,11 @@ public class I18N {
 
     public static Component errorInvalidPosition() {
         return Component.translatable("easy_homes.commands.errors.invalid_position")
+                .withStyle(ChatFormatting.RED);
+    }
+
+    public static Component errorInvalidHomeName(String homeName) {
+        return Component.translatable("easy_homes.commands.errors.invalid_home_name", formatHome(homeName))
                 .withStyle(ChatFormatting.RED);
     }
 
