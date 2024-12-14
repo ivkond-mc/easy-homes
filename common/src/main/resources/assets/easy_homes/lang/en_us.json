@@ -15,5 +15,6 @@
   "easy_homes.midnightconfig.delay": "Delay",
   "easy_homes.midnightconfig.maxHomes": "Max homes",
   "easy_homes.key.category": "Easy Homes",
-  "easy_homes.key.tp_home": "Teleport to default home"
+  "easy_homes.key.tp_home": "Teleport to default home",
+  "easy_homes.key.set_new_home": "Set new home"
 }

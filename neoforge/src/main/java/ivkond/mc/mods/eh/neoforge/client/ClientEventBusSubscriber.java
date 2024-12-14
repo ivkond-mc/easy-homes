@@ -24,6 +24,7 @@ public class ClientEventBusSubscriber {
         @SubscribeEvent
         public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
             event.register(KeyMappings.TP_TO_DEFAULT_HOME);
+            event.register(KeyMappings.SET_NEW_HOME);
         }
     }
 }

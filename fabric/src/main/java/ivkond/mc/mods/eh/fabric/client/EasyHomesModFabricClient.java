@@ -7,10 +7,10 @@ import ivkond.mc.mods.eh.EasyHomesMod;
 import ivkond.mc.mods.eh.client.KeyMappings;
 
 public final class EasyHomesModFabricClient implements ClientModInitializer {
-
     @Override
     public void onInitializeClient() {
         KeyBindingHelper.registerKeyBinding(KeyMappings.TP_TO_DEFAULT_HOME);
+        KeyBindingHelper.registerKeyBinding(KeyMappings.SET_NEW_HOME);
 
         ClientTickEvents.END_CLIENT_TICK.register(EasyHomesMod::onClientTick);
     }
