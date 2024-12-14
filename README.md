@@ -3,7 +3,7 @@
 ### About
 
 In Minecraft, navigating vast worlds can often be time-consuming and frustrating, especially when managing multiple
-locations. Simple Homes eliminates this frustration by providing a streamlined way to save and revisit key areas.
+locations. **Easy Homes** eliminates this frustration by providing a streamlined way to save and revisit key areas.
 Whether
 you're mining in a remote cave, working on a distant build, or farming resources in far-off biomes, you can teleport
 between locations instantly, saving time and effort.
@@ -12,7 +12,7 @@ This mod is perfect for players who value efficiency, organization, and the free
 It’s also highly useful in multiplayer settings, where players often manage shared bases or individual builds scattered
 across the map.
 
-With Simple Homes, you’ll spend less time traveling and more time enjoying the creative and adventurous aspects of
+With **Easy Homes**, you’ll spend less time traveling and more time enjoying the creative and adventurous aspects of
 Minecraft. It’s the ultimate quality-of-life upgrade for any player!
 
 ### Commands
@@ -42,7 +42,7 @@ Minecraft. It’s the ultimate quality-of-life upgrade for any player!
 
 #### Server
 
-Place `simple_homes.json` in your server `config` folder with following content:
+Place `easy_homes.json` in your server `config` folder with following content:
 
 ```json
 {
