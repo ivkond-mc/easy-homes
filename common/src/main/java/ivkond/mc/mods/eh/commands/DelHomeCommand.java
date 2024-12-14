@@ -21,7 +21,7 @@ public class DelHomeCommand {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         LiteralArgumentBuilder<CommandSourceStack> home = literal("delhome")
-                .then(argument("name", StringArgumentType.word())
+                .then(argument("name", StringArgumentType.greedyString())
                         .suggests(HomeNameSuggestionProvider.INSTANCE)
                         .executes(DelHomeCommand::deleteHome));
 

@@ -6,15 +6,16 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
 import ivkond.mc.mods.eh.config.EasyHomesConfig;
 import ivkond.mc.mods.eh.domain.HomeLocation;
 import ivkond.mc.mods.eh.storage.HomeRepository;
 import ivkond.mc.mods.eh.utils.I18N;
 import ivkond.mc.mods.eh.utils.Log;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
@@ -25,7 +26,7 @@ public class SetHomeCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         LiteralArgumentBuilder<CommandSourceStack> home = literal("sethome")
                 .executes(SetHomeCommand::setDefaultHome)
-                .then(argument("name", StringArgumentType.word())
+                .then(argument("name", StringArgumentType.greedyString())
                         .executes(SetHomeCommand::setHome));
 
         dispatcher.register(home);
@@ -45,6 +46,10 @@ public class SetHomeCommand {
         ServerPlayer player = source.getPlayerOrException();
         String playerId = player.getStringUUID();
 
+        if ("-".equals(homeName)) {
+            homeName = generateHomeName(player);
+        }
+
         Log.info("Save player {} current position as home {}", player.getDisplayName().getString(), homeName);
 
         boolean existingHome = homes.exists(playerId, homeName);
@@ -63,5 +68,11 @@ public class SetHomeCommand {
         player.displayClientMessage(I18N.commandSetHomeSuccess(homeName, existingHome), true);
 
         return Command.SINGLE_SUCCESS;
+    }
+
+    private static String generateHomeName(ServerPlayer player) {
+        String dimension = player.level().dimension().location().getPath();
+        Vec3 position = player.position();
+        return String.format("%s_%.0f_%.0f_%.0f", dimension, position.x, position.y, position.z);
     }
 }
