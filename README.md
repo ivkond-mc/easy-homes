@@ -33,7 +33,7 @@ Minecraft. It’s the ultimate quality-of-life upgrade for any player!
 
 ### Configuration
 
-### Properties
+#### Properties
 
 | Property   | Default | Description                        |
 |------------|---------|------------------------------------|
