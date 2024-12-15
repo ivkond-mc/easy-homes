@@ -8,9 +8,13 @@ architectury {
     minecraft = project.minecraft_version
 }
 
+ext {
+    buildNumber = project.findProperty("build_number") ?: System.getenv("BUILD_NUMBER") ?: "local"
+}
+
 allprojects {
     group = rootProject.maven_group
-    version = rootProject.mod_version
+    version = "${rootProject.mod_version}.${buildNumber}"
 }
 
 subprojects {
