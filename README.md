@@ -5,7 +5,7 @@
 [![Build status](https://img.shields.io/github/actions/workflow/status/ivkond-mc/easy-homes/gradle-publish.yml)](https://github.com/ivkond-mc/easy-homes/actions/workflows/gradle-publish.yml)
 [![Java 21](https://img.shields.io/badge/java-21%2B-blue)](https://adoptium.net/temurin/releases/?version=21)
 
-### About
+### :house: About
 
 In Minecraft, navigating vast worlds can often be time-consuming and frustrating, especially when managing multiple
 locations. **Easy Homes** eliminates this frustration by providing a streamlined way to save and revisit key areas.
@@ -20,7 +20,7 @@ across the map.
 With **Easy Homes**, you’ll spend less time traveling and more time enjoying the creative and adventurous aspects of
 Minecraft. It’s the ultimate quality-of-life upgrade for any player!
 
-### Commands
+### :computer: Commands
 
 | Command                | Description                                                                                                                                                              |
 |------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -30,14 +30,14 @@ Minecraft. It’s the ultimate quality-of-life upgrade for any player!
 | `/renhome <old> <new>` | Change existing home name from `<old>` to `<new>`.                                                                                                                       |
 | `/delhome <name>`      | Removes the saved home with the specified name.                                                                                                                          |
 
-### Key Binds
+### :musical_keyboard: Key Binds
 
-| Key | Description                                                              |
-|-----|--------------------------------------------------------------------------|
-| `H` | Bind for `/home` command. Teleports to default home.                     |
-| `J` | Bind for `/sethome -` command. Save current position with generated name |
+| Key          | Description                                                              |
+|--------------|--------------------------------------------------------------------------|
+| <kbd>H</kbd> | Bind for `/home` command. Teleports to default home.                     |
+| <kbd>J</kbd> | Bind for `/sethome -` command. Save current position with generated name |
 
-### Configuration
+### :wrench: Configuration
 
 #### Properties
 
