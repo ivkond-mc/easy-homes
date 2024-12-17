@@ -16,19 +16,20 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class HomeRepository {
     public static final HomeRepository INSTANCE = new HomeRepository();
 
+    // Map<Player, Homes>
     private static final Gson GSON = new GsonBuilder()
             .disableHtmlEscaping()
             .setPrettyPrinting()
             .registerTypeAdapter(OffsetDateTime.class, OffsetDateTimeGsonAdapter.INSTANCE)
             .create();
 
-    // Map<Player, Homes>
-    private final ConcurrentHashMap<String, PlayerHomes> DATA = new ConcurrentHashMap<>();
+    private static final Map<String, PlayerHomes> data = new ConcurrentHashMap<>();
     private Path dataDir;
 
     public void init(Path dataDir) {
@@ -36,11 +37,11 @@ public class HomeRepository {
     }
 
     public void unload() {
-        DATA.keySet().forEach(this::unloadPlayerConfig);
+        data.keySet().forEach(this::unloadPlayerConfig);
     }
 
     public PlayerHomes getHomes(String playerId) {
-        return DATA.get(playerId);
+        return data.get(playerId);
     }
 
     public HomeLocation findHome(String playerId, String homeName) {
@@ -73,9 +74,9 @@ public class HomeRepository {
                 Log.error("Malformed player {} homes config file", playerId);
                 return;
             }
-            DATA.put(playerId, homes);
+            data.put(playerId, homes);
         } catch (NoSuchFileException e) {
-            DATA.put(playerId, new PlayerHomes());
+            data.put(playerId, new PlayerHomes());
         } catch (IOException e) {
             Log.error("Unable to load player {} homes", playerId, e);
             throw new RuntimeException(e);
@@ -85,17 +86,17 @@ public class HomeRepository {
     public void unloadPlayerConfig(String playerId) {
         Path configPath = getConfigPath(playerId);
         try (BufferedWriter writer = Files.newBufferedWriter(configPath)) {
-            PlayerHomes playerHomes = DATA.get(playerId);
+            PlayerHomes playerHomes = data.get(playerId);
             GSON.toJson(playerHomes, writer);
         } catch (IOException e) {
             Log.error("Unable to save player {} homes", playerId, e);
             throw new RuntimeException(e);
         }
-        DATA.remove(playerId);
+        data.remove(playerId);
     }
 
     public boolean exists(String playerId, String homeName) {
-        return DATA.get(playerId).findHome(homeName) != null;
+        return data.get(playerId).findHome(homeName) != null;
     }
 
     public Duration getCooldown(String playerId) {
@@ -122,6 +123,6 @@ public class HomeRepository {
     }
 
     private PlayerHomes getOrCreateHomes(String playerId) {
-        return DATA.computeIfAbsent(playerId, id -> new PlayerHomes());
+        return data.computeIfAbsent(playerId, id -> new PlayerHomes());
     }
 }
