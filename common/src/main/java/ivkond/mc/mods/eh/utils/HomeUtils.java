@@ -1,14 +1,11 @@
 package ivkond.mc.mods.eh.utils;
 
-import com.mojang.brigadier.StringReader;
+import java.util.regex.Pattern;
 
 public class HomeUtils {
+    private static final Pattern HOME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]*$");
+
     public static boolean isInvalidName(String name) {
-        for (char c : name.toCharArray()) {
-            if (!StringReader.isAllowedInUnquotedString(c)) {
-                return true;
-            }
-        }
-        return false;
+        return HOME_PATTERN.matcher(name).matches();
     }
 }
