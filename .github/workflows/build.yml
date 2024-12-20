@@ -3,7 +3,7 @@ name: Build project
 on:
   push:
     tags-ignore:
-      - *
+      - '*'
   workflow_dispatch:
 
 jobs:
