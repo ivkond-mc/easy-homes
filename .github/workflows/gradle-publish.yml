@@ -44,3 +44,10 @@ jobs:
         USERNAME: ${{ github.actor }}
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BUILD_NUMBER: ${{ github.run_number }}
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          fabric/build/libs/easy_homes-fabric-1.21.1-1.0.${{ github.run_number}}.jar
+          neoforge/build/libs/easy_homes-neoforge-1.21.1-1.0.${{ github.run_number}}.jar
