@@ -58,8 +58,6 @@ subprojects {
     }
 
     publisher {
-        setDebug(true)
-
         apiKeys {
             modrinth = project.findProperty("modrinth.token") ?: System.getenv("MODRINTH_TOKEN")
             curseforge = project.findProperty("curseforge.token") ?: System.getenv("CURSE_TOKEN")
