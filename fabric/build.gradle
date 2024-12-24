@@ -64,15 +64,6 @@ remapJar {
     inputFile.set shadowJar.archiveFile
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifactId = base.archivesName.get()
-            from components.java
-        }
-    }
-}
-
 publisher {
     setLoaders("fabric")
     setProjectVersion("${project.version}")
