@@ -16,14 +16,14 @@ logoFile = "assets/easy_homes/icon.png"
 [[dependencies.easy_homes]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.0,)"
+versionRange = "[20.5,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.easy_homes]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21,)"
+versionRange = "[1.20.5,)"
 ordering = "NONE"
 side = "BOTH"
 
