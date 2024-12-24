@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[2,)"
+loaderVersion = "[1,)"
 #issueTrackerURL = ""
 license = "MIT"
 
@@ -11,19 +11,21 @@ authors = "ivkond"
 description = '''
 Easy and lightweight /sethome mod
 '''
-logoFile = "assets/easy_homes/icon.png"
+logoFile = "icon.png"
 
 [[dependencies.easy_homes]]
 modId = "neoforge"
 type = "required"
-versionRange = "[20.4,)"
+mandatory = true
+versionRange = "[20.3,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.easy_homes]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.20.4,)"
+mandatory = true
+versionRange = "[1.20.3,)"
 ordering = "NONE"
 side = "BOTH"
 
