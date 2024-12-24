@@ -12,4 +12,5 @@ rootProject.name = 'easy_homes'
 
 include 'common'
 include 'fabric'
-include 'neoforge'
+// Disabled due to missing midnightlib for 1.20.5
+//include 'neoforge'

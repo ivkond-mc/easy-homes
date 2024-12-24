@@ -1,2 +1,2 @@
-### 21.1
-* Initial release
+### 20.5
+* Initial release (without NeoForge)
