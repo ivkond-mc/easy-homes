@@ -1,5 +1,2 @@
-### 21.1.0
+### 21.1
 * Initial release
-
-### 21.1.1
-* Fixed home name validation
