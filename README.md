@@ -1,6 +1,6 @@
 ![Logo](docs/logo.png)
 
-[![Minecraft](https://img.shields.io/badge/minecraft-1.21.1-blue)](https://www.minecraft.net/article/minecraft-java-edition-1-21-1)
+[![Minecraft](https://img.shields.io/badge/minecraft-1.21.2-blue)](https://www.minecraft.net/article/minecraft-java-edition-1-21-2)
 [![Java 21](https://img.shields.io/badge/java-21%2B-blue)](https://adoptium.net/temurin/releases/?version=21)
 [![Licence](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/license/mit)
 [![Modrinth](https://img.shields.io/modrinth/game-versions/easy-homes?style=flat)](https://modrinth.com/mod/easy-homes)

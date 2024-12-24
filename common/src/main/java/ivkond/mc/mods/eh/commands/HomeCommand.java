@@ -27,6 +27,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 
 import java.time.Duration;
+import java.util.Set;
 
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
@@ -94,7 +95,7 @@ public class HomeCommand {
         }
 
         playDecorations(currentLevel, player.blockPosition(), ParticleTypes.PORTAL);
-        player.teleportTo(targetLevel, home.x(), home.y(), home.z(), home.rotY(), home.rotX());
+        player.teleportTo(targetLevel, home.x(), home.y(), home.z(), Set.of(), home.rotY(), home.rotX(), false);
         playDecorations(targetLevel, blockPos, ParticleTypes.REVERSE_PORTAL);
 
         homes.updateLockDuration(playerId);
