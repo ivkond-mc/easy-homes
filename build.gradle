@@ -2,25 +2,22 @@ plugins {
     id 'dev.architectury.loom' version '1.7-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
+    id 'com.hypherionmc.modutils.modpublisher' version '2.1.6' apply false
 }
 
 architectury {
     minecraft = project.minecraft_version
 }
 
-ext {
-    buildNumber = project.findProperty("build_number") ?: System.getenv("BUILD_NUMBER") ?: "local"
-}
-
 allprojects {
     group = rootProject.maven_group
-    version = "${minecraft_version}-${rootProject.mod_version}.${buildNumber}"
 }
 
 subprojects {
     apply plugin: 'dev.architectury.loom'
     apply plugin: 'architectury-plugin'
     apply plugin: 'maven-publish'
+    apply plugin: 'com.hypherionmc.modutils.modpublisher'
 
     base {
         // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.
@@ -77,5 +74,34 @@ subprojects {
                 }
             }
         }
+    }
+
+    publisher {
+        setDebug(true)
+
+        apiKeys {
+            modrinth = project.findProperty("modrinth.token") ?: System.getenv("MODRINTH_TOKEN")
+            curseforge = project.findProperty("curseforge.token") ?: System.getenv("CURSE_TOKEN")
+        }
+
+        setCurseID(curseforge_id)
+        setModrinthID(modrinth_id)
+        setVersionType("release")
+        setChangelog(rootProject.file("./CHANGELOG.md"))
+        setGameVersions([minecraft_version])
+        setCurseEnvironment("both")
+        setArtifact(remapJar)
+        setJavaVersions([JavaVersion.VERSION_21])
+        setDisableEmptyJarCheck(false)
+    }
+}
+
+tasks.register('uploadMod') {
+    group 'publishing'
+    // Generates something like: [':fabric:publishMod', ':neoforge:publishMod']
+    def tasks = enabled_platforms.split(',').collect {":" + it + ":publishMod" }
+    dependsOn(tasks)
+    doLast {
+        print("Mods has been successfully uploaded")
     }
 }

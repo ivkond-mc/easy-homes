@@ -2,6 +2,8 @@ plugins {
     id 'com.github.johnrengelman.shadow'
 }
 
+version = "${mod_version}-neoforge"
+
 architectury {
     platformSetupLoomIde()
     neoForge()
@@ -64,4 +66,10 @@ publishing {
             from components.java
         }
     }
+}
+
+publisher {
+    setLoaders("neoforge")
+    setProjectVersion("${project.version}")
+    setDisplayName("${archives_name}-${project.version}")
 }
