@@ -6,6 +6,6 @@ public class HomeUtils {
     private static final Pattern HOME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]*$");
 
     public static boolean isInvalidName(String name) {
-        return HOME_PATTERN.matcher(name).matches();
+        return !HOME_PATTERN.matcher(name).matches();
     }
 }
