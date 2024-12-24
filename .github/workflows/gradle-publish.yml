@@ -32,3 +32,5 @@ jobs:
       env:
         USERNAME: ${{ github.actor }}
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+        CURSE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
