@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[3,)"
+loaderVersion = "[2,)"
 #issueTrackerURL = ""
 license = "MIT"
 
@@ -16,14 +16,14 @@ logoFile = "assets/easy_homes/icon.png"
 [[dependencies.easy_homes]]
 modId = "neoforge"
 type = "required"
-versionRange = "[20.5,)"
+versionRange = "[20.4,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.easy_homes]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.20.5,)"
+versionRange = "[1.20.4,)"
 ordering = "NONE"
 side = "BOTH"
 

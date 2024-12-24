@@ -10,5 +10,5 @@ dependencies {
 
     // A little bit weird, but common module may use Fabric version as dependency in 'modCompileOnly' scope
     // See: https://github.com/TeamMidnightDust/MidnightLib/issues/74
-    modCompileOnly "maven.modrinth:midnightlib:${rootProject.midnightlib_version}-fabric"
+    modCompileOnly "maven.modrinth:midnightlib:${rootProject.midnightlib_fabric_version}"
 }

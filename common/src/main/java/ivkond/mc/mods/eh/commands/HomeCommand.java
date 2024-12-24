@@ -73,7 +73,7 @@ public class HomeCommand {
         }
 
         Duration cooldown = homes.getCooldown(playerId);
-        if (cooldown.isPositive()) {
+        if (cooldown.getSeconds() > 0) {
             player.displayClientMessage(I18N.commandHomeLocked(cooldown), true);
             return 0;
         }

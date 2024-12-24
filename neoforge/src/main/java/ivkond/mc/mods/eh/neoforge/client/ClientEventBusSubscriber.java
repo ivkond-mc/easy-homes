@@ -3,23 +3,26 @@ package ivkond.mc.mods.eh.neoforge.client;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
+
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import ivkond.mc.mods.eh.EasyHomesMod;
 import ivkond.mc.mods.eh.client.KeyMappings;
+import net.neoforged.neoforge.event.TickEvent;
 
 public class ClientEventBusSubscriber {
-    @EventBusSubscriber(modid = EasyHomesMod.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
+    @Mod.EventBusSubscriber(modid = EasyHomesMod.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class ForgeEventSubscriber {
         @SubscribeEvent
-        public static void onClientTick(ClientTickEvent.Post event) {
+        public static void onClientTick(TickEvent.ClientTickEvent event) {
             Minecraft instance = Minecraft.getInstance();
-            EasyHomesMod.onClientTick(instance);
+            if (event.phase == TickEvent.Phase.END) {
+                EasyHomesMod.onClientTick(instance);
+            }
         }
     }
 
-    @EventBusSubscriber(modid = EasyHomesMod.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = EasyHomesMod.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModEventSubscriber {
         @SubscribeEvent
         public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
