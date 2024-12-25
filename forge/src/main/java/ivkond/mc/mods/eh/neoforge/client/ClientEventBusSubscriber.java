@@ -1,14 +1,13 @@
 package ivkond.mc.mods.eh.neoforge.client;
 
-import net.minecraft.client.Minecraft;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import ivkond.mc.mods.eh.EasyHomesMod;
 import ivkond.mc.mods.eh.client.KeyMappings;
-import net.neoforged.neoforge.event.TickEvent;
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 public class ClientEventBusSubscriber {
     @Mod.EventBusSubscriber(modid = EasyHomesMod.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)

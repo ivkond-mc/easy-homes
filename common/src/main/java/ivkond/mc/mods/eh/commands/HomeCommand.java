@@ -106,6 +106,6 @@ public class HomeCommand {
 
     private static void playDecorations(ServerLevel level, BlockPos pos, SimpleParticleType particles) {
         level.sendParticles(particles, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 20, 0.3d, 0.3d, 0.3d, 0.5d);
-        level.playSound(null, pos, SoundEvents.PLAYER_TELEPORT, SoundSource.PLAYERS, 1f, 1f);
+        level.playSound(null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1f, 1f);
     }
 }

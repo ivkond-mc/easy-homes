@@ -65,7 +65,7 @@ public class SetHomeCommand {
             return 0;
         }
 
-        ResourceKey<Level> levelResourceKey = player.level().dimension();
+        ResourceKey<Level> levelResourceKey = player.getLevel().dimension();
         String level = levelResourceKey.location().toString();
         HomeLocation location = new HomeLocation(level, player.getX(), player.getY(), player.getZ(), player.getXRot(), player.getYRot());
 
@@ -77,7 +77,7 @@ public class SetHomeCommand {
     }
 
     private static String generateHomeName(ServerPlayer player) {
-        String dimension = player.level().dimension().location().getPath();
+        String dimension = player.getLevel().dimension().location().getPath();
         Vec3 position = player.position();
         return String.format("%s_%.0f_%.0f_%.0f", dimension, position.x, position.y, position.z);
     }

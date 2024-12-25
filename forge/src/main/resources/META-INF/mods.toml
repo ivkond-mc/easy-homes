@@ -14,20 +14,15 @@ Easy and lightweight /sethome mod
 logoFile = "icon.png"
 
 [[dependencies.easy_homes]]
-modId = "neoforge"
-type = "required"
+modId = "forge"
 mandatory = true
-versionRange = "[20.3,)"
+versionRange = "[45,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.easy_homes]]
 modId = "minecraft"
-type = "required"
 mandatory = true
-versionRange = "[1.20.3,)"
+versionRange = "[1.19.4,)"
 ordering = "NONE"
 side = "BOTH"
-
-[[mixins]]
-config = "easy_homes.mixins.json"
