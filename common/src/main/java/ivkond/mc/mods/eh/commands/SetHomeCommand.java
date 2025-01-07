@@ -8,6 +8,8 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import ivkond.mc.mods.eh.config.EasyHomesConfig;
 import ivkond.mc.mods.eh.domain.HomeLocation;
+import ivkond.mc.mods.eh.network.HomeCreatedPayload;
+import ivkond.mc.mods.eh.network.PacketSender;
 import ivkond.mc.mods.eh.storage.HomeRepository;
 import ivkond.mc.mods.eh.utils.HomeUtils;
 import ivkond.mc.mods.eh.utils.I18N;
@@ -70,6 +72,9 @@ public class SetHomeCommand {
         HomeLocation location = new HomeLocation(level, player.getX(), player.getY(), player.getZ(), player.getXRot(), player.getYRot());
 
         homes.setHome(player.getStringUUID(), homeName, location);
+
+        HomeCreatedPayload payload = new HomeCreatedPayload(homeName, location);
+        PacketSender.send(player, payload);
 
         player.displayClientMessage(I18N.commandSetHomeSuccess(homeName, existingHome), true);
 
