@@ -13,3 +13,4 @@
 ### 21.1.4
 * Reworked translation
 * Added `/back` command
+* Binded `/back` command to `Shift` + `H` keystroke
