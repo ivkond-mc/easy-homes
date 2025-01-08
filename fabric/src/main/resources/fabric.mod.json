@@ -1,15 +1,15 @@
 {
   "schemaVersion": 1,
-  "id": "easy_homes",
-  "version": "${version}",
-  "name": "Easy Homes",
-  "description": "Easy and lightweight /sethome mod",
+  "id": "${mod_id}",
+  "version": "${mod_version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
   "authors": [
-    "ivkond"
+    "${mod_author}"
   ],
   "contact": {
-    "homepage": "TODO",
-    "sources": "https://github.com/ivkond-mc/simple-homes"
+    "homepage": "${mod_sources}",
+    "sources": "${mod_sources}"
   },
   "license": "MIT",
   "icon": "assets/easy_homes/icon.png",
@@ -29,8 +29,8 @@
     "easy_homes.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.16.9",
-    "minecraft": "~1.21.1",
+    "fabricloader": ">=${fabric_loader_version}",
+    "minecraft": "~${minecraft_version}",
     "java": ">=21",
     "fabric-api": "*"
   },
