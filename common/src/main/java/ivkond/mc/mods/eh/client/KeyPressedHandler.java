@@ -3,7 +3,7 @@ package ivkond.mc.mods.eh.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 
-public class HomeKeyPressedHandler {
+public class KeyPressedHandler {
     public static void handle(Minecraft minecraft) {
         if (KeyMappings.TP_TO_DEFAULT_HOME.consumeClick()) {
             sendCommand(minecraft, "home");

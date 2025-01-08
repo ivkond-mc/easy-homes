@@ -2,7 +2,7 @@ package ivkond.mc.mods.eh;
 
 import com.mojang.brigadier.CommandDispatcher;
 import eu.midnightdust.lib.config.MidnightConfig;
-import ivkond.mc.mods.eh.client.HomeKeyPressedHandler;
+import ivkond.mc.mods.eh.client.KeyPressedHandler;
 import ivkond.mc.mods.eh.commands.*;
 import ivkond.mc.mods.eh.config.EasyHomesConfig;
 import ivkond.mc.mods.eh.integration.xaero.XaerosMinimapIntegration;
@@ -42,7 +42,7 @@ public final class EasyHomesMod {
     }
 
     public static void onClientTick(Minecraft minecraft) {
-        HomeKeyPressedHandler.handle(minecraft);
+        KeyPressedHandler.handle(minecraft);
     }
 
     public static void onPlayerLoggedIn(ServerPlayer player) {
