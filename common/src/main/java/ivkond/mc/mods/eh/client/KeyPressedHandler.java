@@ -6,7 +6,11 @@ import net.minecraft.client.multiplayer.ClientPacketListener;
 public class KeyPressedHandler {
     public static void handle(Minecraft minecraft) {
         if (KeyMappings.TP_TO_DEFAULT_HOME.consumeClick()) {
-            sendCommand(minecraft, "home");
+            if (minecraft.player != null && minecraft.player.isShiftKeyDown()) {
+                sendCommand(minecraft, "back");
+            } else {
+                sendCommand(minecraft, "home");
+            }
         }
 
         if (KeyMappings.SET_NEW_HOME.consumeClick()) {
