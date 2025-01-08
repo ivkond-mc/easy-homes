@@ -118,6 +118,15 @@ public class HomeRepository {
         return homes.getAllHomes().size() >= EasyHomesConfig.maxHomes;
     }
 
+    public String getLastVisitedHome(String playerId) {
+        PlayerHomes homes = getHomes(playerId);
+        return homes.getLastVisitedHome();
+    }
+
+    public void setLastVisitedHome(String playerId, String homeName) {
+        getHomes(playerId).setLastVisitedHome(homeName);
+    }
+
     private Path getConfigPath(String playerId) {
         return dataDir.resolve(playerId + ".json");
     }

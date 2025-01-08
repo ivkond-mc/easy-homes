@@ -57,8 +57,6 @@ public class HomeCommand {
     private static int doTeleport(CommandContext<CommandSourceStack> context, String homeName) throws CommandSyntaxException {
         CommandSourceStack source = context.getSource();
         ServerPlayer player = source.getPlayerOrException();
-        String playerId = player.getStringUUID();
-        ServerLevel currentLevel = source.getLevel();
 
         Log.info("Teleporting {} to home {}", player.getName().getString(), homeName);
 
@@ -67,33 +65,43 @@ public class HomeCommand {
             return 0;
         }
 
+        doTeleportInternal(source, homeName);
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    static void doTeleportInternal(CommandSourceStack stack, String homeName) throws CommandSyntaxException {
+        ServerPlayer player = stack.getPlayerOrException();
+        String playerId = player.getStringUUID();
+        ServerLevel currentLevel = stack.getLevel();
+
         HomeLocation home = homes.findHome(playerId, homeName);
         if (home == null) {
             player.displayClientMessage(I18N.errorHomeNotFound(homeName), true);
-            return 0;
+            return;
         }
 
         if (!player.isCreative()) {
             Duration cooldown = homes.getCooldown(playerId);
             if (cooldown.isPositive()) {
                 player.displayClientMessage(I18N.commandHomeLocked(cooldown), true);
-                return 0;
+                return;
             }
         }
 
         ResourceLocation levelLocation = ResourceLocation.parse(home.dimension());
         ResourceKey<Level> levelKey = ResourceKey.create(Registries.DIMENSION, levelLocation);
-        ServerLevel targetLevel = source.getServer().getLevel(levelKey);
+        ServerLevel targetLevel = stack.getServer().getLevel(levelKey);
         if (targetLevel == null) {
             player.displayClientMessage(I18N.errorUnknownLevel(home.dimension()), true);
-            return 0;
+            return;
         }
 
         // TeleportCommand#performTeleport
         BlockPos blockPos = BlockPos.containing(home.x(), home.y(), home.z());
         if (!ServerLevel.isInSpawnableBounds(blockPos)) {
             player.displayClientMessage(I18N.errorInvalidPosition(), true);
-            return 0;
+            return;
         }
 
         playDecorations(currentLevel, player.blockPosition(), ParticleTypes.PORTAL);
@@ -101,10 +109,9 @@ public class HomeCommand {
         playDecorations(targetLevel, blockPos, ParticleTypes.REVERSE_PORTAL);
 
         homes.updateLockDuration(playerId);
+        homes.setLastVisitedHome(playerId, homeName);
 
         player.displayClientMessage(I18N.commandHomeSuccess(homeName), true);
-
-        return Command.SINGLE_SUCCESS;
     }
 
     private static void playDecorations(ServerLevel level, BlockPos pos, SimpleParticleType particles) {

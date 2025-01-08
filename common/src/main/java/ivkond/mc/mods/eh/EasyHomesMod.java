@@ -65,5 +65,6 @@ public final class EasyHomesMod {
         SetHomeCommand.register(dispatcher);
         RenHomeCommand.register(dispatcher);
         DelHomeCommand.register(dispatcher);
+        BackCommand.register(dispatcher);
     }
 }
