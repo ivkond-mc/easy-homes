@@ -10,3 +10,4 @@
 ### 21.4.3
 * Reworked translation
 * Added `/back` command
+* Binded `/back` command to `Shift` + `H` keystroke
