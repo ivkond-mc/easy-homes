@@ -34,7 +34,7 @@ repositories {
 }
 
 dependencies {
-    neoForge "net.neoforged:neoforge:$rootProject.neoforge_version"
+    neoForge "net.neoforged:neoforge:${rootProject.neoforge_version}"
 
     modImplementation include ("maven.modrinth:midnightlib:${project.midnightlib_version}-neoforge")
 
@@ -43,10 +43,13 @@ dependencies {
 }
 
 processResources {
-    inputs.property 'version', project.version
+    def props = new Properties()
+    props.load(new FileReader(rootProject.file('./gradle.properties')))
+
+    inputs.properties props
 
     filesMatching('META-INF/neoforge.mods.toml') {
-        expand version: project.version
+        expand props
     }
 }
 

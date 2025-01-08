@@ -12,6 +12,7 @@ import ivkond.mc.mods.eh.storage.HomeRepository;
 
 import java.util.concurrent.CompletableFuture;
 
+@SuppressWarnings("java:S6548")
 public class HomeNameSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
     public static final HomeNameSuggestionProvider INSTANCE = new HomeNameSuggestionProvider();
 

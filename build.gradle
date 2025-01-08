@@ -32,6 +32,8 @@ subprojects {
         // for more information about repositories.
         // For: MidnightLib
         maven { url "https://api.modrinth.com/maven" }
+        // For: Xaero's mods
+        maven { url 'https://cursemaven.com' }
     }
 
     loom {
@@ -39,7 +41,7 @@ subprojects {
     }
 
     dependencies {
-        minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
+        minecraft "net.minecraft:minecraft:${rootProject.minecraft_version}"
         mappings loom.officialMojangMappings()
     }
 

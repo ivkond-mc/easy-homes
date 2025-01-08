@@ -79,7 +79,7 @@ public class HomeRepository {
             data.put(playerId, new PlayerHomes());
         } catch (IOException e) {
             Log.error("Unable to load player {} homes", playerId, e);
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -90,7 +90,7 @@ public class HomeRepository {
             GSON.toJson(playerHomes, writer);
         } catch (IOException e) {
             Log.error("Unable to save player {} homes", playerId, e);
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
         data.remove(playerId);
     }

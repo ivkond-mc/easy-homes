@@ -21,7 +21,7 @@ public class PathUtils {
         try {
             Files.createDirectories(easyHomes);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
         return easyHomes;
     }
