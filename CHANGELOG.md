@@ -3,3 +3,6 @@
 
 ### 21.1.1
 * Fixed home name validation
+
+### 21.1.2
+* Added Xaero's maps mods integration
