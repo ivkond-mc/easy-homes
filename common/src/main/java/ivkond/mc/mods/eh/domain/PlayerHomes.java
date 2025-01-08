@@ -8,6 +8,7 @@ import java.util.Map;
 public class PlayerHomes {
     // Map<Name, Location>
     private final Map<String, HomeLocation> homes = new HashMap<>();
+    private final String[] lastVisitedHomes = new String[2];
     private OffsetDateTime lastTeleportation;
 
     public HomeLocation findHome(String name) {
@@ -32,5 +33,18 @@ public class PlayerHomes {
 
     public void setLastTeleportation(OffsetDateTime lastTeleportation) {
         this.lastTeleportation = lastTeleportation;
+    }
+
+    public String getLastVisitedHome() {
+        return lastVisitedHomes[0];
+    }
+
+    public void setLastVisitedHome(String lastVisitedHome) {
+        if (lastVisitedHome == null || lastVisitedHome.equals(lastVisitedHomes[1])) {
+            return;
+        }
+
+        lastVisitedHomes[0] = lastVisitedHomes[1];
+        lastVisitedHomes[1] = lastVisitedHome;
     }
 }

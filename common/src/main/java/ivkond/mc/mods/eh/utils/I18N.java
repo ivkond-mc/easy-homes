@@ -8,6 +8,7 @@ import net.minecraft.network.chat.MutableComponent;
 
 import java.time.Duration;
 import java.util.Map;
+import java.util.Objects;
 
 public class I18N {
     private I18N() {
@@ -32,9 +33,12 @@ public class I18N {
             return Component.translatable("easy_homes.commands.list_homes.empty", command);
         }
 
+        String lastVisitedHome = Objects.requireNonNullElse(playerHomes.getLastVisitedHome(), "n/a");
         MutableComponent response = Component.literal("===== ")
                 .append(Component.translatable("easy_homes.commands.list_homes.header"))
-                .append(" =====\n");
+                .append(" =====\n")
+                .append(Component.translatable("easy_homes.commands.list_homes.last_visited", formatHome(lastVisitedHome)))
+                .append("\n");
         homes.forEach((name, home) -> {
             Component coordinatesComponent = Component.literal(home.coordinates()).withStyle(ChatFormatting.DARK_AQUA);
 
@@ -85,6 +89,11 @@ public class I18N {
 
     public static Component errorInvalidHomeName(String homeName) {
         return Component.translatable("easy_homes.commands.errors.invalid_home_name", formatHome(homeName))
+                .withStyle(ChatFormatting.RED);
+    }
+
+    public static Component errorNoLastVisitedHome() {
+        return Component.translatable("easy_homes.commands.back.no_last_visited")
                 .withStyle(ChatFormatting.RED);
     }
 

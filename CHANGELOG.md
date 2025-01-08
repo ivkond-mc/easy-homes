@@ -9,3 +9,7 @@
 
 ### 21.1.3
 * Cooldown and homes limit are disabled in creative mode
+
+### 21.1.4
+* Reworked translation
+* Added `/back` command
