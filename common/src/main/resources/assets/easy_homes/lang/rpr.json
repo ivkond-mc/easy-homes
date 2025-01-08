@@ -1,6 +1,7 @@
 {
   "easy_homes.commands.home.success": "Пріѣхалъ въ %s!",
   "easy_homes.commands.home.too_fast": "Подожди ещё %s секундъ до телепортаціи!",
+  "easy_homes.commands.home.player_mounted": "Для телепортаціи надобно выйти из транспорта или спешиться с лошади!",
   "easy_homes.commands.list_homes.empty": "Пока нѣтъ сохранённыхъ домовъ.\nСохрани домъ с помощью команды %s",
   "easy_homes.commands.list_homes.header": "Твои дома",
   "easy_homes.commands.list_homes.last_visited": "Послѣдній: %s",

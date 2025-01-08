@@ -1,6 +1,7 @@
 {
   "easy_homes.commands.home.success": "Welcome to %s!",
   "easy_homes.commands.home.too_fast": "Wait %s more second(s) to teleport!",
+  "easy_homes.commands.home.player_mounted": "You need to exit the vehicle or dismount from the horse to teleport!",
   "easy_homes.commands.list_homes.empty": "You don’t have any homes yet.\nSave one with the command %s",
   "easy_homes.commands.list_homes.header": "Your Homes",
   "easy_homes.commands.list_homes.last_visited": "Last: %s",

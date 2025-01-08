@@ -28,8 +28,7 @@ import net.minecraft.world.level.Level;
 
 import java.time.Duration;
 
-import static net.minecraft.commands.Commands.argument;
-import static net.minecraft.commands.Commands.literal;
+import static net.minecraft.commands.Commands.*;
 
 public class HomeCommand {
     private static final HomeRepository homes = HomeRepository.INSTANCE;
@@ -73,6 +72,11 @@ public class HomeCommand {
         ServerPlayer player = stack.getPlayerOrException();
         String playerId = player.getStringUUID();
         ServerLevel currentLevel = stack.getLevel();
+
+        if (player.isPassenger() && player.canControlVehicle()) {
+            player.displayClientMessage(I18N.errorPlayerMounted(), true);
+            return;
+        }
 
         HomeLocation home = homes.findHome(playerId, homeName);
         if (home == null) {

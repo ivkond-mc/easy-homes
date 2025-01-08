@@ -97,6 +97,11 @@ public class I18N {
                 .withStyle(ChatFormatting.RED);
     }
 
+    public static Component errorPlayerMounted() {
+        return Component.translatable("easy_homes.commands.home.player_mounted")
+                .withStyle(ChatFormatting.RED);
+    }
+
     public static Component formatHome(String homeName) {
         return Component.literal(homeName).withStyle(ChatFormatting.GOLD);
     }
