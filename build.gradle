@@ -41,7 +41,7 @@ subprojects {
     }
 
     dependencies {
-        minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
+        minecraft "net.minecraft:minecraft:${rootProject.minecraft_version}"
         mappings loom.officialMojangMappings()
     }
 
