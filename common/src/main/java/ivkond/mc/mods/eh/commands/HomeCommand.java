@@ -73,10 +73,12 @@ public class HomeCommand {
             return 0;
         }
 
-        Duration cooldown = homes.getCooldown(playerId);
-        if (cooldown.isPositive()) {
-            player.displayClientMessage(I18N.commandHomeLocked(cooldown), true);
-            return 0;
+        if (!player.isCreative()) {
+            Duration cooldown = homes.getCooldown(playerId);
+            if (cooldown.isPositive()) {
+                player.displayClientMessage(I18N.commandHomeLocked(cooldown), true);
+                return 0;
+            }
         }
 
         ResourceLocation levelLocation = ResourceLocation.parse(home.dimension());
@@ -106,7 +108,7 @@ public class HomeCommand {
     }
 
     private static void playDecorations(ServerLevel level, BlockPos pos, SimpleParticleType particles) {
-        level.sendParticles(particles, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 20, 0.3d, 0.3d, 0.3d, 0.5d);
+        level.sendParticles(particles, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 20, 0.3d, 0.3d, 0.3d, 0.5d);
         level.playSound(null, pos, SoundEvents.PLAYER_TELEPORT, SoundSource.PLAYERS, 1f, 1f);
     }
 }

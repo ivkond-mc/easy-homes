@@ -62,7 +62,7 @@ public class SetHomeCommand {
 
         boolean existingHome = homes.exists(playerId, homeName);
 
-        if (!existingHome && homes.isMaxHomesReached(playerId)) {
+        if (!player.isCreative() && !existingHome && homes.isMaxHomesReached(playerId)) {
             player.displayClientMessage(I18N.commandSetHomeMaxHomesReached(), true);
             return 0;
         }
