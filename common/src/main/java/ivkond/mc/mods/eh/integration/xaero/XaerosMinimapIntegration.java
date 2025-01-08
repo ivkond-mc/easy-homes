@@ -1,6 +1,7 @@
 package ivkond.mc.mods.eh.integration.xaero;
 
 import ivkond.mc.mods.eh.domain.HomeLocation;
+import ivkond.mc.mods.eh.utils.Log;
 import ivkond.mc.mods.eh.utils.Platform;
 import xaero.common.core.XaeroMinimapCore;
 import xaero.common.minimap.waypoints.Waypoint;
@@ -92,7 +93,7 @@ public class XaerosMinimapIntegration {
         try {
             XaeroMinimap.instance.getSettings().saveWaypoints(waypointsManager.getCurrentWorld());
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.error("Unable to save waypoints", e);
         }
     }
 
