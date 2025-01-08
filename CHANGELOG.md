@@ -11,3 +11,6 @@
 * Reworked translation
 * Added `/back` command
 * Binded `/back` command to `Shift` + `H` keystroke
+
+### 21.4.4
+* Added warning message if player is in the vehicle 
