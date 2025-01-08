@@ -31,6 +31,10 @@ Minecraft. It’s the ultimate quality-of-life upgrade for any player!
   ```
   Keep track of all your saved locations. Lists all your homes by name, dimension and coordinates.
 * ```
+  /back
+  ```
+  Instantly return to previously visited home. 
+* ```
   /sethome [<name>]
   ```
   Mark current location as a home. Name it for easy identification or leave it blank to set a default home.
@@ -46,10 +50,11 @@ Minecraft. It’s the ultimate quality-of-life upgrade for any player!
 
 ### ⌨️ Key Binds
 
-| Key          | Description                                                              |
-|--------------|--------------------------------------------------------------------------|
-| <kbd>H</kbd> | Bind for `/home` command. Teleports to default home.                     |
-| <kbd>J</kbd> | Bind for `/sethome -` command. Save current position with generated name |
+| Key                             | Description                                                              |
+|---------------------------------|--------------------------------------------------------------------------|
+| <kbd>H</kbd>                    | Bind for `/home` command. Teleports to default home.                     |
+| <kbd>Shift</kbd> + <kbd>H</kbd> | Bind for `/back` command. Teleports to previously visited home.          |
+| <kbd>J</kbd>                    | Bind for `/sethome -` command. Save current position with generated name |
 
 ### 🔧 Configuration
 
@@ -77,3 +82,6 @@ Place `easy_homes.json` in your server `config` folder with following content:
 ** ([modrinth](https://modrinth.com/mod/modmenu), [curseforge](https://www.curseforge.com/minecraft/mc-mods/fabric-api))
 
 To configure mod properties you can use your mod loader configuration screen.
+
+## 📢 Feedback
+Feel free to reach out in our Discord if you encounter any bugs, have questions, or would like to share suggestions for improving the mod: [https://discord.gg/CJFGMTB6kN](https://discord.gg/CJFGMTB6kN)
