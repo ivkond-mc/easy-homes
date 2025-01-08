@@ -2,17 +2,19 @@ package ivkond.mc.mods.eh;
 
 import com.mojang.brigadier.CommandDispatcher;
 import eu.midnightdust.lib.config.MidnightConfig;
+import ivkond.mc.mods.eh.client.KeyPressedHandler;
 import ivkond.mc.mods.eh.commands.*;
+import ivkond.mc.mods.eh.config.EasyHomesConfig;
+import ivkond.mc.mods.eh.integration.xaero.XaerosMinimapIntegration;
+import ivkond.mc.mods.eh.storage.HomeRepository;
+import ivkond.mc.mods.eh.utils.Log;
+import ivkond.mc.mods.eh.utils.PathUtils;
+import ivkond.mc.mods.eh.utils.Platform;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import ivkond.mc.mods.eh.client.HomeKeyPressedHandler;
-import ivkond.mc.mods.eh.config.EasyHomesConfig;
-import ivkond.mc.mods.eh.storage.HomeRepository;
-import ivkond.mc.mods.eh.utils.Log;
-import ivkond.mc.mods.eh.utils.PathUtils;
 
 import java.nio.file.Path;
 
@@ -21,10 +23,12 @@ public final class EasyHomesMod {
 
     private static final HomeRepository homes = HomeRepository.INSTANCE;
 
-    public static void init() {
+    public static void init(Platform platformHelper) {
         Log.info("Initializing Easy Homes Mod");
 
         MidnightConfig.init(MOD_ID, EasyHomesConfig.class);
+
+        XaerosMinimapIntegration.init(platformHelper);
     }
 
     public static void onServerStared(MinecraftServer server) {
@@ -38,7 +42,7 @@ public final class EasyHomesMod {
     }
 
     public static void onClientTick(Minecraft minecraft) {
-        HomeKeyPressedHandler.handle(minecraft);
+        KeyPressedHandler.handle(minecraft);
     }
 
     public static void onPlayerLoggedIn(ServerPlayer player) {

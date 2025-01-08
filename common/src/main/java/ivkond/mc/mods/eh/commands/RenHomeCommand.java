@@ -6,6 +6,8 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import ivkond.mc.mods.eh.network.HomeRenamedPayload;
+import ivkond.mc.mods.eh.network.PacketSender;
 import ivkond.mc.mods.eh.storage.HomeRepository;
 import ivkond.mc.mods.eh.utils.HomeNameSuggestionProvider;
 import ivkond.mc.mods.eh.utils.HomeUtils;
@@ -57,6 +59,9 @@ public class RenHomeCommand {
         }
 
         homes.renameHome(playerId, oldName, newName);
+
+        HomeRenamedPayload payload = new HomeRenamedPayload(oldName, newName);
+        PacketSender.send(player, payload);
 
         player.displayClientMessage(I18N.commandRenHomeSuccess(oldName, newName), true);
 

@@ -11,4 +11,6 @@ dependencies {
     // A little bit weird, but common module may use Fabric version as dependency in 'modCompileOnly' scope
     // See: https://github.com/TeamMidnightDust/MidnightLib/issues/74
     modCompileOnly "maven.modrinth:midnightlib:${rootProject.midnightlib_version}-fabric"
+
+    modApi "curse.maven:xaeros-minimap-263420:${rootProject.xaeros_minimap_version}"
 }

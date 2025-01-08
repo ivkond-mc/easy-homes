@@ -6,13 +6,15 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import ivkond.mc.mods.eh.utils.HomeUtils;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.server.level.ServerPlayer;
+import ivkond.mc.mods.eh.network.HomeDeletedPayload;
+import ivkond.mc.mods.eh.network.PacketSender;
 import ivkond.mc.mods.eh.storage.HomeRepository;
 import ivkond.mc.mods.eh.utils.HomeNameSuggestionProvider;
+import ivkond.mc.mods.eh.utils.HomeUtils;
 import ivkond.mc.mods.eh.utils.I18N;
 import ivkond.mc.mods.eh.utils.Log;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.server.level.ServerPlayer;
 
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
@@ -48,6 +50,9 @@ public class DelHomeCommand {
         }
 
         homes.deleteHome(playerId, name);
+
+        HomeDeletedPayload payload = new HomeDeletedPayload(name);
+        PacketSender.send(player, payload);
 
         player.displayClientMessage(I18N.commandDelHomeSuccess(name), true);
 
