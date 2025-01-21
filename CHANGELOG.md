@@ -14,3 +14,6 @@
 
 ### 21.4.4
 * Added warning message if player is in the vehicle 
+
+### 21.4.5
+* Fixed homes corruption on sever crash 

@@ -38,7 +38,7 @@ public final class EasyHomesMod {
     }
 
     public static void onServerStopping() {
-        homes.unload();
+        homes.forgetAll();
     }
 
     public static void onClientTick(Minecraft minecraft) {
@@ -47,12 +47,12 @@ public final class EasyHomesMod {
 
     public static void onPlayerLoggedIn(ServerPlayer player) {
         Log.debug("Player {} logged in. Now load configuration", player.getDisplayName().getString());
-        homes.loadPlayerConfig(player.getStringUUID());
+        homes.loadConfig(player.getStringUUID());
     }
 
     public static void onPlayerLoggedOut(ServerPlayer player) {
         Log.debug("Player {} logged out. Now persist and clear configuration", player.getDisplayName().getString());
-        homes.unloadPlayerConfig(player.getStringUUID());
+        homes.forgetConfig(player.getStringUUID());
     }
 
     public static Screen createConfigurationScreen(Screen parent) {
