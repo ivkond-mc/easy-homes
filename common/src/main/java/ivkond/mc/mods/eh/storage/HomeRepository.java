@@ -36,10 +36,6 @@ public class HomeRepository {
         this.dataDir = dataDir;
     }
 
-    public void unload() {
-        data.keySet().forEach(this::unloadPlayerConfig);
-    }
-
     public PlayerHomes getHomes(String playerId) {
         return data.get(playerId);
     }
@@ -54,19 +50,22 @@ public class HomeRepository {
         HomeLocation oldHome = playerHomes.findHome(oldName);
         playerHomes.removeHome(oldName);
         playerHomes.setHome(newName, oldHome);
+        saveConfig(playerId);
     }
 
     public void setHome(String playerId, String name, HomeLocation home) {
         PlayerHomes homes = getOrCreateHomes(playerId);
         homes.setHome(name, home);
+        saveConfig(playerId);
     }
 
     public void deleteHome(String playerId, String homeName) {
         PlayerHomes homes = getOrCreateHomes(playerId);
         homes.removeHome(homeName);
+        saveConfig(playerId);
     }
 
-    public void loadPlayerConfig(String playerId) {
+    public void loadConfig(String playerId) {
         Path configPath = getConfigPath(playerId);
         try (BufferedReader reader = Files.newBufferedReader(configPath)) {
             PlayerHomes homes = GSON.fromJson(reader, PlayerHomes.class);
@@ -83,7 +82,15 @@ public class HomeRepository {
         }
     }
 
-    public void unloadPlayerConfig(String playerId) {
+    public void forgetConfig(String playerId) {
+        data.remove(playerId);
+    }
+
+    public void forgetAll() {
+        data.clear();
+    }
+
+    public void saveConfig(String playerId) {
         Path configPath = getConfigPath(playerId);
         try (BufferedWriter writer = Files.newBufferedWriter(configPath)) {
             PlayerHomes playerHomes = data.get(playerId);
@@ -92,7 +99,6 @@ public class HomeRepository {
             Log.error("Unable to save player {} homes", playerId, e);
             throw new IllegalStateException(e);
         }
-        data.remove(playerId);
     }
 
     public boolean exists(String playerId, String homeName) {
@@ -111,6 +117,7 @@ public class HomeRepository {
     public void updateLockDuration(String playerId) {
         PlayerHomes homes = getHomes(playerId);
         homes.setLastTeleportation(OffsetDateTime.now());
+        saveConfig(playerId);
     }
 
     public boolean isMaxHomesReached(String playerId) {
@@ -125,6 +132,7 @@ public class HomeRepository {
 
     public void setLastVisitedHome(String playerId, String homeName) {
         getHomes(playerId).setLastVisitedHome(homeName);
+        saveConfig(playerId);
     }
 
     private Path getConfigPath(String playerId) {
