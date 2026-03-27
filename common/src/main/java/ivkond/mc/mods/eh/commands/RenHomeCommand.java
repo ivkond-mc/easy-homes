@@ -40,17 +40,17 @@ public class RenHomeCommand {
 
         String oldName = context.getArgument("old_name", String.class);
         if (HomeUtils.isInvalidName(oldName)) {
-            player.sendSystemMessage(I18N.errorInvalidHomeName(oldName));
+            player.displayClientMessage(I18N.errorInvalidHomeName(oldName), true);
             return 0;
         }
 
         String newName = context.getArgument("new_name", String.class);
         if (HomeUtils.isInvalidName(newName)) {
-            player.sendSystemMessage(I18N.errorInvalidHomeName(newName));
+            player.displayClientMessage(I18N.errorInvalidHomeName(newName), true);
             return 0;
         }
 
-        Log.info("Rename players {} home {} to {}", player.getDisplayName().getString(), oldName, newName);
+        Log.debug("Rename players {} home {} to {}", player.getDisplayName().getString(), oldName, newName);
 
         boolean oldHomeExists = homes.exists(playerId, oldName);
         if (!oldHomeExists) {

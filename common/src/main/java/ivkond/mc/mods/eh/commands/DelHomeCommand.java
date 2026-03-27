@@ -37,10 +37,10 @@ public class DelHomeCommand {
         String playerId = player.getStringUUID();
         String name = context.getArgument("name", String.class);
 
-        Log.info("Delete players {} home {}", player.getDisplayName().getString(), name);
+        Log.debug("Delete players {} home {}", player.getDisplayName().getString(), name);
 
         if (HomeUtils.isInvalidName(name)) {
-            player.sendSystemMessage(I18N.errorInvalidHomeName(name));
+            player.displayClientMessage(I18N.errorInvalidHomeName(name), true);
             return 0;
         }
 

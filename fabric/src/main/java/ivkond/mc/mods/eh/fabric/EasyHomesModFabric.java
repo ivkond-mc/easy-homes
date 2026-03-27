@@ -19,7 +19,7 @@ public final class EasyHomesModFabric implements ModInitializer {
     public void onInitialize() {
         EasyHomesMod.init(PLATFORM);
 
-        ServerLifecycleEvents.SERVER_STARTED.register(EasyHomesMod::onServerStared);
+        ServerLifecycleEvents.SERVER_STARTED.register(EasyHomesMod::onServerStarted);
         ServerLifecycleEvents.SERVER_STOPPING.register(event -> EasyHomesMod.onServerStopping());
         ServerPlayConnectionEvents.JOIN.register((packetListener, packetSender, minecraftServer) ->
                 EasyHomesMod.onPlayerLoggedIn(packetListener.getPlayer())

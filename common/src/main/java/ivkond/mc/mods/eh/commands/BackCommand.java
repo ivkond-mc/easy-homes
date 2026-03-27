@@ -27,7 +27,7 @@ public class BackCommand {
         CommandSourceStack source = context.getSource();
         ServerPlayer player = source.getPlayerOrException();
 
-        Log.info("Teleport player to last visited home {}", player.getDisplayName().getString());
+        Log.debug("Teleport player to last visited home {}", player.getDisplayName().getString());
 
         String lastVisitedHome = homes.getLastVisitedHome(player.getStringUUID());
         if (lastVisitedHome == null) {
@@ -35,8 +35,7 @@ public class BackCommand {
             return 0;
         }
 
-        HomeCommand.doTeleportInternal(source, lastVisitedHome);
-
-        return Command.SINGLE_SUCCESS;
+        boolean success = HomeCommand.doTeleportInternal(source, lastVisitedHome);
+        return success ? Command.SINGLE_SUCCESS : 0;
     }
 }

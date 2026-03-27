@@ -28,8 +28,11 @@ public class HomesCommand {
         CommandSourceStack source = context.getSource();
         ServerPlayer player = source.getPlayerOrException();
 
-        Log.info("List player {} homes", player.getDisplayName().getString());
+        Log.debug("List player {} homes", player.getDisplayName().getString());
         PlayerHomes playerHomes = homes.getHomes(player.getStringUUID());
+        if (playerHomes == null) {
+            playerHomes = new PlayerHomes();
+        }
 
         player.sendSystemMessage(I18N.commandHomesList(playerHomes));
 

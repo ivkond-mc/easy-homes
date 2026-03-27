@@ -54,11 +54,11 @@ public class SetHomeCommand {
         }
 
         if (HomeUtils.isInvalidName(homeName)) {
-            player.sendSystemMessage(I18N.errorInvalidHomeName(homeName));
+            player.displayClientMessage(I18N.errorInvalidHomeName(homeName), true);
             return 0;
         }
 
-        Log.info("Save player {} current position as home {}", player.getDisplayName().getString(), homeName);
+        Log.debug("Save player {} current position as home {}", player.getDisplayName().getString(), homeName);
 
         boolean existingHome = homes.exists(playerId, homeName);
 

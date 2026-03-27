@@ -22,6 +22,9 @@ public class HomeNameSuggestionProvider implements SuggestionProvider<CommandSou
         String filter = builder.getRemainingLowerCase();
 
         PlayerHomes homes = HomeRepository.INSTANCE.getHomes(player.getStringUUID());
+        if (homes == null) {
+            return builder.buildFuture();
+        }
         boolean useFilter = filter != null && !filter.isBlank();
         homes.getAllHomes().keySet().forEach(name -> {
             if (!useFilter || name.toLowerCase().startsWith(filter)) {

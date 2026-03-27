@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PlayerHomes {
-    // Map<Name, Location>
     private final Map<String, HomeLocation> homes = new HashMap<>();
+    // [0] = previous home (returned by getLastVisitedHome), [1] = current home
     private final String[] lastVisitedHomes = new String[2];
     private OffsetDateTime lastTeleportation;
 

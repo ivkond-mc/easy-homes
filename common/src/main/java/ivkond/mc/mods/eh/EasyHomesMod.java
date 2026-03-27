@@ -31,7 +31,7 @@ public final class EasyHomesMod {
         XaerosMinimapIntegration.init(platformHelper);
     }
 
-    public static void onServerStared(MinecraftServer server) {
+    public static void onServerStarted(MinecraftServer server) {
         Path dataDir = PathUtils.getOrCreateDataDir(server);
         Log.info("Initializing Easy Homes storage");
         homes.init(dataDir);
