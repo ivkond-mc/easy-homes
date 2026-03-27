@@ -57,39 +57,38 @@ public class HomeCommand {
         CommandSourceStack source = context.getSource();
         ServerPlayer player = source.getPlayerOrException();
 
-        Log.info("Teleporting {} to home {}", player.getName().getString(), homeName);
+        Log.debug("Teleporting {} to home {}", player.getName().getString(), homeName);
 
         if (HomeUtils.isInvalidName(homeName)) {
-            player.sendSystemMessage(I18N.errorInvalidHomeName(homeName));
+            player.displayClientMessage(I18N.errorInvalidHomeName(homeName), true);
             return 0;
         }
 
-        doTeleportInternal(source, homeName);
-
-        return Command.SINGLE_SUCCESS;
+        boolean success = doTeleportInternal(source, homeName);
+        return success ? Command.SINGLE_SUCCESS : 0;
     }
 
-    static void doTeleportInternal(CommandSourceStack stack, String homeName) throws CommandSyntaxException {
+    static boolean doTeleportInternal(CommandSourceStack stack, String homeName) throws CommandSyntaxException {
         ServerPlayer player = stack.getPlayerOrException();
         String playerId = player.getStringUUID();
         ServerLevel currentLevel = stack.getLevel();
 
         if (player.isPassenger() && player.canControlVehicle()) {
             player.displayClientMessage(I18N.errorPlayerMounted(), true);
-            return;
+            return false;
         }
 
         HomeLocation home = homes.findHome(playerId, homeName);
         if (home == null) {
             player.displayClientMessage(I18N.errorHomeNotFound(homeName), true);
-            return;
+            return false;
         }
 
         if (!player.isCreative()) {
             Duration cooldown = homes.getCooldown(playerId);
             if (cooldown.isPositive()) {
                 player.displayClientMessage(I18N.commandHomeLocked(cooldown), true);
-                return;
+                return false;
             }
         }
 
@@ -98,24 +97,24 @@ public class HomeCommand {
         ServerLevel targetLevel = stack.getServer().getLevel(levelKey);
         if (targetLevel == null) {
             player.displayClientMessage(I18N.errorUnknownLevel(home.dimension()), true);
-            return;
+            return false;
         }
 
         // TeleportCommand#performTeleport
         BlockPos blockPos = BlockPos.containing(home.x(), home.y(), home.z());
         if (!ServerLevel.isInSpawnableBounds(blockPos)) {
             player.displayClientMessage(I18N.errorInvalidPosition(), true);
-            return;
+            return false;
         }
 
         playDecorations(currentLevel, player.blockPosition(), ParticleTypes.PORTAL);
         player.teleportTo(targetLevel, home.x(), home.y(), home.z(), Set.of(), home.rotY(), home.rotX(), false);
         playDecorations(targetLevel, blockPos, ParticleTypes.REVERSE_PORTAL);
 
-        homes.updateLockDuration(playerId);
-        homes.setLastVisitedHome(playerId, homeName);
+        homes.onTeleported(playerId, homeName);
 
         player.displayClientMessage(I18N.commandHomeSuccess(homeName), true);
+        return true;
     }
 
     private static void playDecorations(ServerLevel level, BlockPos pos, SimpleParticleType particles) {

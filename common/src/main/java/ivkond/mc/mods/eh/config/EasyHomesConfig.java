@@ -4,10 +4,10 @@ import eu.midnightdust.lib.config.MidnightConfig;
 
 public class EasyHomesConfig extends MidnightConfig {
     public static final String DEFAULT_HOME = "main";
-    public static final String MAIN = "main";
+    private static final String CONFIG_CATEGORY = "main";
 
-    @Entry(category = MAIN, min = 1)
+    @Entry(category = CONFIG_CATEGORY, min = 1)
     public static int cooldown = 5;
-    @Entry(category = MAIN, min = 1)
+    @Entry(category = CONFIG_CATEGORY, min = 1)
     public static int maxHomes = 5;
 }

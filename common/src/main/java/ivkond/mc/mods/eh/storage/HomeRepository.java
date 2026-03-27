@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -22,14 +23,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class HomeRepository {
     public static final HomeRepository INSTANCE = new HomeRepository();
 
-    // Map<Player, Homes>
     private static final Gson GSON = new GsonBuilder()
             .disableHtmlEscaping()
             .setPrettyPrinting()
             .registerTypeAdapter(OffsetDateTime.class, OffsetDateTimeGsonAdapter.INSTANCE)
             .create();
 
-    private static final Map<String, PlayerHomes> data = new ConcurrentHashMap<>();
+    private final Map<String, PlayerHomes> data = new ConcurrentHashMap<>();
     private Path dataDir;
 
     public void init(Path dataDir) {
@@ -46,8 +46,11 @@ public class HomeRepository {
     }
 
     public void renameHome(String playerId, String oldName, String newName) {
-        PlayerHomes playerHomes = getHomes(playerId);
+        PlayerHomes playerHomes = getOrCreateHomes(playerId);
         HomeLocation oldHome = playerHomes.findHome(oldName);
+        if (oldHome == null) {
+            return;
+        }
         playerHomes.removeHome(oldName);
         playerHomes.setHome(newName, oldHome);
         saveConfig(playerId);
@@ -92,46 +95,50 @@ public class HomeRepository {
 
     public void saveConfig(String playerId) {
         Path configPath = getConfigPath(playerId);
-        try (BufferedWriter writer = Files.newBufferedWriter(configPath)) {
+        Path tempPath = configPath.resolveSibling(playerId + ".json.tmp");
+        try (BufferedWriter writer = Files.newBufferedWriter(tempPath)) {
             PlayerHomes playerHomes = data.get(playerId);
             GSON.toJson(playerHomes, writer);
         } catch (IOException e) {
             Log.error("Unable to save player {} homes", playerId, e);
             throw new IllegalStateException(e);
         }
+        try {
+            Files.move(tempPath, configPath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            Log.error("Unable to finalize player {} homes save", playerId, e);
+            throw new IllegalStateException(e);
+        }
     }
 
     public boolean exists(String playerId, String homeName) {
-        return data.get(playerId).findHome(homeName) != null;
+        PlayerHomes homes = data.get(playerId);
+        return homes != null && homes.findHome(homeName) != null;
     }
 
     public Duration getCooldown(String playerId) {
         PlayerHomes homes = getHomes(playerId);
-        if (homes.getLastTeleportation() != null) {
-            OffsetDateTime expiresAt = homes.getLastTeleportation().plusSeconds(EasyHomesConfig.cooldown);
-            return Duration.between(OffsetDateTime.now(), expiresAt);
+        if (homes == null || homes.getLastTeleportation() == null) {
+            return Duration.ZERO;
         }
-        return Duration.ZERO;
-    }
-
-    public void updateLockDuration(String playerId) {
-        PlayerHomes homes = getHomes(playerId);
-        homes.setLastTeleportation(OffsetDateTime.now());
-        saveConfig(playerId);
+        OffsetDateTime expiresAt = homes.getLastTeleportation().plusSeconds(EasyHomesConfig.cooldown);
+        return Duration.between(OffsetDateTime.now(), expiresAt);
     }
 
     public boolean isMaxHomesReached(String playerId) {
         PlayerHomes homes = getHomes(playerId);
-        return homes.getAllHomes().size() >= EasyHomesConfig.maxHomes;
+        return homes != null && homes.getAllHomes().size() >= EasyHomesConfig.maxHomes;
     }
 
     public String getLastVisitedHome(String playerId) {
         PlayerHomes homes = getHomes(playerId);
-        return homes.getLastVisitedHome();
+        return homes != null ? homes.getLastVisitedHome() : null;
     }
 
-    public void setLastVisitedHome(String playerId, String homeName) {
-        getHomes(playerId).setLastVisitedHome(homeName);
+    public void onTeleported(String playerId, String homeName) {
+        PlayerHomes homes = getOrCreateHomes(playerId);
+        homes.setLastTeleportation(OffsetDateTime.now());
+        homes.setLastVisitedHome(homeName);
         saveConfig(playerId);
     }
 

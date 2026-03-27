@@ -53,7 +53,7 @@ public final class EasyHomesModNeoForge {
 
         @SubscribeEvent
         public static void onServerStarted(ServerStartedEvent event) {
-            EasyHomesMod.onServerStared(event.getServer());
+            EasyHomesMod.onServerStarted(event.getServer());
         }
 
         @SubscribeEvent
