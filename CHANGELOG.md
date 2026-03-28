@@ -24,5 +24,11 @@
 * Reduced disk writes during teleportation
 * Fixed typo in onServerStarted method name
 
+### 21.4.7
+* Port to Minecraft 1.21.5 (covers 1.21.4-1.21.8)
+* Updated Architectury Loom to 1.11, Gradle to 8.11
+* Updated Fabric API, NeoForge, MidnightLib, ModMenu dependencies
+* Narrowed NeoForge version range to [21.4,)
+
 ### 21.4.5
 * Fixed homes corruption on sever crash
