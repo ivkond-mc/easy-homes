@@ -19,7 +19,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -92,7 +92,7 @@ public class HomeCommand {
             }
         }
 
-        ResourceLocation levelLocation = ResourceLocation.parse(home.dimension());
+        Identifier levelLocation = Identifier.parse(home.dimension());
         ResourceKey<Level> levelKey = ResourceKey.create(Registries.DIMENSION, levelLocation);
         ServerLevel targetLevel = stack.getServer().getLevel(levelKey);
         if (targetLevel == null) {

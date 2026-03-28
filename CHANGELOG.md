@@ -24,6 +24,12 @@
 * Reduced disk writes during teleportation
 * Fixed typo in onServerStarted method name
 
+### 21.11.0
+* Port to Minecraft 1.21.11
+* Renamed ResourceLocation to Identifier (Mojang deobfuscation prep)
+* Renamed ResourceKey.location() to ResourceKey.identifier()
+* Updated Architectury Loom to 1.13, all dependencies updated
+
 ### 21.9.0
 * Port to Minecraft 1.21.9 (covers 1.21.9-1.21.10)
 * Adapted KeyMapping.Category API change (ResourceLocation-based)

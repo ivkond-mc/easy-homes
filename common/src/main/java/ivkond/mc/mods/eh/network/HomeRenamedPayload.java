@@ -3,10 +3,10 @@ package ivkond.mc.mods.eh.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public record HomeRenamedPayload(String oldName, String newName) implements CustomPacketPayload {
-    public static final Type<HomeRenamedPayload> ID = new Type<>(ResourceLocation.parse("easy_homes:home_renamed"));
+    public static final Type<HomeRenamedPayload> ID = new Type<>(Identifier.parse("easy_homes:home_renamed"));
     public static final StreamCodec<FriendlyByteBuf, HomeRenamedPayload> CODEC = CustomPacketPayload.codec(HomeRenamedPayload::write, HomeRenamedPayload::new);
 
     private HomeRenamedPayload(FriendlyByteBuf buf) {

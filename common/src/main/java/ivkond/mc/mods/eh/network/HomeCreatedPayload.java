@@ -4,10 +4,10 @@ import ivkond.mc.mods.eh.domain.HomeLocation;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public record HomeCreatedPayload(String name, HomeLocation location) implements CustomPacketPayload {
-    public static final CustomPacketPayload.Type<HomeCreatedPayload> ID = new CustomPacketPayload.Type<>(ResourceLocation.parse("easy_homes:home_created"));
+    public static final CustomPacketPayload.Type<HomeCreatedPayload> ID = new CustomPacketPayload.Type<>(Identifier.parse("easy_homes:home_created"));
     public static final StreamCodec<FriendlyByteBuf, HomeCreatedPayload> CODEC = CustomPacketPayload.codec(HomeCreatedPayload::write, HomeCreatedPayload::new);
 
     private HomeCreatedPayload(FriendlyByteBuf buf) {

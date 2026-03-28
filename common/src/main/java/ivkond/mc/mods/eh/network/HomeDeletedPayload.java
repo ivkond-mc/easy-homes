@@ -3,10 +3,10 @@ package ivkond.mc.mods.eh.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public record HomeDeletedPayload(String name) implements CustomPacketPayload {
-    public static final Type<HomeDeletedPayload> ID = new Type<>(ResourceLocation.parse("easy_homes:home_deleted"));
+    public static final Type<HomeDeletedPayload> ID = new Type<>(Identifier.parse("easy_homes:home_deleted"));
     public static final StreamCodec<FriendlyByteBuf, HomeDeletedPayload> CODEC = CustomPacketPayload.codec(HomeDeletedPayload::write, HomeDeletedPayload::new);
 
     private HomeDeletedPayload(FriendlyByteBuf buf) {
