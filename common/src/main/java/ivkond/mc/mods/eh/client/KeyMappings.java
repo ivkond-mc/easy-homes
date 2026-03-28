@@ -2,9 +2,10 @@ package ivkond.mc.mods.eh.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.resources.ResourceLocation;
 
 public class KeyMappings {
-    private static final String CATEGORY = "easy_homes.key.category";
+    private static final KeyMapping.Category CATEGORY = new KeyMapping.Category(ResourceLocation.parse("easy_homes:key_category"));
 
     public static final KeyMapping TP_TO_DEFAULT_HOME = new KeyMapping(
             "easy_homes.key.tp_home",

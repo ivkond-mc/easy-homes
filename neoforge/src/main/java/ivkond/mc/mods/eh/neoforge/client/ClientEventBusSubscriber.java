@@ -10,7 +10,7 @@ import ivkond.mc.mods.eh.EasyHomesMod;
 import ivkond.mc.mods.eh.client.KeyMappings;
 
 public class ClientEventBusSubscriber {
-    @EventBusSubscriber(modid = EasyHomesMod.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
+    @EventBusSubscriber(modid = EasyHomesMod.MOD_ID, value = Dist.CLIENT)
     public static class ForgeEventSubscriber {
         @SubscribeEvent
         public static void onClientTick(ClientTickEvent.Post event) {
@@ -19,7 +19,7 @@ public class ClientEventBusSubscriber {
         }
     }
 
-    @EventBusSubscriber(modid = EasyHomesMod.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(modid = EasyHomesMod.MOD_ID, value = Dist.CLIENT)
     public static class ModEventSubscriber {
         @SubscribeEvent
         public static void registerKeyMappings(RegisterKeyMappingsEvent event) {

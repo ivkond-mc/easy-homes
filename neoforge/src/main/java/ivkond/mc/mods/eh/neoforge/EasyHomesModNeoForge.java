@@ -31,7 +31,7 @@ public final class EasyHomesModNeoForge {
     public EasyHomesModNeoForge(ModContainer container) {
         EasyHomesMod.init(PLATFORM);
 
-        if (FMLEnvironment.dist.isClient()) {
+        if (FMLEnvironment.getDist().isClient()) {
             initConfigurationScreen(container);
         }
     }
@@ -78,7 +78,7 @@ public final class EasyHomesModNeoForge {
         }
     }
 
-    @EventBusSubscriber(modid = EasyHomesMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(modid = EasyHomesMod.MOD_ID)
     public static class ModEventBusSubscriber {
         @SubscribeEvent
         public static void onRegisterPayloadHandlers(RegisterPayloadHandlersEvent event) {

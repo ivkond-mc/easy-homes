@@ -14,7 +14,7 @@ logoFile = "assets/easy_homes/icon.png"
 [[dependencies.${mod_id}]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.4,)"
+versionRange = "[21.9,)"
 ordering = "NONE"
 side = "BOTH"
 

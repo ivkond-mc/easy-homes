@@ -24,6 +24,11 @@
 * Reduced disk writes during teleportation
 * Fixed typo in onServerStarted method name
 
+### 21.9.0
+* Port to Minecraft 1.21.9 (covers 1.21.9-1.21.10)
+* Adapted KeyMapping.Category API change (ResourceLocation-based)
+* Adapted NeoForge FML refactor: removed Bus enum from @EventBusSubscriber, updated FMLEnvironment API
+
 ### 21.4.7
 * Port to Minecraft 1.21.5 (covers 1.21.4-1.21.8)
 * Updated Architectury Loom to 1.11, Gradle to 8.11
