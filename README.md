@@ -1,9 +1,9 @@
 ![Logo](docs/logo.png)
 
 [![Licence](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/license/mit)
-[![Java 21](https://img.shields.io/badge/java-21%2B-blue)](https://adoptium.net/temurin/releases/?version=21)
-[![Minecraft](https://img.shields.io/badge/minecraft-1.21.4-blue)](https://www.minecraft.net/article/minecraft-java-edition-1-21-4)
-[![Build status](https://img.shields.io/github/actions/workflow/status/ivkond-mc/easy-homes/gradle-publish.yml?branch=release/1.21.4)](https://github.com/ivkond-mc/easy-homes/actions/workflows/gradle-publish.yml?branch=release/1.21.4)
+[![Java 25](https://img.shields.io/badge/java-25%2B-blue)](https://adoptium.net/temurin/releases/?version=25)
+[![Minecraft](https://img.shields.io/badge/minecraft-26.1.2-blue)](https://www.minecraft.net/)
+[![Build status](https://img.shields.io/github/actions/workflow/status/ivkond-mc/easy-homes/gradle-publish.yml?branch=release/26.1.2)](https://github.com/ivkond-mc/easy-homes/actions/workflows/gradle-publish.yml?branch=release/26.1.2)
 
 ### 🏠 About
 

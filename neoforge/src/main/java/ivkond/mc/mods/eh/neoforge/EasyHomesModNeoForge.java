@@ -1,6 +1,7 @@
 package ivkond.mc.mods.eh.neoforge;
 
 import com.mojang.brigadier.CommandDispatcher;
+import eu.midnightdust.lib.config.MidnightConfig;
 import ivkond.mc.mods.eh.EasyHomesMod;
 import ivkond.mc.mods.eh.integration.xaero.XaerosMinimapIntegration;
 import ivkond.mc.mods.eh.neoforge.impl.NeoForgePlatform;
@@ -39,7 +40,7 @@ public final class EasyHomesModNeoForge {
     private static void initConfigurationScreen(ModContainer container) {
         container.registerExtensionPoint(
                 IConfigScreenFactory.class,
-                (c, parent) -> EasyHomesMod.createConfigurationScreen(parent)
+                (c, parent) -> MidnightConfig.getScreen(parent, EasyHomesMod.MOD_ID)
         );
     }
 

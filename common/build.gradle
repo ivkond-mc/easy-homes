@@ -1,16 +1,14 @@
-architectury {
-    common rootProject.enabled_platforms.split(',')
+plugins {
+    id 'net.neoforged.moddev'
+}
+
+version = "${rootProject.mod_version}-common"
+
+neoForge {
+    neoFormVersion = rootProject.neoform_version
 }
 
 dependencies {
-    // We depend on Fabric Loader here to use the Fabric @Environment annotations,
-    // which get remapped to the correct annotations on each platform.
-    // Do NOT use other classes from Fabric Loader.
-    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
-
-    // A little bit weird, but common module may use Fabric version as dependency in 'modCompileOnly' scope
-    // See: https://github.com/TeamMidnightDust/MidnightLib/issues/74
-    modCompileOnly "maven.modrinth:midnightlib:${rootProject.midnightlib_version}-fabric"
-
-    modApi "curse.maven:xaeros-minimap-263420:${rootProject.xaeros_minimap_version}"
+    compileOnly "maven.modrinth:midnightlib:${rootProject.midnightlib_version}-fabric"
+    compileOnly "xaero.minimap:xaerominimap-common-${rootProject.minecraft_version}:${rootProject.xaeros_minimap_version}"
 }

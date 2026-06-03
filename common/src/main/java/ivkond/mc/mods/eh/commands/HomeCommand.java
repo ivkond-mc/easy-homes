@@ -60,7 +60,7 @@ public class HomeCommand {
         Log.debug("Teleporting {} to home {}", player.getName().getString(), homeName);
 
         if (HomeUtils.isInvalidName(homeName)) {
-            player.displayClientMessage(I18N.errorInvalidHomeName(homeName), true);
+            player.sendOverlayMessage(I18N.errorInvalidHomeName(homeName));
             return 0;
         }
 
@@ -74,20 +74,20 @@ public class HomeCommand {
         ServerLevel currentLevel = stack.getLevel();
 
         if (player.isPassenger() && player.canControlVehicle()) {
-            player.displayClientMessage(I18N.errorPlayerMounted(), true);
+            player.sendOverlayMessage(I18N.errorPlayerMounted());
             return false;
         }
 
         HomeLocation home = homes.findHome(playerId, homeName);
         if (home == null) {
-            player.displayClientMessage(I18N.errorHomeNotFound(homeName), true);
+            player.sendOverlayMessage(I18N.errorHomeNotFound(homeName));
             return false;
         }
 
         if (!player.isCreative()) {
             Duration cooldown = homes.getCooldown(playerId);
             if (cooldown.isPositive()) {
-                player.displayClientMessage(I18N.commandHomeLocked(cooldown), true);
+                player.sendOverlayMessage(I18N.commandHomeLocked(cooldown));
                 return false;
             }
         }
@@ -96,14 +96,14 @@ public class HomeCommand {
         ResourceKey<Level> levelKey = ResourceKey.create(Registries.DIMENSION, levelLocation);
         ServerLevel targetLevel = stack.getServer().getLevel(levelKey);
         if (targetLevel == null) {
-            player.displayClientMessage(I18N.errorUnknownLevel(home.dimension()), true);
+            player.sendOverlayMessage(I18N.errorUnknownLevel(home.dimension()));
             return false;
         }
 
         // TeleportCommand#performTeleport
         BlockPos blockPos = BlockPos.containing(home.x(), home.y(), home.z());
         if (!ServerLevel.isInSpawnableBounds(blockPos)) {
-            player.displayClientMessage(I18N.errorInvalidPosition(), true);
+            player.sendOverlayMessage(I18N.errorInvalidPosition());
             return false;
         }
 
@@ -113,7 +113,7 @@ public class HomeCommand {
 
         homes.onTeleported(playerId, homeName);
 
-        player.displayClientMessage(I18N.commandHomeSuccess(homeName), true);
+        player.sendOverlayMessage(I18N.commandHomeSuccess(homeName));
         return true;
     }
 

@@ -40,12 +40,12 @@ public class DelHomeCommand {
         Log.debug("Delete players {} home {}", player.getDisplayName().getString(), name);
 
         if (HomeUtils.isInvalidName(name)) {
-            player.displayClientMessage(I18N.errorInvalidHomeName(name), true);
+            player.sendOverlayMessage(I18N.errorInvalidHomeName(name));
             return 0;
         }
 
         if (!homes.exists(playerId, name)) {
-            player.displayClientMessage(I18N.errorHomeNotFound(name), true);
+            player.sendOverlayMessage(I18N.errorHomeNotFound(name));
             return 0;
         }
 
@@ -54,7 +54,7 @@ public class DelHomeCommand {
         HomeDeletedPayload payload = new HomeDeletedPayload(name);
         PacketSender.send(player, payload);
 
-        player.displayClientMessage(I18N.commandDelHomeSuccess(name), true);
+        player.sendOverlayMessage(I18N.commandDelHomeSuccess(name));
 
         return Command.SINGLE_SUCCESS;
     }

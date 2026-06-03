@@ -7,6 +7,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import ivkond.mc.mods.eh.EasyHomesMod;
+import ivkond.mc.mods.eh.client.KeyPressedHandler;
 import ivkond.mc.mods.eh.client.KeyMappings;
 
 public class ClientEventBusSubscriber {
@@ -15,7 +16,7 @@ public class ClientEventBusSubscriber {
         @SubscribeEvent
         public static void onClientTick(ClientTickEvent.Post event) {
             Minecraft instance = Minecraft.getInstance();
-            EasyHomesMod.onClientTick(instance);
+            KeyPressedHandler.handle(instance);
         }
     }
 

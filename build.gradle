@@ -1,12 +1,7 @@
 plugins {
-    id 'dev.architectury.loom' version '1.13-SNAPSHOT' apply false
-    id 'architectury-plugin' version '3.4-SNAPSHOT'
-    id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
+    id 'net.fabricmc.fabric-loom' version "${fabric_loom_version}" apply false
+    id 'net.neoforged.moddev' version "${moddevgradle_version}" apply false
     id 'com.hypherionmc.modutils.modpublisher' version '2.1.6' apply false
-}
-
-architectury {
-    minecraft = project.minecraft_version
 }
 
 allprojects {
@@ -14,13 +9,10 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'dev.architectury.loom'
-    apply plugin: 'architectury-plugin'
+    apply plugin: 'java'
     apply plugin: 'maven-publish'
-    apply plugin: 'com.hypherionmc.modutils.modpublisher'
 
     base {
-        // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.
         archivesName = "$rootProject.archives_name"
     }
 
@@ -33,52 +25,54 @@ subprojects {
         // For: MidnightLib
         maven { url "https://api.modrinth.com/maven" }
         // For: Xaero's mods
-        maven { url 'https://cursemaven.com' }
-    }
-
-    loom {
-        silentMojangMappingsLicense()
-    }
-
-    dependencies {
-        minecraft "net.minecraft:minecraft:${rootProject.minecraft_version}"
-        mappings loom.officialMojangMappings()
+        maven { url 'https://chocolateminecraft.com/maven' }
     }
 
     java {
         withSourcesJar()
 
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_25
+        targetCompatibility = JavaVersion.VERSION_25
     }
 
     tasks.withType(JavaCompile).configureEach {
-        it.options.release = 21
+        it.options.release = 25
     }
 
-    publisher {
-        apiKeys {
-            modrinth = project.findProperty("modrinth.token") ?: System.getenv("MODRINTH_TOKEN")
-            curseforge = project.findProperty("curseforge.token") ?: System.getenv("CURSE_TOKEN")
+    if (enabled_platforms.split(',').contains(project.name)) {
+        apply plugin: 'com.hypherionmc.modutils.modpublisher'
+
+        publisher {
+            apiKeys {
+                modrinth = project.findProperty("modrinth.token") ?: System.getenv("MODRINTH_TOKEN")
+                curseforge = project.findProperty("curseforge.token") ?: System.getenv("CURSE_TOKEN")
+            }
+
+            setCurseID(curseforge_id)
+            setModrinthID(modrinth_id)
+            setVersionType("release")
+            setChangelog(rootProject.file("./CHANGELOG.md"))
+            setGameVersions([minecraft_version])
+            setCurseEnvironment("both")
+            setArtifact(tasks.named("jar"))
+            setJavaVersions([JavaVersion.VERSION_25])
+            setDisableEmptyJarCheck(false)
+            setLoaders(project.name)
+            setProjectVersion("${project.version}")
+            setDisplayName("${archives_name}-${project.version}")
         }
-
-        setCurseID(curseforge_id)
-        setModrinthID(modrinth_id)
-        setVersionType("release")
-        setChangelog(rootProject.file("./CHANGELOG.md"))
-        setGameVersions([minecraft_version])
-        setCurseEnvironment("both")
-        setArtifact(remapJar)
-        setJavaVersions([JavaVersion.VERSION_21])
-        setDisableEmptyJarCheck(false)
     }
+}
+
+tasks.register('buildRelease') {
+    group 'build'
+    dependsOn(':common:build')
+    dependsOn(enabled_platforms.split(',').collect {":" + it + ":build" })
 }
 
 tasks.register('uploadMod') {
     group 'publishing'
-    // Generates something like: [':fabric:publishMod', ':neoforge:publishMod']
-    def tasks = enabled_platforms.split(',').collect {":" + it + ":publishMod" }
-    dependsOn(tasks)
+    dependsOn(enabled_platforms.split(',').collect {":" + it + ":publishMod" })
     doLast {
         print("Mods has been successfully uploaded")
     }
