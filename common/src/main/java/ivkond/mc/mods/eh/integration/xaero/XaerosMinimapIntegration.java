@@ -13,7 +13,6 @@ import xaero.hud.minimap.world.MinimapWorld;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class XaerosMinimapIntegration {
     public static final String MOD_ID = "xaerominimap";
@@ -36,7 +35,7 @@ public class XaerosMinimapIntegration {
         }
 
         WaypointSet waypointSet = world.getCurrentWaypointSet();
-        List<Waypoint> waypoints = copyWaypoints(waypointSet);
+        ArrayList<Waypoint> waypoints = copyWaypoints(waypointSet);
 
         Waypoint existing = findWaypointByHomeName(waypoints, homeName);
         if (existing != null) {
@@ -120,8 +119,8 @@ public class XaerosMinimapIntegration {
         return session.getMinimapProcessor().getSession();
     }
 
-    private static List<Waypoint> copyWaypoints(WaypointSet waypointSet) {
-        List<Waypoint> waypoints = new ArrayList<>();
+    private static ArrayList<Waypoint> copyWaypoints(WaypointSet waypointSet) {
+        ArrayList<Waypoint> waypoints = new ArrayList<>();
         waypointSet.getWaypoints().forEach(waypoints::add);
         return waypoints;
     }
@@ -139,7 +138,7 @@ public class XaerosMinimapIntegration {
         }
     }
 
-    private static Waypoint findWaypointByHomeName(List<Waypoint> waypoints, String homeName) {
+    private static Waypoint findWaypointByHomeName(Iterable<Waypoint> waypoints, String homeName) {
         String waypointName = WAYPOINT_NAME.formatted(homeName);
         for (Waypoint waypoint : waypoints) {
             if (waypoint.getComparisonName().equals(waypointName)) {

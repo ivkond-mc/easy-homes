@@ -22,6 +22,8 @@ repositories {
 dependencies {
     minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
 
+    // Minecraft 26.1+ uses unobfuscated Loom.
+    // Keep standard Gradle configurations; modImplementation/mappings are unavailable here.
     implementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
 
     // Fabric API. This is technically optional, but you probably want it anyway.
