@@ -54,7 +54,7 @@ public class SetHomeCommand {
         }
 
         if (HomeUtils.isInvalidName(homeName)) {
-            player.displayClientMessage(I18N.errorInvalidHomeName(homeName), true);
+            player.sendOverlayMessage(I18N.errorInvalidHomeName(homeName));
             return 0;
         }
 
@@ -63,7 +63,7 @@ public class SetHomeCommand {
         boolean existingHome = homes.exists(playerId, homeName);
 
         if (!player.isCreative() && !existingHome && homes.isMaxHomesReached(playerId)) {
-            player.displayClientMessage(I18N.commandSetHomeMaxHomesReached(), true);
+            player.sendOverlayMessage(I18N.commandSetHomeMaxHomesReached());
             return 0;
         }
 
@@ -76,7 +76,7 @@ public class SetHomeCommand {
         HomeCreatedPayload payload = new HomeCreatedPayload(homeName, location);
         PacketSender.send(player, payload);
 
-        player.displayClientMessage(I18N.commandSetHomeSuccess(homeName, existingHome), true);
+        player.sendOverlayMessage(I18N.commandSetHomeSuccess(homeName, existingHome));
 
         return Command.SINGLE_SUCCESS;
     }

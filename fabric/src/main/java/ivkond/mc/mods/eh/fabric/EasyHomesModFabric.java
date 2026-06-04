@@ -33,8 +33,8 @@ public final class EasyHomesModFabric implements ModInitializer {
                         EasyHomesMod.registerCommands(dispatcher)
         );
 
-        PayloadTypeRegistry.playS2C().register(HomeCreatedPayload.ID, HomeCreatedPayload.CODEC);
-        PayloadTypeRegistry.playS2C().register(HomeDeletedPayload.ID, HomeDeletedPayload.CODEC);
-        PayloadTypeRegistry.playS2C().register(HomeRenamedPayload.ID, HomeRenamedPayload.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(HomeCreatedPayload.ID, HomeCreatedPayload.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(HomeDeletedPayload.ID, HomeDeletedPayload.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(HomeRenamedPayload.ID, HomeRenamedPayload.CODEC);
     }
 }

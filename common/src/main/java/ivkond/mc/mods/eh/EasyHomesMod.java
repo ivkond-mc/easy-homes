@@ -2,7 +2,6 @@ package ivkond.mc.mods.eh;
 
 import com.mojang.brigadier.CommandDispatcher;
 import eu.midnightdust.lib.config.MidnightConfig;
-import ivkond.mc.mods.eh.client.KeyPressedHandler;
 import ivkond.mc.mods.eh.commands.*;
 import ivkond.mc.mods.eh.config.EasyHomesConfig;
 import ivkond.mc.mods.eh.integration.xaero.XaerosMinimapIntegration;
@@ -10,8 +9,6 @@ import ivkond.mc.mods.eh.storage.HomeRepository;
 import ivkond.mc.mods.eh.utils.Log;
 import ivkond.mc.mods.eh.utils.PathUtils;
 import ivkond.mc.mods.eh.utils.Platform;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -41,10 +38,6 @@ public final class EasyHomesMod {
         homes.forgetAll();
     }
 
-    public static void onClientTick(Minecraft minecraft) {
-        KeyPressedHandler.handle(minecraft);
-    }
-
     public static void onPlayerLoggedIn(ServerPlayer player) {
         Log.debug("Player {} logged in. Now load configuration", player.getDisplayName().getString());
         homes.loadConfig(player.getStringUUID());
@@ -53,10 +46,6 @@ public final class EasyHomesMod {
     public static void onPlayerLoggedOut(ServerPlayer player) {
         Log.debug("Player {} logged out. Now persist and clear configuration", player.getDisplayName().getString());
         homes.forgetConfig(player.getStringUUID());
-    }
-
-    public static Screen createConfigurationScreen(Screen parent) {
-        return MidnightConfig.getScreen(parent, MOD_ID);
     }
 
     public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {

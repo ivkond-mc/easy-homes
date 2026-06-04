@@ -31,7 +31,7 @@ public class BackCommand {
 
         String lastVisitedHome = homes.getLastVisitedHome(player.getStringUUID());
         if (lastVisitedHome == null) {
-            player.displayClientMessage(I18N.errorNoLastVisitedHome(), true);
+            player.sendOverlayMessage(I18N.errorNoLastVisitedHome());
             return 0;
         }
 
