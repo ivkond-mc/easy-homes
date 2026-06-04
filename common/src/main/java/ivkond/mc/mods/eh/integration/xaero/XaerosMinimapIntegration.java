@@ -95,7 +95,7 @@ public class XaerosMinimapIntegration {
         WaypointSet waypointSet = world.getCurrentWaypointSet();
         String waypointName = WAYPOINT_NAME.formatted(homeName);
         for (Waypoint waypoint : copyWaypoints(waypointSet)) {
-            if (waypoint.getName().equals(waypointName)) {
+            if (waypoint.getComparisonName().equals(waypointName)) {
                 waypointSet.remove(waypoint);
             }
         }
