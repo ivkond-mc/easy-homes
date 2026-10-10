@@ -143,3 +143,21 @@ mod.mc_compat = ">=26.2 <26.3"
 [neoforge."26.2"]
 mod.neoforge_range = "[26.2,)"
 mod.mc_range = "[26.2,)"
+
+["26.3"]
+mod.mc_releases = ["26.3"]
+deps.fabric_loader = "0.19.5"
+deps.fabric_api = "0.162.0+26.3"
+deps.neo_loader = "26.3.0.67-beta"
+deps.midnightlib = "1.9.3+26.3"
+deps.modmenu = "21.0.0"
+deps.xaeros = "xaero.minimap:xaerominimap-common-26.3:26.6.0"
+
+[fabric."26.3"]
+mod.mc_compat = ">=26.3 <26.4"
+
+[neoforge."26.3"]
+# 1.9.3+26.3-neoforge ships a broken "[26.3)" version range; 1.9.3.1 fixes it
+deps.midnightlib = "1.9.3.1+26.3"
+mod.neoforge_range = "[26.3,)"
+mod.mc_range = "[26.3,)"

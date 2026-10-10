@@ -5,10 +5,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.EntityType;
 //? if >=26.2 {
 /*import net.minecraft.world.entity.EntityTypes;
-*///? }
+*///? } else {
+import net.minecraft.world.entity.EntityType;
+//? }
 //? if >=1.21.11 {
 import net.minecraft.world.entity.vehicle.boat.Boat;
 //? } else {
