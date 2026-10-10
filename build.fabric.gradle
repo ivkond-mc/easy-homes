@@ -47,6 +47,20 @@ tasks.matching { it.name == 'runGameTestServer' }.configureEach {
     doFirst { file("${layout.buildDirectory.get()}/reports/gametest").mkdirs() }
 }
 
+// Game test structure seeding, per era:
+// - 1.18.2/1.19.2: fabric-gametest reads SNBT templates straight from resources
+//   (src/main/resources/data/easy_homes/gametest/structures/platform.snbt)
+// - 1.19.4-era: structure resources on the mod classpath are not readable;
+//   StructureTemplateManager.loadFromGenerated reads world/generated/<ns>/<name>.nbt,
+//   so seed the run directory with the platform structure before the run.
+if (sc.current.parsed >= '1.19.4' && sc.current.parsed < '1.20') {
+    tasks.register('prepareGameTestStructures', Copy) {
+        from rootProject.file('src/main/resources/data/easy_homes/structure/platform.nbt')
+        into layout.buildDirectory.dir('gametest/world/generated/easy_homes/structures')
+    }
+    tasks.named('runGameTestServer') { dependsOn 'prepareGameTestStructures' }
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${sc.current.version}"
     loomx.applyMojangMappings()
@@ -59,7 +73,14 @@ dependencies {
     def midnightlib = project.property('deps.midnightlib') as String
     modImplementation include(midnightlib.contains(':') ? midnightlib : "maven.modrinth:midnightlib:${midnightlib}-fabric")
 
-    compileOnly project.property('deps.xaeros') as String
+    // Xaero's Minimap: Modrinth ships intermediary-mapped Fabric jars that loom
+    // must remap (modCompileOnly); the CurseMaven/ChocolateMC jars are used as-is
+    def xaeros = project.property('deps.xaeros') as String
+    if (xaeros.startsWith('maven.modrinth')) {
+        modCompileOnly xaeros
+    } else {
+        compileOnly xaeros
+    }
 }
 
 ext.artifactTask = loomx.modJar
@@ -85,6 +106,14 @@ processResources {
     filesMatching('fabric.mod.json') { expand props }
     filesMatching('easy_homes.mixins.json') { expand props }
     exclude 'META-INF/neoforge.mods.toml'
+
+    // MC < 21 renamed the structure datapack folder from data/<ns>/structures/
+    // to data/<ns>/structure/; 1.20.x nodes resolve templates from the legacy folder
+    if (sc.current.parsed >= '1.20' && sc.current.parsed < '1.21') {
+        from(rootProject.file('src/main/resources/data/easy_homes/structure')) {
+            into 'data/easy_homes/structures'
+        }
+    }
 }
 
 // Game tests live in main for Stonecutter preprocessing, but never ship in the artifact
@@ -93,7 +122,8 @@ processResources {
 tasks.withType(Jar).configureEach {
     exclude 'ivkond/mc/mods/eh/gametest/**'
     exclude 'data/easy_homes/structure/**'
-    // SNBT template variant consumed by fabric-gametest-api-v1 on 1.18.x
+    exclude 'data/easy_homes/structures/**'
+    // SNBT template variant consumed by fabric-gametest-api-v1 on 1.18.x/1.19.x
     exclude 'data/easy_homes/gametest/**'
 }
 

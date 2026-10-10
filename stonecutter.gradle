@@ -34,13 +34,15 @@ stonecutter.parameters {
         string(current.parsed < '1.20') {
             replace('player.level()', 'player.getLevel()')
         }
-        // MC 1.19 renamed/added several mojmap members the sources rely on
-        string(current.parsed < '1.19') {
-            replace('SoundEvents.PLAYER_TELEPORT', 'SoundEvents.CHORUS_FRUIT_TELEPORT')
+        // SoundEvents.PLAYER_TELEPORT only exists since 1.20.5
+        string(current.parsed < '1.20.5') {
+            replace('SoundEvents.PLAYER_TELEPORT', 'SoundEvents.ENDERMAN_TELEPORT')
         }
-        // BlockPos.containing and the per-wood EntityType boat constants came later
+        // BlockPos.containing came in 1.19.4; the per-wood EntityType boat constants in 1.21.2
         string(current.parsed < '1.19.4') {
             replace('BlockPos.containing(', 'new BlockPos(')
+        }
+        string(current.parsed < '1.21.2') {
             replace('EntityType.OAK_BOAT', 'EntityType.BOAT')
         }
         // Duration.isPositive needs Java 18; legacy nodes build with Java 17

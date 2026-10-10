@@ -79,7 +79,13 @@ public class HomeCommand {
         ServerLevel currentLevel = stack.getLevel();
 
         //? if <1.19.3 {
-        /*if (player.isPassenger()) {
+        /*// Player.canControlVehicle() only exists since 1.19.3
+        if (player.isPassenger()) {
+            OverlayMessages.send(player, I18N.errorPlayerMounted());
+            return false;
+        }*/
+        //? } else if <1.21.2 {
+        /*if (player.isPassenger() && player.getVehicle().getControllingPassenger() == player) {
             OverlayMessages.send(player, I18N.errorPlayerMounted());
             return false;
         }*/
@@ -124,9 +130,11 @@ public class HomeCommand {
         }
 
         playDecorations(currentLevel, player.blockPosition(), ParticleTypes.PORTAL);
-        //? if <1.19 {
-        /*// 1.18.2: no Set-based teleportTo overload
+        //? if <1.20.1 {
+        /*// no relative-argument Set overload before 1.20.1
         player.teleportTo(targetLevel, home.x(), home.y(), home.z(), home.rotY(), home.rotX());*/
+        //? } else if <1.21.2 {
+        /*player.teleportTo(targetLevel, home.x(), home.y(), home.z(), Set.of(), home.rotY(), home.rotX());*/
         //? } else {
         player.teleportTo(targetLevel, home.x(), home.y(), home.z(), Set.of(), home.rotY(), home.rotX(), false);
         //? }

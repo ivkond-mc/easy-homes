@@ -18,7 +18,12 @@ import static ivkond.mc.mods.eh.gametest.Eh.reset;
 /*@net.neoforged.neoforge.gametest.GameTestHolder("easy_homes")
 @net.neoforged.neoforge.gametest.PrefixGameTestTemplate(false)*/
 //? }
-public final class DelHomeScenarios {
+public final class DelHomeScenarios
+        // The 1.19.4-era fabric gametest api only discovers classes implementing FabricGameTest
+        //? if fabric && =1.19.4 {
+        /*implements net.fabricmc.fabric.api.gametest.v1.FabricGameTest*/
+        //? }
+        {
 
     /** DEL-1: deletes an existing home from memory and from disk. */
     //? if <1.21.5 && fabric {

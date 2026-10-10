@@ -24,6 +24,20 @@ public class KeyPressedHandler {
             //? if <1.19 {
             /*// 1.18.2: no sendCommand helper, commands travel as chat packets
             connection.send(new net.minecraft.network.protocol.game.ServerboundChatPacket("/" + command));*/
+            //? } else if <1.19.4 {
+            /*// ClientPacketListener.sendCommand(String) only exists since 1.19.4;
+            // 1.19.x needs a raw unsigned ServerboundChatCommandPacket
+            connection.send(new net.minecraft.network.protocol.game.ServerboundChatCommandPacket(
+                    command,
+                    java.time.Instant.now(),
+                    0L,
+                    net.minecraft.commands.arguments.ArgumentSignatures.EMPTY,
+                    false,
+                    new net.minecraft.network.chat.LastSeenMessages.Update(
+                            new net.minecraft.network.chat.LastSeenMessages(java.util.List.of()),
+                            java.util.Optional.empty()
+                    )
+            ));*/
             //? } else {
             connection.sendCommand(command);
             //? }

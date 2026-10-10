@@ -22,7 +22,12 @@ import static ivkond.mc.mods.eh.gametest.Eh.reset;
 /*@net.neoforged.neoforge.gametest.GameTestHolder("easy_homes")
 @net.neoforged.neoforge.gametest.PrefixGameTestTemplate(false)*/
 //? }
-public final class BackScenarios {
+public final class BackScenarios
+        // The 1.19.4-era fabric gametest api only discovers classes implementing FabricGameTest
+        //? if fabric && =1.19.4 {
+        /*implements net.fabricmc.fabric.api.gametest.v1.FabricGameTest*/
+        //? }
+        {
 
     /** BAC-1: /back without teleport history fails. */
     //? if <1.21.5 && fabric {

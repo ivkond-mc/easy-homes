@@ -55,14 +55,25 @@ public final class Eh {
             public void send(net.minecraft.network.protocol.Packet<?> packet,
                              io.netty.channel.ChannelFutureListener listener, boolean flush) {
             }
+            //? } else if >=1.20.5 {
+            /*@Override
+            public void send(net.minecraft.network.protocol.Packet<?> packet,
+                             net.minecraft.network.PacketSendListener listener, boolean flush) {
+            }*/
             //? } else if <1.19.1 {
             /*@Override
             public void send(net.minecraft.network.protocol.Packet<?> packet) {
             }*/
             //? } else {
-            /*@Override
+            /*// 1.19.1-1.20.4: no flush flag on Connection#send; the 1-arg
+            // overload is overridden too because 1.19.4 makes it delegate eagerly
+            @Override
+            public void send(net.minecraft.network.protocol.Packet<?> packet) {
+            }
+
+            @Override
             public void send(net.minecraft.network.protocol.Packet<?> packet,
-                             net.minecraft.network.PacketSendListener listener, boolean flush) {
+                             net.minecraft.network.PacketSendListener listener) {
             }*/
             //? }
         };
@@ -80,9 +91,15 @@ public final class Eh {
         adHocChannels.add(HomeRenamedPayload.ID.id());*/
         //? }
         //? if <1.20.2 {
-        /*// 1.18.2: no ClientInformation / CommonListenerCookie yet
+        /*// No ClientInformation / CommonListenerCookie before 1.20.2
+        //? if >=1.19.2 && <1.19.4 {
+        // 1.19.2/1.19.3: the ctor takes a nullable ProfilePublicKey
+        ServerPlayer player = new ServerPlayer(server, helper.getLevel(), profile, null);
+        player.connection = new ServerGamePacketListenerImpl(server, connection, player);
+        //? } else {
         ServerPlayer player = new ServerPlayer(server, helper.getLevel(), profile);
         player.connection = new ServerGamePacketListenerImpl(server, connection, player);
+        //? }
         player.setGameMode(gameMode);
         return player;*/
         //? } else {
@@ -106,8 +123,11 @@ public final class Eh {
 
     /** Teleports the player within the test level, bypassing mod commands (test setup only). */
     public static void move(ServerPlayer player, ServerLevel level, double x, double y, double z, float yaw, float pitch) {
-        //? if <1.19 {
-        /*player.teleportTo(level, x, y, z, yaw, pitch);*/
+        //? if <1.20.1 {
+        /*// no relative-argument Set overload before 1.20.1
+        player.teleportTo(level, x, y, z, yaw, pitch);*/
+        //? } else if <1.21.2 {
+        /*player.teleportTo(level, x, y, z, Set.of(), yaw, pitch);*/
         //? } else {
         player.teleportTo(level, x, y, z, Set.of(), yaw, pitch, false);
         //? }

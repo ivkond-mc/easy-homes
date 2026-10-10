@@ -14,8 +14,10 @@ import xaero.common.minimap.waypoints.Waypoint;
 *///? } else {
 import xaero.hud.minimap.module.MinimapSession;
 //? }
+//? if >=1.19.4 {
 import xaero.hud.minimap.waypoint.WaypointColor;
 import xaero.hud.minimap.waypoint.WaypointPurpose;
+//? }
 //? if >=26.1 {
 import xaero.hud.minimap.waypoint.set.WaypointSet;
 import xaero.hud.minimap.world.MinimapWorld;
@@ -56,22 +58,12 @@ public class XaerosMinimapIntegration {
         Waypoint existing = findWaypointByHomeName(waypoints, homeName);
         if (existing != null) {
             existing.setName(WAYPOINT_NAME.formatted(homeName));
-            existing.setInitials(homeName.substring(0, 1));
+            setWaypointInitials(existing, homeName.substring(0, 1));
             existing.setX((int) location.x());
             existing.setY((int) location.y());
             existing.setZ((int) location.z());
         } else {
-            Waypoint newWaypoint = new Waypoint(
-                    (int) location.x(),
-                    (int) location.y(),
-                    (int) location.z(),
-                    WAYPOINT_NAME.formatted(homeName),
-                    homeName.substring(0, 1),
-                    WaypointColor.getRandom(),
-                    WaypointPurpose.NORMAL,
-                    false
-            );
-            waypointSet.add(newWaypoint);
+            waypointSet.add(createWaypoint(homeName, location));
         }
 
         saveWaypoints(world);
@@ -88,22 +80,12 @@ public class XaerosMinimapIntegration {
         Waypoint existing = findWaypointByHomeName(waypoints, homeName);
         if (existing != null) {
             existing.setName(WAYPOINT_NAME.formatted(homeName));
-            existing.setInitials(homeName.substring(0, 1));
+            setWaypointInitials(existing, homeName.substring(0, 1));
             existing.setX((int) location.x());
             existing.setY((int) location.y());
             existing.setZ((int) location.z());
         } else {
-            Waypoint newWaypoint = new Waypoint(
-                    (int) location.x(),
-                    (int) location.y(),
-                    (int) location.z(),
-                    WAYPOINT_NAME.formatted(homeName),
-                    homeName.substring(0, 1),
-                    WaypointColor.getRandom(),
-                    WaypointPurpose.NORMAL,
-                    false
-            );
-            waypoints.add(newWaypoint);
+            waypoints.add(createWaypoint(homeName, location));
         }
 
         saveWaypoints(waypointsManager);
@@ -127,7 +109,7 @@ public class XaerosMinimapIntegration {
         }
 
         waypoint.setName(WAYPOINT_NAME.formatted(newHomeName));
-        waypoint.setInitials(newHomeName.substring(0, 1));
+        setWaypointInitials(waypoint, newHomeName.substring(0, 1));
 
         saveWaypoints(world);
     }
@@ -146,7 +128,7 @@ public class XaerosMinimapIntegration {
         }
 
         waypoint.setName(WAYPOINT_NAME.formatted(newHomeName));
-        waypoint.setInitials(newHomeName.substring(0, 1));
+        setWaypointInitials(waypoint, newHomeName.substring(0, 1));
 
         saveWaypoints(waypointsManager);
     }
@@ -230,6 +212,46 @@ public class XaerosMinimapIntegration {
         } catch (IOException e) {
             Log.error("Unable to save waypoints", e);
         }
+    }
+    *///? }
+
+    // Waypoint construction/initials helpers: the Xaero API differs between eras.
+    //? if >=1.19.4 {
+    private static void setWaypointInitials(Waypoint waypoint, String initials) {
+        waypoint.setInitials(initials);
+    }
+
+    private static Waypoint createWaypoint(String homeName, HomeLocation location) {
+        return new Waypoint(
+                (int) location.x(),
+                (int) location.y(),
+                (int) location.z(),
+                WAYPOINT_NAME.formatted(homeName),
+                homeName.substring(0, 1),
+                WaypointColor.getRandom(),
+                WaypointPurpose.NORMAL,
+                false
+        );
+    }
+    //? } else {
+    /*// 22.x-era API: setSymbol instead of setInitials, and the constructor takes an
+    // int color index (0-15) plus an int waypoint type (0 = normal) instead of
+    // WaypointColor/WaypointPurpose
+    private static void setWaypointInitials(Waypoint waypoint, String initials) {
+        waypoint.setSymbol(initials);
+    }
+
+    private static Waypoint createWaypoint(String homeName, HomeLocation location) {
+        return new Waypoint(
+                (int) location.x(),
+                (int) location.y(),
+                (int) location.z(),
+                WAYPOINT_NAME.formatted(homeName),
+                homeName.substring(0, 1),
+                (int) (Math.random() * 16),
+                0,
+                false
+        );
     }
     *///? }
 

@@ -35,7 +35,12 @@ import static ivkond.mc.mods.eh.gametest.Eh.reset;
 /*@net.neoforged.neoforge.gametest.GameTestHolder("easy_homes")
 @net.neoforged.neoforge.gametest.PrefixGameTestTemplate(false)*/
 //? }
-public final class HomeScenarios {
+public final class HomeScenarios
+        // The 1.19.4-era fabric gametest api only discovers classes implementing FabricGameTest
+        //? if fabric && =1.19.4 {
+        /*implements net.fabricmc.fabric.api.gametest.v1.FabricGameTest*/
+        //? }
+        {
 
     /** HOM-1: teleports to a named home, restoring position and rotation. */
     //? if <1.21.5 && fabric {
@@ -336,7 +341,12 @@ public final class HomeScenarios {
         //? }
         player.startRiding(boat);
         //? if <1.19.3 {
-        /*if (!player.isPassenger()) {
+        /*// Player.canControlVehicle() only exists since 1.19.3
+        if (!player.isPassenger()) {
+            fail(helper, "Precondition failed: player does not control the boat");
+        }*/
+        //? } else if <1.21.2 {
+        /*if (!player.isPassenger() || player.getVehicle().getControllingPassenger() != player) {
             fail(helper, "Precondition failed: player does not control the boat");
         }*/
         //? } else {
