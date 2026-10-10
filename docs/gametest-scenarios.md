@@ -11,7 +11,7 @@ Status: **approved** — review decisions are recorded in section 5.
 - All six commands: `/sethome`, `/home`, `/delhome`, `/renhome`, `/homes`, `/back`
 - Repository behavior: limits, cooldown, persistence on disk
 - Cross-dimensional teleports and guard clauses (unknown dimension, out-of-bounds position)
-- **All 18 Stonecutter nodes** (since the 1.21.8/1.21.10/26.2/26.3 ports) — NeoForge via ModDevGradle, Fabric via
+- **All 24 Stonecutter nodes** (since the 1.21.8/1.21.10/26.2/26.3 and 1.18.2-1.21.1 legacy ports) — NeoForge via ModDevGradle, Fabric via
   `fabric-gametest-api-v1` (decision Q3)
 
 **Out of scope:**
@@ -156,7 +156,7 @@ existing name while at `maxHomes` succeeds) — current behavior, covered by SET
 
 ## 6. Implementation status
 
-Complete — all scenarios implemented and green on all 18 nodes
+Complete — all scenarios implemented and green on all 24 nodes
 (1.21.4 nodes run 31 tests; 1.21.5+ nodes run 32 including the framework's
 builtin `always_pass`). CI runs the full matrix on every push and PR via
 `.github/workflows/gametests.yml`. The structure template can be regenerated
