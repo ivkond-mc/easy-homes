@@ -49,3 +49,6 @@
 
 ### 21.4.5
 * Fixed homes corruption on sever crash
+
+### 21.11.1
+* Fixed crash in the Xaero's Minimap integration: the integration now detects the installed Xaero's API at runtime (Xaero 25.3+/26.x refactors) and disables itself gracefully instead of crashing on /sethome (#14)

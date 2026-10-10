@@ -3,35 +3,24 @@ package ivkond.mc.mods.eh.integration.xaero;
 import ivkond.mc.mods.eh.domain.HomeLocation;
 import ivkond.mc.mods.eh.utils.Log;
 import ivkond.mc.mods.eh.utils.Platform;
-//? if <26.1 {
-/*import xaero.common.core.XaeroMinimapCore;
-*///? } else {
-import xaero.common.XaeroMinimapSession;
-//? }
-import xaero.common.minimap.waypoints.Waypoint;
-//? if <26.1 {
-/*import xaero.common.minimap.waypoints.WaypointsManager;
-*///? } else {
-import xaero.hud.minimap.module.MinimapSession;
-//? }
-//? if >=1.19.4 {
-import xaero.hud.minimap.waypoint.WaypointColor;
-import xaero.hud.minimap.waypoint.WaypointPurpose;
-//? }
-//? if >=26.1 {
-import xaero.hud.minimap.waypoint.set.WaypointSet;
-import xaero.hud.minimap.world.MinimapWorld;
-//? }
-//? if <26.1 {
-/*import xaero.minimap.XaeroMinimap;
 
-import java.util.List;
-*///? }
-
-import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 
-public class XaerosMinimapIntegration {
+/**
+ * Syncs homes into Xaero's Minimap waypoints.
+ * <p>
+ * Xaero's internal API is not stable: the waypoint access path and even Waypoint
+ * methods differ between releases, and builds of both eras are installable on the
+ * same Minecraft versions (see issue #14). Because of that this class talks to
+ * Xaero entirely through reflection and picks the access path at runtime, so a
+ * mismatched Xaero release degrades to a logged warning instead of crashing
+ * the client with a {@link NoSuchMethodError}.
+ */
+public final class XaerosMinimapIntegration {
     public static final String MOD_ID = "xaerominimap";
 
     private static final String WAYPOINT_NAME = "%s-home";
@@ -41,227 +30,264 @@ public class XaerosMinimapIntegration {
         skip = !platform.isModLoaded(MOD_ID);
     }
 
-    //? if >=26.1 {
     public static void onHomeCreated(String homeName, HomeLocation location) {
-        if (skip) {
-            return;
-        }
-
-        MinimapWorld world = getCurrentWorld();
-        if (world == null) {
-            return;
-        }
-
-        WaypointSet waypointSet = world.getCurrentWaypointSet();
-        ArrayList<Waypoint> waypoints = copyWaypoints(waypointSet);
-
-        Waypoint existing = findWaypointByHomeName(waypoints, homeName);
-        if (existing != null) {
-            existing.setName(WAYPOINT_NAME.formatted(homeName));
-            setWaypointInitials(existing, homeName.substring(0, 1));
-            existing.setX((int) location.x());
-            existing.setY((int) location.y());
-            existing.setZ((int) location.z());
-        } else {
-            waypointSet.add(createWaypoint(homeName, location));
-        }
-
-        saveWaypoints(world);
+        run(() -> {
+            Object waypoints = getWritableWaypoints();
+            if (waypoints == null) {
+                return;
+            }
+            Object waypoint = findWaypoint(homeName);
+            if (waypoint != null) {
+                invoke(waypoint, "setName", WAYPOINT_NAME.formatted(homeName));
+                setInitials(waypoint, homeName.substring(0, 1));
+                invoke(waypoint, "setX", (int) location.x());
+                invoke(waypoint, "setY", (int) location.y());
+                invoke(waypoint, "setZ", (int) location.z());
+            } else {
+                invoke(waypoints, "add", createWaypoint(homeName, location));
+            }
+            saveWaypoints();
+        });
     }
-    //? } else {
-    /*public static void onHomeCreated(String homeName, HomeLocation location) {
-        if (skip) {
-            return;
-        }
 
-        WaypointsManager waypointsManager = XaeroMinimapCore.currentSession.getWaypointsManager();
-        ArrayList<Waypoint> waypoints = waypointsManager.getWaypoints().getList();
-
-        Waypoint existing = findWaypointByHomeName(waypoints, homeName);
-        if (existing != null) {
-            existing.setName(WAYPOINT_NAME.formatted(homeName));
-            setWaypointInitials(existing, homeName.substring(0, 1));
-            existing.setX((int) location.x());
-            existing.setY((int) location.y());
-            existing.setZ((int) location.z());
-        } else {
-            waypoints.add(createWaypoint(homeName, location));
-        }
-
-        saveWaypoints(waypointsManager);
-    }
-    *///? }
-
-    //? if >=26.1 {
     public static void onHomeRenamed(String oldHomeName, String newHomeName) {
-        if (skip) {
-            return;
-        }
-
-        MinimapWorld world = getCurrentWorld();
-        if (world == null) {
-            return;
-        }
-
-        Waypoint waypoint = findWaypointByHomeName(copyWaypoints(world.getCurrentWaypointSet()), oldHomeName);
-        if (waypoint == null) {
-            return;
-        }
-
-        waypoint.setName(WAYPOINT_NAME.formatted(newHomeName));
-        setWaypointInitials(waypoint, newHomeName.substring(0, 1));
-
-        saveWaypoints(world);
+        run(() -> {
+            Object waypoint = findWaypoint(oldHomeName);
+            if (waypoint == null) {
+                return;
+            }
+            invoke(waypoint, "setName", WAYPOINT_NAME.formatted(newHomeName));
+            setInitials(waypoint, newHomeName.substring(0, 1));
+            saveWaypoints();
+        });
     }
-    //? } else {
-    /*public static void onHomeRenamed(String oldHomeName, String newHomeName) {
-        if (skip) {
-            return;
-        }
 
-        WaypointsManager waypointsManager = XaeroMinimapCore.currentSession.getWaypointsManager();
-        ArrayList<Waypoint> waypoints = waypointsManager.getWaypoints().getList();
-
-        Waypoint waypoint = findWaypointByHomeName(waypoints, oldHomeName);
-        if (waypoint == null) {
-            return;
-        }
-
-        waypoint.setName(WAYPOINT_NAME.formatted(newHomeName));
-        setWaypointInitials(waypoint, newHomeName.substring(0, 1));
-
-        saveWaypoints(waypointsManager);
-    }
-    *///? }
-
-    //? if >=26.1 {
     public static void onHomeDeleted(String homeName) {
-        if (skip) {
-            return;
-        }
+        run(() -> {
+            Object waypoints = getWritableWaypoints();
+            if (waypoints == null) {
+                return;
+            }
+            String waypointName = WAYPOINT_NAME.formatted(homeName);
+            for (Object waypoint : copyWaypoints()) {
+                if (waypointName.equals(nameOf(waypoint))) {
+                    invoke(waypoints, "remove", waypoint);
+                }
+            }
+            saveWaypoints();
+        });
+    }
 
-        MinimapWorld world = getCurrentWorld();
-        if (world == null) {
-            return;
-        }
+    // The Xaero eras, resolved once on first use:
+    // - modern (25.3+): MinimapSession -> world manager -> current waypoint set
+    // - legacy: XaeroMinimapCore.currentSession -> WaypointsManager -> waypoint list
+    private static final int ERA_UNRESOLVED = 0;
+    private static final int ERA_MODERN = 1;
+    private static final int ERA_LEGACY = 2;
+    private static int era = ERA_UNRESOLVED;
 
-        WaypointSet waypointSet = world.getCurrentWaypointSet();
-        String waypointName = WAYPOINT_NAME.formatted(homeName);
-        for (Waypoint waypoint : copyWaypoints(waypointSet)) {
-            if (waypoint.getComparisonName().equals(waypointName)) {
-                waypointSet.remove(waypoint);
+    private static int era() throws Exception {
+        if (era == ERA_UNRESOLVED) {
+            if (available("xaero.hud.minimap.module.MinimapSession")) {
+                era = ERA_MODERN;
+            } else if (available("xaero.common.core.XaeroMinimapCore")) {
+                era = ERA_LEGACY;
+            } else {
+                throw new IllegalStateException("Unsupported Xaero's Minimap build");
             }
         }
-
-        saveWaypoints(world);
+        return era;
     }
-    //? } else {
-    /*public static void onHomeDeleted(String homeName) {
-        if (skip) {
+
+    // null means the minimap session is not ready yet (e.g. player not in a world);
+    // the sync is skipped silently and retried on the next home event
+    private static Object getWritableWaypoints() throws Exception {
+        if (era() == ERA_MODERN) {
+            return modernWaypointSet();
+        }
+        Object manager = invoke(currentLegacySession(), "getWaypointsManager");
+        return invoke(invoke(manager, "getWaypoints"), "getList");
+    }
+
+    private static List<Object> copyWaypoints() throws Exception {
+        List<Object> copy = new ArrayList<>();
+        Iterable<?> waypoints = (Iterable<?>) getReadableWaypoints();
+        if (waypoints != null) {
+            for (Object waypoint : waypoints) {
+                copy.add(waypoint);
+            }
+        }
+        return copy;
+    }
+
+    private static Object getReadableWaypoints() throws Exception {
+        if (era() == ERA_MODERN) {
+            Object set = modernWaypointSet();
+            return set != null ? invoke(set, "getWaypoints") : null;
+        }
+        Object manager = invoke(currentLegacySession(), "getWaypointsManager");
+        return invoke(invoke(manager, "getWaypoints"), "getList");
+    }
+
+    private static void saveWaypoints() throws Exception {
+        if (era() == ERA_MODERN) {
+            Object session = modernSession();
+            if (session == null) {
+                return;
+            }
+            Object world = invoke(invoke(session, "getWorldManager"), "getCurrentWorld");
+            invoke(invoke(session, "getWorldManagerIO"), "saveWorld", world);
             return;
         }
-
-        WaypointsManager waypointsManager = XaeroMinimapCore.currentSession.getWaypointsManager();
-        List<Waypoint> waypoints = waypointsManager.getWaypoints().getList();
-        String waypointName = WAYPOINT_NAME.formatted(homeName);
-        waypoints.removeIf(waypoint -> waypoint.getName().equals(waypointName));
-
-        saveWaypoints(waypointsManager);
+        Object manager = invoke(currentLegacySession(), "getWaypointsManager");
+        Object settings = invoke(field(Class.forName("xaero.minimap.XaeroMinimap"), "instance"), "getSettings");
+        invoke(settings, "saveWaypoints", invoke(manager, "getCurrentWorld"));
     }
-    *///? }
 
-    //? if >=26.1 {
-    private static MinimapWorld getCurrentWorld() {
-        MinimapSession session = getMinimapSession();
+    private static Object modernWaypointSet() throws Exception {
+        Object world = modernWorld();
+        return world != null ? invoke(world, "getCurrentWaypointSet") : null;
+    }
+
+    private static Object modernWorld() throws Exception {
+        Object session = modernSession();
         if (session == null) {
             return null;
         }
-        return session.getWorldManager().getCurrentWorld();
+        return invoke(invoke(session, "getWorldManager"), "getCurrentWorld");
     }
 
-    private static MinimapSession getMinimapSession() {
-        XaeroMinimapSession session = XaeroMinimapSession.getCurrentSession();
-        if (session == null || session.getMinimapProcessor() == null) {
+    private static Object modernSession() throws Exception {
+        Object xaeroSession = invoke(Class.forName("xaero.common.XaeroMinimapSession"), "getCurrentSession");
+        if (xaeroSession == null) {
             return null;
         }
-        return session.getMinimapProcessor().getSession();
-    }
-
-    private static ArrayList<Waypoint> copyWaypoints(WaypointSet waypointSet) {
-        ArrayList<Waypoint> waypoints = new ArrayList<>();
-        waypointSet.getWaypoints().forEach(waypoints::add);
-        return waypoints;
-    }
-
-    private static void saveWaypoints(MinimapWorld world) {
-        MinimapSession session = getMinimapSession();
-        if (session == null) {
-            return;
+        Object processor = invoke(xaeroSession, "getMinimapProcessor");
+        if (processor == null) {
+            return null;
         }
+        return invoke(processor, "getSession");
+    }
 
-        try {
-            session.getWorldManagerIO().saveWorld(world);
-        } catch (IOException e) {
-            Log.error("Unable to save waypoints", e);
+    private static Object currentLegacySession() throws Exception {
+        return field(Class.forName("xaero.common.core.XaeroMinimapCore"), "currentSession");
+    }
+
+    private static Object createWaypoint(String homeName, HomeLocation location) throws Exception {
+        String name = WAYPOINT_NAME.formatted(homeName);
+        String initials = homeName.substring(0, 1);
+        int x = (int) location.x();
+        int y = (int) location.y();
+        int z = (int) location.z();
+        Class<?> waypointClass = Class.forName("xaero.common.minimap.waypoints.Waypoint");
+        for (Constructor<?> constructor : waypointClass.getConstructors()) {
+            Class<?>[] params = constructor.getParameterTypes();
+            if (params.length == 8 && params[0] == int.class) {
+                Object color = params[5] == int.class ? (int) (Math.random() * 16)
+                        : invoke(Class.forName("xaero.hud.minimap.waypoint.WaypointColor"), "getRandom");
+                Object purpose = params[6] == int.class ? 0
+                        : Enum.valueOf((Class<? extends Enum>) Class.forName("xaero.hud.minimap.waypoint.WaypointPurpose"), "NORMAL");
+                return constructor.newInstance(x, y, z, name, initials, color, purpose, false);
+            }
         }
-    }
-    //? } else {
-    /*private static void saveWaypoints(WaypointsManager waypointsManager) {
-        try {
-            XaeroMinimap.instance.getSettings().saveWaypoints(waypointsManager.getCurrentWorld());
-        } catch (IOException e) {
-            Log.error("Unable to save waypoints", e);
-        }
-    }
-    *///? }
-
-    // Waypoint construction/initials helpers: the Xaero API differs between eras.
-    //? if >=1.19.4 {
-    private static void setWaypointInitials(Waypoint waypoint, String initials) {
-        waypoint.setInitials(initials);
+        throw new IllegalStateException("No suitable Waypoint constructor found");
     }
 
-    private static Waypoint createWaypoint(String homeName, HomeLocation location) {
-        return new Waypoint(
-                (int) location.x(),
-                (int) location.y(),
-                (int) location.z(),
-                WAYPOINT_NAME.formatted(homeName),
-                homeName.substring(0, 1),
-                WaypointColor.getRandom(),
-                WaypointPurpose.NORMAL,
-                false
-        );
-    }
-    //? } else {
-    /*// 22.x-era API: setSymbol instead of setInitials, and the constructor takes an
-    // int color index (0-15) plus an int waypoint type (0 = normal) instead of
-    // WaypointColor/WaypointPurpose
-    private static void setWaypointInitials(Waypoint waypoint, String initials) {
-        waypoint.setSymbol(initials);
-    }
-
-    private static Waypoint createWaypoint(String homeName, HomeLocation location) {
-        return new Waypoint(
-                (int) location.x(),
-                (int) location.y(),
-                (int) location.z(),
-                WAYPOINT_NAME.formatted(homeName),
-                homeName.substring(0, 1),
-                (int) (Math.random() * 16),
-                0,
-                false
-        );
-    }
-    *///? }
-
-    private static Waypoint findWaypointByHomeName(Iterable<Waypoint> waypoints, String homeName) {
+    private static Object findWaypoint(String homeName) throws Exception {
         String waypointName = WAYPOINT_NAME.formatted(homeName);
-        for (Waypoint waypoint : waypoints) {
-            if (waypoint.getComparisonName().equals(waypointName)) {
+        for (Object waypoint : copyWaypoints()) {
+            if (waypointName.equals(nameOf(waypoint))) {
                 return waypoint;
             }
         }
         return null;
+    }
+
+    private static String nameOf(Object waypoint) throws Exception {
+        try {
+            return (String) invoke(waypoint, "getComparisonName");
+        } catch (NoSuchMethodException e) {
+            return (String) invoke(waypoint, "getName");
+        }
+    }
+
+    private static void setInitials(Object waypoint, String initials) throws Exception {
+        try {
+            invoke(waypoint, "setInitials", initials);
+        } catch (NoSuchMethodException e) {
+            // Xaero 26.6+ dropped setInitials in favor of setSymbol
+            invoke(waypoint, "setSymbol", initials);
+        }
+    }
+
+    // Reflection helpers
+
+    private static void run(Task task) {
+        if (skip) {
+            return;
+        }
+        try {
+            task.run();
+        } catch (Throwable t) {
+            skip = true;
+            Log.error("Xaero's Minimap integration failed, disabling it", t);
+        }
+    }
+
+    private interface Task {
+        void run() throws Exception;
+    }
+
+    private static boolean available(String className) {
+        try {
+            Class.forName(className);
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
+
+    private static Object invoke(Object target, String method, Object... args) throws Exception {
+        // a Class target means a static method call
+        Class<?> owner = target instanceof Class<?> cls ? cls : target.getClass();
+        Object receiver = target instanceof Class<?> ? null : target;
+        for (Method candidate : owner.getMethods()) {
+            if (!candidate.getName().equals(method) || !matches(candidate.getParameterTypes(), args)) {
+                continue;
+            }
+            return candidate.invoke(receiver, args);
+        }
+        throw new NoSuchMethodException(method + " on " + owner.getName());
+    }
+
+    private static Object field(Class<?> owner, String name) throws Exception {
+        Field field = owner.getField(name);
+        return field.get(null);
+    }
+
+    private static boolean matches(Class<?>[] params, Object[] args) {
+        if (params.length != args.length) {
+            return false;
+        }
+        for (int i = 0; i < args.length; i++) {
+            if (args[i] != null && !wrap(params[i]).isInstance(args[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static Class<?> wrap(Class<?> primitive) {
+        if (!primitive.isPrimitive()) {
+            return primitive;
+        }
+        if (primitive == int.class) return Integer.class;
+        if (primitive == long.class) return Long.class;
+        if (primitive == boolean.class) return Boolean.class;
+        if (primitive == double.class) return Double.class;
+        if (primitive == float.class) return Float.class;
+        if (primitive == short.class) return Short.class;
+        if (primitive == byte.class) return Byte.class;
+        return Character.class;
     }
 }

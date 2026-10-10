@@ -53,8 +53,6 @@ dependencies {
             prefer "${project.property('deps.midnightlib')}-neoforge"
         }
     }
-
-    compileOnly project.property('deps.xaeros') as String
 }
 
 // Chiseled builds compile generated sources, so the artifacts must be created first

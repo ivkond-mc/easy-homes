@@ -72,15 +72,6 @@ dependencies {
     // Older MidnightLib releases on Modrinth use the version number verbatim (no loader suffix)
     def midnightlib = project.property('deps.midnightlib') as String
     modImplementation include(midnightlib.contains(':') ? midnightlib : "maven.modrinth:midnightlib:${midnightlib}-fabric")
-
-    // Xaero's Minimap: Modrinth ships intermediary-mapped Fabric jars that loom
-    // must remap (modCompileOnly); the CurseMaven/ChocolateMC jars are used as-is
-    def xaeros = project.property('deps.xaeros') as String
-    if (xaeros.startsWith('maven.modrinth')) {
-        modCompileOnly xaeros
-    } else {
-        compileOnly xaeros
-    }
 }
 
 ext.artifactTask = loomx.modJar
