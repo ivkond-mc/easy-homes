@@ -15,7 +15,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterGameTestsEvent;
 
-//? if <1.21.9 {
+//? if <1.21.6 {
 /^@EventBusSubscriber(modid = EasyHomesMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 ^///? } else {
 @EventBusSubscriber(modid = EasyHomesMod.MOD_ID)

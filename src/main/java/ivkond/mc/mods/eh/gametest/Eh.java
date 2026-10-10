@@ -46,7 +46,7 @@ public final class Eh {
         MinecraftServer server = helper.getLevel().getServer();
         GameProfile profile = new GameProfile(UUID.randomUUID(), name);
         Connection connection = new Connection(PacketFlow.SERVERBOUND) {
-            //? if >=1.21.9 {
+            //? if >=1.21.8 {
             @Override
             public void send(net.minecraft.network.protocol.Packet<?> packet,
                              io.netty.channel.ChannelFutureListener listener, boolean flush) {

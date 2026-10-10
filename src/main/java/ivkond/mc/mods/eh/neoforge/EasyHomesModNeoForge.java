@@ -38,16 +38,24 @@ public final class EasyHomesModNeoForge {
         ^///? } else {
         if (FMLEnvironment.getDist().isClient()) {
         //? }
-            initConfigurationScreen(container);
+            //? if >=1.21.6 <1.21.9 {
+            ivkond.mc.mods.eh.neoforge.client.ClientEventBusSubscriber.registerConfigScreen(container);
+            //? } else {
+            /^initConfigurationScreen(container);
+            ^///? }
         }
     }
 
+    //? if >=1.21.6 <1.21.9 {
+    /^// On NeoForge 21.6-21.8 (FML 9) the config screen registration lives in
+    ^///? } else {
     private static void initConfigurationScreen(ModContainer container) {
         container.registerExtensionPoint(
                 IConfigScreenFactory.class,
                 (c, parent) -> MidnightConfig.getScreen(parent, EasyHomesMod.MOD_ID)
         );
     }
+    //? }
 
     @EventBusSubscriber(modid = EasyHomesMod.MOD_ID)
     public static class CommonEventBusSubscriber {
@@ -84,7 +92,7 @@ public final class EasyHomesModNeoForge {
         }
     }
 
-    //? if <1.21.9 {
+    //? if <1.21.6 {
     /^@EventBusSubscriber(modid = EasyHomesMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
     ^///? } else {
     @EventBusSubscriber(modid = EasyHomesMod.MOD_ID)
