@@ -82,4 +82,6 @@ processResources {
 tasks.withType(Jar).configureEach {
     exclude 'ivkond/mc/mods/eh/gametest/**'
     exclude 'data/easy_homes/structure/**'
+    // SNBT template variant consumed by fabric-gametest-api-v1 on 1.18.x
+    exclude 'data/easy_homes/gametest/**'
 }

@@ -27,6 +27,8 @@ public class HomeRepository {
             .disableHtmlEscaping()
             .setPrettyPrinting()
             .registerTypeAdapter(OffsetDateTime.class, OffsetDateTimeGsonAdapter.INSTANCE)
+            // GSON before 2.10 (bundled with MC 1.18.x) cannot reflect into record fields
+            .registerTypeAdapter(HomeLocation.class, HomeLocationGsonAdapter.INSTANCE)
             .create();
 
     private final Map<String, PlayerHomes> data = new ConcurrentHashMap<>();

@@ -21,7 +21,12 @@ public class KeyPressedHandler {
     private static void sendCommand(Minecraft minecraft, String command) {
         ClientPacketListener connection = minecraft.getConnection();
         if (connection != null) {
+            //? if <1.19 {
+            /*// 1.18.2: no sendCommand helper, commands travel as chat packets
+            connection.send(new net.minecraft.network.protocol.game.ServerboundChatPacket("/" + command));*/
+            //? } else {
             connection.sendCommand(command);
+            //? }
         }
     }
 }

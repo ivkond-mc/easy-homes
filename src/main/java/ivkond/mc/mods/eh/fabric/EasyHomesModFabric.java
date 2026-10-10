@@ -8,9 +8,15 @@ import ivkond.mc.mods.eh.network.HomeDeletedPayload;
 import ivkond.mc.mods.eh.network.HomeRenamedPayload;
 import ivkond.mc.mods.eh.utils.Platform;
 import net.fabricmc.api.ModInitializer;
+//? if <1.19.2 {
+/*import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+*///? } else {
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+//? }
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+//? if >=1.19.4 {
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+//? }
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 
 public final class EasyHomesModFabric implements ModInitializer {
@@ -29,11 +35,21 @@ public final class EasyHomesModFabric implements ModInitializer {
                 EasyHomesMod.onPlayerLoggedOut(packetListener.getPlayer())
         );
 
+        //? if <1.19.2 {
+        /*CommandRegistrationCallback.EVENT.register(
+                (dispatcher, dedicated) -> EasyHomesMod.registerCommands(dispatcher)
+        );*/
+        //? } else {
         CommandRegistrationCallback.EVENT.register(
                 (dispatcher, buildContext, commandSelection) ->
                         EasyHomesMod.registerCommands(dispatcher)
         );
+        //? }
 
+        //? if <1.19.4 {
+        /*// Pre-1.19.4 fabric networking: S2C channels need no server-side
+        // registration, the client registers receivers for the raw channels
+        *///? } else {
         //? if <26.1 {
         /*PayloadTypeRegistry.playS2C().register(HomeCreatedPayload.ID, HomeCreatedPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(HomeDeletedPayload.ID, HomeDeletedPayload.CODEC);
@@ -42,6 +58,7 @@ public final class EasyHomesModFabric implements ModInitializer {
         PayloadTypeRegistry.clientboundPlay().register(HomeCreatedPayload.ID, HomeCreatedPayload.CODEC);
         PayloadTypeRegistry.clientboundPlay().register(HomeDeletedPayload.ID, HomeDeletedPayload.CODEC);
         PayloadTypeRegistry.clientboundPlay().register(HomeRenamedPayload.ID, HomeRenamedPayload.CODEC);
+        //? }
         //? }
     }
 }

@@ -42,6 +42,11 @@ loom {
     }
 }
 
+// 1.18.x fabric-gametest does not create the report file's parent directory
+tasks.matching { it.name == 'runGameTestServer' }.configureEach {
+    doFirst { file("${layout.buildDirectory.get()}/reports/gametest").mkdirs() }
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${sc.current.version}"
     loomx.applyMojangMappings()
@@ -50,7 +55,9 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.property('deps.fabric_api')}"
     modImplementation "com.terraformersmc:modmenu:${project.property('deps.modmenu')}"
 
-    modImplementation include("maven.modrinth:midnightlib:${project.property('deps.midnightlib')}-fabric")
+    // Older MidnightLib releases on Modrinth use the version number verbatim (no loader suffix)
+    def midnightlib = project.property('deps.midnightlib') as String
+    modImplementation include(midnightlib.contains(':') ? midnightlib : "maven.modrinth:midnightlib:${midnightlib}-fabric")
 
     compileOnly project.property('deps.xaeros') as String
 }
@@ -86,6 +93,8 @@ processResources {
 tasks.withType(Jar).configureEach {
     exclude 'ivkond/mc/mods/eh/gametest/**'
     exclude 'data/easy_homes/structure/**'
+    // SNBT template variant consumed by fabric-gametest-api-v1 on 1.18.x
+    exclude 'data/easy_homes/gametest/**'
 }
 
 publisher {

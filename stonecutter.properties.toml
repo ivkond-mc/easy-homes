@@ -16,6 +16,21 @@ mod.curseforge_id = "1163866"
 # (loom 1.16.3 silently drops all classes while merging, producing a resources-only jar).
 loomx.loom_version = "1.18.4"
 
+["1.18.2"]
+mod.mc_releases = ["1.18.2"]
+deps.fabric_loader = "0.14.22"
+deps.fabric_api = "0.77.0+1.18.2"
+# MidnightLib 0.4.4 (last 1.18.2 build) ships a single fabric/quilt jar whose
+# Modrinth version number has no loader suffix, hence the full coordinate here
+deps.midnightlib = "maven.modrinth:midnightlib:0.4.4"
+deps.modmenu = "3.2.5"
+# Same Xaero's Minimap release (24.7.1) as the other legacy nodes, but the
+# 1.18.2 Fabric build (6012828) whose classes target Java 17
+deps.xaeros = "curse.maven:xaeros-minimap-263420:6012828"
+
+[fabric."1.18.2"]
+mod.mc_compat = ">=1.18.2 <1.19"
+
 ["1.21.4"]
 mod.mc_releases = ["1.21.4"]
 deps.fabric_loader = "0.16.9"

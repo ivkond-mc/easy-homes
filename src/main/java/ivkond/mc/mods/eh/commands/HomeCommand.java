@@ -18,7 +18,11 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+//? if <1.19.3 {
+/*import net.minecraft.core.Registry;
+*///? } else {
 import net.minecraft.core.registries.Registries;
+//? }
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
@@ -74,10 +78,17 @@ public class HomeCommand {
         String playerId = player.getStringUUID();
         ServerLevel currentLevel = stack.getLevel();
 
+        //? if <1.19.3 {
+        /*if (player.isPassenger()) {
+            OverlayMessages.send(player, I18N.errorPlayerMounted());
+            return false;
+        }*/
+        //? } else {
         if (player.isPassenger() && player.canControlVehicle()) {
             OverlayMessages.send(player, I18N.errorPlayerMounted());
             return false;
         }
+        //? }
 
         HomeLocation home = homes.findHome(playerId, homeName);
         if (home == null) {
@@ -94,7 +105,11 @@ public class HomeCommand {
         }
 
         Identifier levelLocation = Identifier.parse(home.dimension());
+        //? if <1.19.3 {
+        /*ResourceKey<Level> levelKey = ResourceKey.create(Registry.DIMENSION_REGISTRY, levelLocation);*/
+        //? } else {
         ResourceKey<Level> levelKey = ResourceKey.create(Registries.DIMENSION, levelLocation);
+        //? }
         ServerLevel targetLevel = stack.getServer().getLevel(levelKey);
         if (targetLevel == null) {
             OverlayMessages.send(player, I18N.errorUnknownLevel(home.dimension()));
@@ -109,7 +124,12 @@ public class HomeCommand {
         }
 
         playDecorations(currentLevel, player.blockPosition(), ParticleTypes.PORTAL);
+        //? if <1.19 {
+        /*// 1.18.2: no Set-based teleportTo overload
+        player.teleportTo(targetLevel, home.x(), home.y(), home.z(), home.rotY(), home.rotX());*/
+        //? } else {
         player.teleportTo(targetLevel, home.x(), home.y(), home.z(), Set.of(), home.rotY(), home.rotX(), false);
+        //? }
         playDecorations(targetLevel, blockPos, ParticleTypes.REVERSE_PORTAL);
 
         homes.onTeleported(playerId, homeName);

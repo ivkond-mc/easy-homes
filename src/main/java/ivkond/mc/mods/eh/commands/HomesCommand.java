@@ -34,7 +34,12 @@ public class HomesCommand {
             playerHomes = new PlayerHomes();
         }
 
+        //? if <1.19 {
+        /*// 1.18.2: sendSystemMessage does not exist; sendMessage needs a sender UUID
+        player.sendMessage(I18N.commandHomesList(playerHomes), net.minecraft.Util.NIL_UUID);*/
+        //? } else {
         player.sendSystemMessage(I18N.commandHomesList(playerHomes));
+        //? }
 
         return Command.SINGLE_SUCCESS;
     }

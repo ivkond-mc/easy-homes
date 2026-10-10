@@ -18,7 +18,11 @@ plugins {
 stonecutter {
     kotlinController = false
     create(rootProject) {
-        for (mc in ['1.18.2', '1.19.2', '1.19.4', '1.20.1', '1.21.1', '1.21.4', '1.21.5', '1.21.8', '1.21.9', '1.21.10', '1.21.11', '26.1.2', '26.2', '26.3']) {
+        // Legacy nodes are Fabric-only and are added one at a time as they are
+        // ported: a node without its deps block in stonecutter.properties.toml
+        // breaks configuration of the whole build
+        version('1.18.2-fabric', '1.18.2').buildscript('build.fabric.gradle')
+        for (mc in ['1.21.4', '1.21.5', '1.21.8', '1.21.9', '1.21.10', '1.21.11', '26.1.2', '26.2', '26.3']) {
             for (loader in ['fabric', 'neoforge']) {
                 version("${mc}-${loader}", mc).buildscript("build.${loader}.gradle")
             }

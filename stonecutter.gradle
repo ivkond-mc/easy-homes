@@ -23,6 +23,31 @@ stonecutter.parameters {
         string(current.parsed < '1.20.5') {
             replace('Identifier.parse(', 'new ResourceLocation(')
         }
+        // Longer-match resolution: the rule above shadows the plain Identifier
+        // rule inside Identifier.parse(...) segments even when inactive, so the
+        // 1.20.5..1.21.10 range needs its own explicit spelling
+        string(current.parsed < '1.21.11' && current.parsed >= '1.20.5') {
+            replace('Identifier.parse(', 'ResourceLocation.parse(')
+        }
+
+        // Entity#level() was getLevel() before 1.20
+        string(current.parsed < '1.20') {
+            replace('player.level()', 'player.getLevel()')
+        }
+        // MC 1.19 renamed/added several mojmap members the sources rely on
+        string(current.parsed < '1.19') {
+            replace('SoundEvents.PLAYER_TELEPORT', 'SoundEvents.CHORUS_FRUIT_TELEPORT')
+        }
+        // BlockPos.containing and the per-wood EntityType boat constants came later
+        string(current.parsed < '1.19.4') {
+            replace('BlockPos.containing(', 'new BlockPos(')
+            replace('EntityType.OAK_BOAT', 'EntityType.BOAT')
+        }
+        // Duration.isPositive needs Java 18; legacy nodes build with Java 17
+        // (compareTo keeps ZERO cooldown treated as expired, unlike !isNegative)
+        string(current.parsed < '1.20.5') {
+            replace('cooldown.isPositive()', 'cooldown.compareTo(java.time.Duration.ZERO) > 0')
+        }
     }
 }
 

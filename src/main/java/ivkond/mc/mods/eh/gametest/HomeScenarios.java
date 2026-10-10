@@ -335,9 +335,15 @@ public final class HomeScenarios {
         Boat boat = helper.spawn(EntityType.OAK_BOAT, 3, 1, 3);
         //? }
         player.startRiding(boat);
+        //? if <1.19.3 {
+        /*if (!player.isPassenger()) {
+            fail(helper, "Precondition failed: player does not control the boat");
+        }*/
+        //? } else {
         if (!player.isPassenger() || !player.canControlVehicle()) {
             fail(helper, "Precondition failed: player does not control the boat");
         }
+        //? }
         var before = player.position();
 
         assertCommand(helper, player, "home base", 0);

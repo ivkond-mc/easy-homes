@@ -13,10 +13,14 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.server.MinecraftServer;
+//? if >=1.20.2 {
 import net.minecraft.server.level.ClientInformation;
+//? }
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+//? if >=1.20.2 {
 import net.minecraft.server.network.CommonListenerCookie;
+//? }
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.Vec3;
@@ -51,6 +55,10 @@ public final class Eh {
             public void send(net.minecraft.network.protocol.Packet<?> packet,
                              io.netty.channel.ChannelFutureListener listener, boolean flush) {
             }
+            //? } else if <1.19.1 {
+            /*@Override
+            public void send(net.minecraft.network.protocol.Packet<?> packet) {
+            }*/
             //? } else {
             /*@Override
             public void send(net.minecraft.network.protocol.Packet<?> packet,
@@ -71,11 +79,19 @@ public final class Eh {
         adHocChannels.add(HomeDeletedPayload.ID.id());
         adHocChannels.add(HomeRenamedPayload.ID.id());*/
         //? }
+        //? if <1.20.2 {
+        /*// 1.18.2: no ClientInformation / CommonListenerCookie yet
+        ServerPlayer player = new ServerPlayer(server, helper.getLevel(), profile);
+        player.connection = new ServerGamePacketListenerImpl(server, connection, player);
+        player.setGameMode(gameMode);
+        return player;*/
+        //? } else {
         CommonListenerCookie cookie = CommonListenerCookie.createInitial(profile, false);
         ServerPlayer player = new ServerPlayer(server, helper.getLevel(), profile, ClientInformation.createDefault());
         player.connection = new ServerGamePacketListenerImpl(server, connection, player, cookie);
         player.setGameMode(gameMode);
         return player;
+        //? }
     }
 
     /** Places the player on a block of the test structure with the given rotation. */
@@ -90,7 +106,11 @@ public final class Eh {
 
     /** Teleports the player within the test level, bypassing mod commands (test setup only). */
     public static void move(ServerPlayer player, ServerLevel level, double x, double y, double z, float yaw, float pitch) {
+        //? if <1.19 {
+        /*player.teleportTo(level, x, y, z, yaw, pitch);*/
+        //? } else {
         player.teleportTo(level, x, y, z, Set.of(), yaw, pitch, false);
+        //? }
     }
 
     /** Runs a command as the player through the live command dispatcher and returns its exit code. */

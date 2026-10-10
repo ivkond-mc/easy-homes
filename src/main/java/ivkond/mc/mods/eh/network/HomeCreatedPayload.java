@@ -1,11 +1,62 @@
 package ivkond.mc.mods.eh.network;
 
 import ivkond.mc.mods.eh.domain.HomeLocation;
+//? if >=1.19.4 {
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+//? }
 
+//? if <1.19.4 {
+/*// Pre-1.19.4 fabric networking: plain channel payloads, no CustomPacketPayload
+public final class HomeCreatedPayload {
+    public static final net.minecraft.resources.ResourceLocation ID =
+            new net.minecraft.resources.ResourceLocation("easy_homes:home_created");
+
+    private final String name;
+    private final HomeLocation location;
+
+    public HomeCreatedPayload(String name, HomeLocation location) {
+        this.name = name;
+        this.location = location;
+    }
+
+    public HomeCreatedPayload(String name, String dimension, double x, double y, double z, float rotX, float rotY) {
+        this(name, new HomeLocation(dimension, x, y, z, rotX, rotY));
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public HomeLocation location() {
+        return location;
+    }
+
+    public static HomeCreatedPayload read(net.minecraft.network.FriendlyByteBuf buf) {
+        return new HomeCreatedPayload(
+                buf.readUtf(), // name
+                buf.readUtf(), // dimension
+                buf.readDouble(), // x
+                buf.readDouble(), // y
+                buf.readDouble(), // z
+                buf.readFloat(), // rotX
+                buf.readFloat() // rotY
+        );
+    }
+
+    public static void write(HomeCreatedPayload payload, net.minecraft.network.FriendlyByteBuf buf) {
+        buf.writeUtf(payload.name);
+        buf.writeUtf(payload.location.dimension());
+        buf.writeDouble(payload.location.x());
+        buf.writeDouble(payload.location.y());
+        buf.writeDouble(payload.location.z());
+        buf.writeFloat(payload.location.rotX());
+        buf.writeFloat(payload.location.rotY());
+    }
+}*/
+//? } else {
 public record HomeCreatedPayload(String name, HomeLocation location) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<HomeCreatedPayload> ID = new CustomPacketPayload.Type<>(Identifier.parse("easy_homes:home_created"));
     public static final StreamCodec<FriendlyByteBuf, HomeCreatedPayload> CODEC = CustomPacketPayload.codec(HomeCreatedPayload::write, HomeCreatedPayload::new);
@@ -41,3 +92,4 @@ public record HomeCreatedPayload(String name, HomeLocation location) implements 
         return ID;
     }
 }
+//? }

@@ -5,6 +5,10 @@ import ivkond.mc.mods.eh.domain.PlayerHomes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+//? if <1.19 {
+/*import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+*///? }
 
 import java.time.Duration;
 import java.util.Map;
@@ -14,14 +18,33 @@ public class I18N {
     private I18N() {
     }
 
+    // Component.literal/translatable static factories only exist since 1.19
+    //? if <1.19 {
+    /*private static MutableComponent text(String content) {
+        return new TextComponent(content);
+    }
+
+    private static MutableComponent tr(String key, Object... args) {
+        return new TranslatableComponent(key, args);
+    }*/
+    //? } else {
+    private static MutableComponent text(String content) {
+        return Component.literal(content);
+    }
+
+    private static MutableComponent tr(String key, Object... args) {
+        return Component.translatable(key, args);
+    }
+    //? }
+
     public static Component commandHomeSuccess(String name) {
-        return Component.translatable("easy_homes.commands.home.success", formatHome(name));
+        return tr("easy_homes.commands.home.success", formatHome(name));
     }
 
     public static Component commandHomeLocked(Duration lockDuration) {
         String expiration = Long.toString(lockDuration.getSeconds());
-        Component expirationComponent = Component.literal(expiration).withStyle(ChatFormatting.GOLD);
-        return Component.translatable("easy_homes.commands.home.too_fast", expirationComponent)
+        Component expirationComponent = text(expiration).withStyle(ChatFormatting.GOLD);
+        return tr("easy_homes.commands.home.too_fast", expirationComponent)
                 .withStyle(ChatFormatting.RED);
     }
 
@@ -29,21 +52,21 @@ public class I18N {
         Map<String, HomeLocation> homes = playerHomes.getAllHomes();
 
         if (homes == null || homes.isEmpty()) {
-            Component command = Component.literal("/sethome <name>").withStyle(ChatFormatting.DARK_AQUA);
-            return Component.translatable("easy_homes.commands.list_homes.empty", command);
+            Component command = text("/sethome <name>").withStyle(ChatFormatting.DARK_AQUA);
+            return tr("easy_homes.commands.list_homes.empty", command);
         }
 
         String lastVisitedHome = Objects.requireNonNullElse(playerHomes.getLastVisitedHome(), "n/a");
-        MutableComponent response = Component.literal("===== ")
-                .append(Component.translatable("easy_homes.commands.list_homes.header"))
+        MutableComponent response = text("===== ")
+                .append(tr("easy_homes.commands.list_homes.header"))
                 .append(" =====\n")
-                .append(Component.translatable("easy_homes.commands.list_homes.last_visited", formatHome(lastVisitedHome)))
+                .append(tr("easy_homes.commands.list_homes.last_visited", formatHome(lastVisitedHome)))
                 .append("\n");
         homes.forEach((name, home) -> {
-            Component coordinatesComponent = Component.literal(home.coordinates()).withStyle(ChatFormatting.DARK_AQUA);
+            Component coordinatesComponent = text(home.coordinates()).withStyle(ChatFormatting.DARK_AQUA);
 
-            Component item = Component.literal(" - ")
-                    .append(Component.translatable("easy_homes.commands.list_homes.item", formatHome(name), home.dimension(), coordinatesComponent))
+            Component item = text(" - ")
+                    .append(tr("easy_homes.commands.list_homes.item", formatHome(name), home.dimension(), coordinatesComponent))
                     .append("\n");
             response.append(item);
         });
@@ -52,57 +75,57 @@ public class I18N {
     }
 
     public static Component commandSetHomeSuccess(String homeName, boolean existingHome) {
-        return Component.translatable(
+        return tr(
                 existingHome ? "easy_homes.commands.set_home.success.existing" : "easy_homes.commands.set_home.success.new",
                 formatHome(homeName)
         );
     }
 
     public static Component commandSetHomeMaxHomesReached() {
-        return Component.translatable("easy_homes.commands.set_home.max_homes_reached")
+        return tr("easy_homes.commands.set_home.max_homes_reached")
                 .withStyle(ChatFormatting.RED);
     }
 
     public static Component commandRenHomeSuccess(String oldName, String newName) {
-        return Component.translatable("easy_homes.commands.ren_home.success", formatHome(oldName), formatHome(newName));
+        return tr("easy_homes.commands.ren_home.success", formatHome(oldName), formatHome(newName));
     }
 
     public static Component commandDelHomeSuccess(String homeName) {
-        return Component.translatable("easy_homes.commands.del_home.success", formatHome(homeName));
+        return tr("easy_homes.commands.del_home.success", formatHome(homeName));
     }
 
     public static Component errorHomeNotFound(String name) {
-        return Component.translatable("easy_homes.commands.errors.home_not_found", formatHome(name))
+        return tr("easy_homes.commands.errors.home_not_found", formatHome(name))
                 .withStyle(ChatFormatting.RED);
     }
 
     public static Component errorUnknownLevel(String name) {
-        Component nameComponent = Component.literal(name).withStyle(ChatFormatting.DARK_AQUA);
-        return Component.translatable("easy_homes.commands.errors.level_not_found", nameComponent)
+        Component nameComponent = text(name).withStyle(ChatFormatting.DARK_AQUA);
+        return tr("easy_homes.commands.errors.level_not_found", nameComponent)
                 .withStyle(ChatFormatting.RED);
     }
 
     public static Component errorInvalidPosition() {
-        return Component.translatable("easy_homes.commands.errors.invalid_position")
+        return tr("easy_homes.commands.errors.invalid_position")
                 .withStyle(ChatFormatting.RED);
     }
 
     public static Component errorInvalidHomeName(String homeName) {
-        return Component.translatable("easy_homes.commands.errors.invalid_home_name", formatHome(homeName))
+        return tr("easy_homes.commands.errors.invalid_home_name", formatHome(homeName))
                 .withStyle(ChatFormatting.RED);
     }
 
     public static Component errorNoLastVisitedHome() {
-        return Component.translatable("easy_homes.commands.back.no_last_visited")
+        return tr("easy_homes.commands.back.no_last_visited")
                 .withStyle(ChatFormatting.RED);
     }
 
     public static Component errorPlayerMounted() {
-        return Component.translatable("easy_homes.commands.home.player_mounted")
+        return tr("easy_homes.commands.home.player_mounted")
                 .withStyle(ChatFormatting.RED);
     }
 
     public static Component formatHome(String homeName) {
-        return Component.literal(homeName).withStyle(ChatFormatting.GOLD);
+        return text(homeName).withStyle(ChatFormatting.GOLD);
     }
 }

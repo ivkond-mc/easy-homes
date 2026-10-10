@@ -32,6 +32,22 @@ public class GenPlatform {
                 writePlatform(out, w, h, d);
             }
             System.out.println("Written " + args[1] + " (" + w + "x" + h + "x" + d + ")");
+        } else if ("gensnbt".equals(args[0])) {
+            // fabric-gametest-api-v1 on 1.18.x loads SNBT templates from
+            // data/<ns>/gametest/structures/<name>.snbt (DataVersion 2975 = 1.18.2)
+            int w = Integer.parseInt(args[2]), h = Integer.parseInt(args[3]), d = Integer.parseInt(args[4]);
+            StringBuilder sb = new StringBuilder();
+            sb.append("{DataVersion:2975,size:[").append(w).append(',').append(h).append(',').append(d)
+              .append("],entities:[],blocks:[");
+            for (int x = 0; x < w; x++) {
+                for (int z = 0; z < d; z++) {
+                    if (x != 0 || z != 0) sb.append(',');
+                    sb.append("{pos:[").append(x).append(",0,").append(z).append("],state:0}");
+                }
+            }
+            sb.append("],palette:[{Name:\"minecraft:stone\"}]}");
+            java.nio.file.Files.writeString(Path.of(args[1]), sb.toString());
+            System.out.println("Written " + args[1] + " (" + w + "x" + h + "x" + d + ")");
         }
     }
 
