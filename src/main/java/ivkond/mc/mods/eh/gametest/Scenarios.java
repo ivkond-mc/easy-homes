@@ -35,6 +35,7 @@ public final class Scenarios {
             new Entry("home_invalid_name", h -> new HomeScenarios().invalidHomeName(h), 100),
             new Entry("home_cooldown", h -> new HomeScenarios().cooldownBlocksThenExpires(h), 200),
             new Entry("home_creative_cooldown", h -> new HomeScenarios().creativeIgnoresCooldown(h), 100),
+            new Entry("home_cooldown_clock_skew", h -> new HomeScenarios().cooldownClampsFutureTimestamp(h), 100),
             new Entry("home_cross_dimension", h -> new HomeScenarios().crossDimensionalHome(h), 100),
             new Entry("home_unknown_dimension", h -> new HomeScenarios().unknownDimensionHome(h), 100),
             new Entry("home_out_of_bounds", h -> new HomeScenarios().outOfBoundsPosition(h), 100),

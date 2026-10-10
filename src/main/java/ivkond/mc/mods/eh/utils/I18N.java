@@ -42,10 +42,37 @@ public class I18N {
     }
 
     public static Component commandHomeLocked(Duration lockDuration) {
-        String expiration = Long.toString(lockDuration.getSeconds());
-        Component expirationComponent = text(expiration).withStyle(ChatFormatting.GOLD);
-        return tr("easy_homes.commands.home.too_fast", expirationComponent)
+        return tr("easy_homes.commands.home.too_fast", formatDuration(lockDuration).withStyle(ChatFormatting.GOLD))
                 .withStyle(ChatFormatting.RED);
+    }
+
+    /**
+     * Human-readable remaining time, e.g. {@code 1д 2ч 3м 4с}; leading zero
+     * units are skipped and unit names come from lang files.
+     */
+    private static MutableComponent formatDuration(Duration duration) {
+        long seconds = duration.getSeconds();
+        long[] values = {seconds / 86400, (seconds % 86400) / 3600, (seconds % 3600) / 60, seconds % 60};
+        String[] unitKeys = {
+                "easy_homes.time.days", "easy_homes.time.hours", "easy_homes.time.minutes", "easy_homes.time.seconds"
+        };
+
+        MutableComponent result = text("");
+        boolean started = false;
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] == 0 && !started) {
+                continue;
+            }
+            if (started) {
+                result.append(text(" "));
+            }
+            result.append(text(values[i] + " ")).append(tr(unitKeys[i]));
+            started = true;
+        }
+        if (!started) {
+            result.append(text("0 ")).append(tr("easy_homes.time.seconds"));
+        }
+        return result;
     }
 
     public static Component commandHomesList(PlayerHomes playerHomes) {

@@ -123,8 +123,17 @@ public class HomeRepository {
         if (homes == null || homes.getLastTeleportation() == null) {
             return Duration.ZERO;
         }
+        OffsetDateTime now = OffsetDateTime.now();
         OffsetDateTime expiresAt = homes.getLastTeleportation().plusSeconds(EasyHomesConfig.cooldown);
-        return Duration.between(OffsetDateTime.now(), expiresAt);
+        Duration remaining = Duration.between(now, expiresAt);
+        // Remaining can only exceed the configured cooldown if the wall clock
+        // jumped backwards after the teleport — heal instead of locking the player out
+        if (remaining.compareTo(Duration.ofSeconds(EasyHomesConfig.cooldown)) > 0) {
+            homes.setLastTeleportation(now.minusSeconds(EasyHomesConfig.cooldown));
+            saveConfig(playerId);
+            return Duration.ZERO;
+        }
+        return remaining.isNegative() ? Duration.ZERO : remaining;
     }
 
     public boolean isMaxHomesReached(String playerId) {

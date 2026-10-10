@@ -8,12 +8,12 @@ public class EasyHomesConfig extends MidnightConfig {
 
     //? if <1.19.3 {
     /*// MidnightConfig @Entry has no category attribute in the 1.18.2-era release
-    @Entry(min = 1)
+    @Entry(min = 1, max = 86400)
     public static int cooldown = 5;
     @Entry(min = 1)
     public static int maxHomes = 5;*/
     //? } else {
-    @Entry(category = CONFIG_CATEGORY, min = 1)
+    @Entry(category = CONFIG_CATEGORY, min = 1, max = 86400)
     public static int cooldown = 5;
     @Entry(category = CONFIG_CATEGORY, min = 1)
     public static int maxHomes = 5;

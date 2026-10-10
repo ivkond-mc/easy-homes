@@ -221,7 +221,45 @@ public final class HomeScenarios
     }
 
     /**
-     * HOM-7: a home saved in the nether brings an overworld player back into
+     * HOM-7: a {@code lastTeleportation} in the future (server wall clock
+     * jumped backwards after a teleport) is clamped and self-healed instead
+     * of locking the player out for the skew duration.
+     */
+    //? if <1.21.5 && fabric {
+    /*@net.minecraft.gametest.framework.GameTest(template = Templates.PLATFORM, timeoutTicks = 100)*/
+    //? }
+    //? if <1.21.5 && neoforge {
+    /*@net.minecraft.gametest.framework.GameTest(template = "platform", timeoutTicks = 100)*/
+    //? }
+    //? if fabric && >=1.21.5 {
+    @net.fabricmc.fabric.api.gametest.v1.GameTest(structure = Templates.PLATFORM, maxTicks = 100)
+    //? }
+    public
+    //? if fabric && >=1.21.5 {
+    //? } else {
+    /*static*/
+    //? }
+    void cooldownClampsFutureTimestamp(GameTestHelper helper) {
+        ServerPlayer player = player(helper, GameType.SURVIVAL, "home_clock_skew");
+        reset(player, 5, 5);
+        place(helper, player, 1, 1, 1, 0, 0);
+        assertCommand(helper, player, "sethome a", 1);
+        place(helper, player, 5, 1, 5, 0, 0);
+        assertCommand(helper, player, "sethome b", 1);
+
+        place(helper, player, 3, 1, 3, 0, 0);
+        assertCommand(helper, player, "home a", 1);
+        // Simulate a 12-hour backwards clock jump: the stored teleport is now
+        // far in the future, well beyond the configured cooldown
+        repo().getHomes(player.getStringUUID())
+                .setLastTeleportation(java.time.OffsetDateTime.now().plusHours(12));
+        assertCommand(helper, player, "home b", 1);
+        assertAt(helper, player, new BlockPos(5, 1, 5));
+        helper.succeed();
+    }
+
+    /**
+     * HOM-7b: a home saved in the nether brings an overworld player back into
      * the nether at the stored coordinates.
      */
     //? if <1.21.5 && fabric {
