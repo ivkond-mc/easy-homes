@@ -2,7 +2,7 @@
 
 [![Licence](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/license/mit)
 [![Java](https://img.shields.io/badge/java-21%20%7C%2025-blue)](https://adoptium.net/temurin/releases/)
-[![Minecraft](https://img.shields.io/badge/minecraft-1.21.4%20to%2026.1.2-blue)](https://www.minecraft.net/)
+[![Minecraft](https://img.shields.io/badge/minecraft-1.21.4%20to%2026.3-blue)](https://www.minecraft.net/)
 [![Build status](https://img.shields.io/github/actions/workflow/status/ivkond-mc/easy-homes/gradle-publish.yml?branch=main)](https://github.com/ivkond-mc/easy-homes/actions/workflows/gradle-publish.yml?branch=main)
 
 ### 🏠 About
@@ -85,7 +85,7 @@ To configure mod properties you can use your mod loader configuration screen.
 
 ## 🛠️ Development
 
-The mod targets multiple Minecraft versions (1.21.4 – 26.1.2) for Fabric and NeoForge from a single branch
+The mod targets multiple Minecraft versions (1.21.4 – 26.3) for Fabric and NeoForge from a single branch
 with [Stonecutter](https://stonecutter.kikugie.dev). Version differences live in the shared sources as
 `//?` chiseled conditions and in `stonecutter.properties.toml` (per-version dependency versions).
 

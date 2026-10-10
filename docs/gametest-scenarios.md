@@ -11,7 +11,7 @@ Status: **approved** — review decisions are recorded in section 5.
 - All six commands: `/sethome`, `/home`, `/delhome`, `/renhome`, `/homes`, `/back`
 - Repository behavior: limits, cooldown, persistence on disk
 - Cross-dimensional teleports and guard clauses (unknown dimension, out-of-bounds position)
-- **All 10 Stonecutter nodes** — NeoForge via ModDevGradle, Fabric via
+- **All 18 Stonecutter nodes** (since the 1.21.8/1.21.10/26.2/26.3 ports) — NeoForge via ModDevGradle, Fabric via
   `fabric-gametest-api-v1` (decision Q3)
 
 **Out of scope:**
@@ -150,13 +150,13 @@ existing name while at `maxHomes` succeeds) — current behavior, covered by SET
    `player.connection.send(...)` goes to the fake connection of a mock player and
    is expected to be a harmless no-op. If it ever throws, we guard it; SMK-1
    verifies this on day one.
-3. **CI matrix** — *Decision: all 10 nodes, NeoForge and Fabric alike.*
+3. **CI matrix** — *Decision: every node, NeoForge and Fabric alike.*
 4. **Cooldown waits** — *Decision: accepted.* E2E tests should verify real behavior,
    1-second wall-clock waits included.
 
 ## 6. Implementation status
 
-Complete — all scenarios implemented and green on all 10 nodes
+Complete — all scenarios implemented and green on all 18 nodes
 (1.21.4 nodes run 31 tests; 1.21.5+ nodes run 32 including the framework's
 builtin `always_pass`). CI runs the full matrix on every push and PR via
 `.github/workflows/gametests.yml`. The structure template can be regenerated
