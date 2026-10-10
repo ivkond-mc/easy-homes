@@ -1,12 +1,12 @@
 package ivkond.mc.mods.eh.network;
 
-//? if fabric && <1.19.4 {
+//? if fabric && <1.20.5 {
 /*import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import io.netty.buffer.Unpooled;
 
-// Pre-1.19.4 fabric networking: S2C channels are raw Identifier + FriendlyByteBuf
+// Pre-1.20.5 fabric networking: S2C channels are raw ResourceLocation + FriendlyByteBuf
 public class PacketSender {
     public static void send(ServerPlayer player, HomeCreatedPayload payload) {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());

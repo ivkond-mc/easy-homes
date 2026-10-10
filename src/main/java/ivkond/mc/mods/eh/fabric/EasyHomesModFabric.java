@@ -14,7 +14,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 //? }
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-//? if >=1.19.4 {
+//? if >=1.20.5 {
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 //? }
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -46,8 +46,8 @@ public final class EasyHomesModFabric implements ModInitializer {
         );
         //? }
 
-        //? if <1.19.4 {
-        /*// Pre-1.19.4 fabric networking: S2C channels need no server-side
+        //? if <1.20.5 {
+        /*// Pre-1.20.5 fabric networking: S2C channels need no server-side
         // registration, the client registers receivers for the raw channels
         *///? } else {
         //? if <26.1 {

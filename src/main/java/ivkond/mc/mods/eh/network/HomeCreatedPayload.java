@@ -1,15 +1,15 @@
 package ivkond.mc.mods.eh.network;
 
 import ivkond.mc.mods.eh.domain.HomeLocation;
-//? if >=1.19.4 {
+//? if >=1.20.5 {
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 //? }
 
-//? if <1.19.4 {
-/*// Pre-1.19.4 fabric networking: plain channel payloads, no CustomPacketPayload
+//? if <1.20.5 {
+/*// Pre-1.20.5 fabric networking: plain channel payloads, no CustomPacketPayload (1.18.2-1.20.4)
 public final class HomeCreatedPayload {
     public static final net.minecraft.resources.ResourceLocation ID =
             new net.minecraft.resources.ResourceLocation("easy_homes:home_created");

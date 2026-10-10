@@ -31,7 +31,7 @@ public final class EasyHomesModFabricClient implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(KeyPressedHandler::handle);
 
         ClientPlayConnectionEvents.INIT.register((handler, client) -> {
-            //? if <1.19.4 {
+            //? if <1.20.5 {
             /*ClientPlayNetworking.registerReceiver(HomeCreatedPayload.ID, (client1, handler1, buf, responseSender) -> {
                 HomeCreatedPayload payload = HomeCreatedPayload.read(buf);
                 client1.execute(() -> XaerosMinimapIntegration.onHomeCreated(payload.name(), payload.location()));
