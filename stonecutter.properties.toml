@@ -64,6 +64,22 @@ mod.mc_compat = "~1.21.9"
 mod.neoforge_range = "[21.9,)"
 mod.mc_range = "[1.21.9,)"
 
+["1.21.10"]
+mod.mc_releases = ["1.21.10"]
+deps.fabric_loader = "0.17.3"
+deps.fabric_api = "0.138.4+1.21.10"
+deps.neo_loader = "21.10.64"
+deps.midnightlib = "1.9.3+1.21.10"
+deps.modmenu = "16.0.1"
+deps.xaeros = "curse.maven:xaeros-minimap-263420:6012867"
+
+[fabric."1.21.10"]
+mod.mc_compat = ">=1.21.10 <1.21.11"
+
+[neoforge."1.21.10"]
+mod.neoforge_range = "[21.10,)"
+mod.mc_range = "[1.21.10,)"
+
 ["1.21.11"]
 mod.mc_releases = ["1.21.11"]
 deps.fabric_loader = "0.18.4"

@@ -20,6 +20,8 @@ jobs:
           - 1.21.5-neoforge
           - 1.21.9-fabric
           - 1.21.9-neoforge
+          - 1.21.10-fabric
+          - 1.21.10-neoforge
           - 1.21.11-fabric
           - 1.21.11-neoforge
           - 26.1.2-fabric
