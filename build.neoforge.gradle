@@ -32,6 +32,12 @@ neoForge {
 
     // Game tests (docs/gametest-scenarios.md): headless server, exit code = failed required tests
     runs {
+        client {
+            client()
+        }
+        server {
+            server()
+        }
         gameTestServer {
             type = 'gameTestServer'
             gameDirectory = file('build/gametest')
