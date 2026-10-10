@@ -28,6 +28,17 @@ java {
 loom {
     // Shared sources live in the repository root, not in the generated node project
     fabricModJsonPath = rootProject.file('src/main/resources/fabric.mod.json')
+
+    // Game tests (docs/gametest-scenarios.md): headless dedicated server run by
+    // fabric-gametest-api-v1; writes a JUnit XML report for CI gating
+    runs {
+        gameTestServer {
+            server()
+            runDir 'build/gametest'
+            vmArg '-Dfabric-api.gametest'
+            vmArg "-Dfabric-api.gametest.report-file=${layout.buildDirectory.get()}/reports/gametest/gametest.xml"
+        }
+    }
 }
 
 dependencies {
@@ -66,6 +77,14 @@ processResources {
     filesMatching('fabric.mod.json') { expand props }
     filesMatching('easy_homes.mixins.json') { expand props }
     exclude 'META-INF/neoforge.mods.toml'
+}
+
+// Game tests live in main for Stonecutter preprocessing, but never ship in the artifact
+// (the fabric-gametest entrypoint in fabric.mod.json is resolved lazily and only in dev).
+// remapJar only exists on obfuscated nodes, hence the Jar-type match.
+tasks.withType(Jar).configureEach {
+    exclude 'ivkond/mc/mods/eh/gametest/**'
+    exclude 'data/easy_homes/structure/**'
 }
 
 publisher {

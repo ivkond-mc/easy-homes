@@ -23,6 +23,14 @@
     ],
     "modmenu": [
       "ivkond.mc.mods.eh.fabric.client.ModMenuConfiguration"
+    ],
+    "fabric-gametest": [
+      "ivkond.mc.mods.eh.gametest.SetHomeScenarios",
+      "ivkond.mc.mods.eh.gametest.HomeScenarios",
+      "ivkond.mc.mods.eh.gametest.DelHomeScenarios",
+      "ivkond.mc.mods.eh.gametest.RenHomeScenarios",
+      "ivkond.mc.mods.eh.gametest.BackScenarios",
+      "ivkond.mc.mods.eh.gametest.HomesScenarios"
     ]
   },
   "mixins": [

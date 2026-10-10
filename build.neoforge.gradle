@@ -29,6 +29,15 @@ neoForge {
     mods {
         easy_homes { sourceSet sourceSets.main }
     }
+
+    // Game tests (docs/gametest-scenarios.md): headless server, exit code = failed required tests
+    runs {
+        gameTestServer {
+            type = 'gameTestServer'
+            gameDirectory = file('build/gametest')
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.property('mod.id')
+        }
+    }
 }
 
 dependencies {
@@ -67,4 +76,10 @@ processResources {
     filesMatching('META-INF/neoforge.mods.toml') { expand props }
     filesMatching('easy_homes.mixins.json') { expand props }
     exclude 'fabric.mod.json'
+}
+
+// Game tests live in main for Stonecutter preprocessing, but never ship in the artifact
+tasks.withType(Jar).configureEach {
+    exclude 'ivkond/mc/mods/eh/gametest/**'
+    exclude 'data/easy_homes/structure/**'
 }
