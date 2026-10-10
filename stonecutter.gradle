@@ -18,6 +18,11 @@ stonecutter.parameters {
             replace('levelResourceKey.identifier()', 'levelResourceKey.location()')
             replace('dimension().identifier()', 'dimension().location()')
         }
+
+        // ResourceLocation.parse only exists since 1.20.5
+        string(current.parsed < '1.20.5') {
+            replace('Identifier.parse(', 'new ResourceLocation(')
+        }
     }
 }
 
