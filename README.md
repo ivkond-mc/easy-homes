@@ -1,9 +1,9 @@
 ![Logo](docs/logo.png)
 
 [![Licence](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/license/mit)
-[![Java 25](https://img.shields.io/badge/java-25%2B-blue)](https://adoptium.net/temurin/releases/?version=25)
-[![Minecraft](https://img.shields.io/badge/minecraft-26.1.2-blue)](https://www.minecraft.net/)
-[![Build status](https://img.shields.io/github/actions/workflow/status/ivkond-mc/easy-homes/gradle-publish.yml?branch=release/26.1.2)](https://github.com/ivkond-mc/easy-homes/actions/workflows/gradle-publish.yml?branch=release/26.1.2)
+[![Java](https://img.shields.io/badge/java-21%20%7C%2025-blue)](https://adoptium.net/temurin/releases/)
+[![Minecraft](https://img.shields.io/badge/minecraft-1.21.4%20to%2026.1.2-blue)](https://www.minecraft.net/)
+[![Build status](https://img.shields.io/github/actions/workflow/status/ivkond-mc/easy-homes/gradle-publish.yml?branch=main)](https://github.com/ivkond-mc/easy-homes/actions/workflows/gradle-publish.yml?branch=main)
 
 ### 🏠 About
 
@@ -82,6 +82,24 @@ Place `easy_homes.json` in your server `config` folder with following content:
 ** ([modrinth](https://modrinth.com/mod/modmenu), [curseforge](https://www.curseforge.com/minecraft/mc-mods/fabric-api))
 
 To configure mod properties you can use your mod loader configuration screen.
+
+## 🛠️ Development
+
+The mod targets multiple Minecraft versions (1.21.4 – 26.1.2) for Fabric and NeoForge from a single branch
+with [Stonecutter](https://stonecutter.kikugie.dev). Version differences live in the shared sources as
+`//?` chiseled conditions and in `stonecutter.properties.toml` (per-version dependency versions).
+
+Gradle itself runs on Java 25 (provisioned automatically via `gradle/gradle-daemon-jvm.properties`);
+older Minecraft nodes are compiled with Java 21 toolchains automatically.
+
+* `./gradlew build` — build the active version node
+* `./gradlew chiseledBuild` — build every version × loader combination
+* `./gradlew publishAll` — build and upload every node to Modrinth/CurseForge
+* Version switching tasks are listed under the `Stonecutter tasks` task group (`./gradlew tasks`),
+  or use the [Stonecutter plugin](https://plugins.jetbrains.com/plugin/26040-stonecutter) for IntelliJ
+
+To add a new Minecraft version: add it to the version list in `settings.gradle` and a matching section
+in `stonecutter.properties.toml`.
 
 ## 📢 Feedback
 Feel free to reach out in our Discord if you encounter any bugs, have questions, or would like to share suggestions for improving the mod: [https://discord.gg/CJFGMTB6kN](https://discord.gg/CJFGMTB6kN)

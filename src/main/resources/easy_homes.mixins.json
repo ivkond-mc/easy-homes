@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "ivkond.mc.mods.eh.mixin",
+  "compatibilityLevel": "${java_level}",
+  "minVersion": "0.8",
+  "client": [
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

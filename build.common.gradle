@@ -1,0 +1,40 @@
+// Shared per-node configuration, applied from build.fabric.gradle / build.neoforge.gradle
+// after `version` and `ext.artifactTask` are set by the loader script.
+
+// ModPublisher shades an old ASM into its jar, which shadows Loom's ASM on the shared plugin
+// classpath and breaks MC 26.1 (Java 25 class files) jar merging. Applying it through a
+// dedicated buildscript classpath isolates it in its own classloader.
+buildscript {
+    repositories {
+        maven { url = 'https://maven.firstdark.dev/releases' }
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'com.hypherionmc.modutils:modpublisher:2.1.6'
+    }
+}
+// Applied by class (not id) so the plugin resolves from this script's own classpath
+apply plugin: com.hypherionmc.modpublisher.plugin.ModPublisherPlugin
+
+def loader = sc.current.project.split('-', 2)[1]
+def mcReleases = (sc.properties.rawOrNull('mod', 'mc_releases') as List) ?: [sc.current.version]
+
+publisher {
+    apiKeys {
+        modrinth = System.getenv('MODRINTH_TOKEN')
+        curseforge = System.getenv('CURSE_TOKEN')
+    }
+
+    setCurseID(project.property('mod.curseforge_id') as String)
+    setModrinthID(project.property('mod.modrinth_id') as String)
+    setVersionType('release')
+    setChangelog(rootProject.file('CHANGELOG.md'))
+    setGameVersions(mcReleases)
+    setCurseEnvironment('both')
+    setArtifact(artifactTask)
+    setJavaVersions([requiredJava])
+    setDisableEmptyJarCheck(false)
+    setLoaders(loader)
+    setProjectVersion("${project.version}")
+    setDisplayName("${project.property('mod.name')} ${project.version} (${loader})")
+}

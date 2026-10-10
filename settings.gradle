@@ -1,14 +1,30 @@
 pluginManagement {
     repositories {
-        maven { url "https://maven.fabricmc.net/" }
-        maven { url "https://maven.firstdark.dev/releases" }
-        maven { url "https://maven.neoforged.net/releases" }
+        mavenCentral()
         gradlePluginPortal()
+        maven { url = 'https://maven.fabricmc.net/' }
+        maven { url = 'https://maven.neoforged.net/releases' }
+        maven { url = 'https://maven.firstdark.dev/releases' }
+        maven { url = 'https://maven.kikugie.dev/releases' }
+    }
+}
+
+plugins {
+    id 'dev.kikugie.stonecutter' version '0.9.8'
+    id 'dev.kikugie.loom-back-compat' version '0.4.2'
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
+stonecutter {
+    kotlinController = false
+    create(rootProject) {
+        for (mc in ['1.21.4', '1.21.5', '1.21.9', '1.21.11', '26.1.2']) {
+            for (loader in ['fabric', 'neoforge']) {
+                version("${mc}-${loader}", mc).buildscript("build.${loader}.gradle")
+            }
+        }
+        vcsVersion = '26.1.2-fabric'
     }
 }
 
 rootProject.name = 'easy_homes'
-
-include 'common'
-include 'fabric'
-include 'neoforge'

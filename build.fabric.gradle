@@ -1,0 +1,74 @@
+plugins {
+    // Applies the correct loom variant for the node's Minecraft version
+    id 'dev.kikugie.loom-back-compat'
+}
+
+// MC 1.21.x requires Java 21, MC 26.1 requires Java 25
+def requiredJava = sc.current.parsed < '26' ? JavaVersion.VERSION_21 : JavaVersion.VERSION_25
+
+version = "${project.property('mod.version')}+${sc.current.version}"
+base { archivesName = "${project.property('mod.id')}-fabric" }
+
+repositories {
+    // MidnightLib
+    maven { name = 'Modrinth'; url = 'https://api.modrinth.com/maven' }
+    // Xaero's Minimap (1.21.x)
+    maven { name = 'CurseMaven'; url = 'https://cursemaven.com' }
+    // Xaero's Minimap (26.1+)
+    maven { name = 'ChocolateMinecraft'; url = 'https://chocolateminecraft.com/maven' }
+    // ModMenu
+    maven { name = 'Terraformers'; url = 'https://maven.terraformersmc.com/' }
+}
+
+java {
+    withSourcesJar()
+    toolchain { languageVersion = JavaLanguageVersion.of(requiredJava.majorVersion) }
+}
+
+loom {
+    // Shared sources live in the repository root, not in the generated node project
+    fabricModJsonPath = rootProject.file('src/main/resources/fabric.mod.json')
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${sc.current.version}"
+    loomx.applyMojangMappings()
+
+    modImplementation "net.fabricmc:fabric-loader:${project.property('deps.fabric_loader')}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.property('deps.fabric_api')}"
+    modImplementation "com.terraformersmc:modmenu:${project.property('deps.modmenu')}"
+
+    modImplementation include("maven.modrinth:midnightlib:${project.property('deps.midnightlib')}-fabric")
+
+    compileOnly project.property('deps.xaeros') as String
+}
+
+ext.artifactTask = loomx.modJar
+ext.requiredJava = requiredJava
+
+apply from: rootProject.file('build.common.gradle')
+
+processResources {
+    def props = [
+            mod_id              : project.property('mod.id'),
+            mod_name            : project.property('mod.name'),
+            mod_description     : project.property('mod.description'),
+            mod_author          : project.property('mod.author'),
+            mod_sources         : project.property('mod.sources'),
+            mod_version         : "${project.version}",
+            fabric_loader_version: project.property('deps.fabric_loader'),
+            minecraft_dependency: project.property('mod.mc_compat'),
+            java                : requiredJava.majorVersion as String,
+            java_level          : "JAVA_${requiredJava.majorVersion}",
+    ]
+    inputs.properties(props)
+
+    filesMatching('fabric.mod.json') { expand props }
+    filesMatching('easy_homes.mixins.json') { expand props }
+    exclude 'META-INF/neoforge.mods.toml'
+}
+
+publisher {
+    modrinthDepends { optional 'modmenu' }
+    curseDepends { optional 'modmenu' }
+}

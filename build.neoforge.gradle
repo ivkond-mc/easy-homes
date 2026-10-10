@@ -1,0 +1,70 @@
+plugins {
+    id 'net.neoforged.moddev' version '2.0.141'
+}
+
+// MC 1.21.x requires Java 21, MC 26.1 requires Java 25
+def requiredJava = sc.current.parsed < '26' ? JavaVersion.VERSION_21 : JavaVersion.VERSION_25
+
+version = "${project.property('mod.version')}+${sc.current.version}"
+base { archivesName = "${project.property('mod.id')}-neoforge" }
+
+repositories {
+    // MidnightLib
+    maven { name = 'Modrinth'; url = 'https://api.modrinth.com/maven' }
+    // Xaero's Minimap (1.21.x)
+    maven { name = 'CurseMaven'; url = 'https://cursemaven.com' }
+    // Xaero's Minimap (26.1+)
+    maven { name = 'ChocolateMinecraft'; url = 'https://chocolateminecraft.com/maven' }
+    maven { name = 'NeoForged'; url = 'https://maven.neoforged.net/releases' }
+}
+
+java {
+    withSourcesJar()
+    toolchain { languageVersion = JavaLanguageVersion.of(requiredJava.majorVersion) }
+}
+
+neoForge {
+    version = project.property('deps.neo_loader')
+
+    mods {
+        easy_homes { sourceSet sourceSets.main }
+    }
+}
+
+dependencies {
+    jarJar(implementation("maven.modrinth:midnightlib:${project.property('deps.midnightlib')}-neoforge")) {
+        version {
+            strictly "[${project.property('deps.midnightlib')}-neoforge,)"
+            prefer "${project.property('deps.midnightlib')}-neoforge"
+        }
+    }
+
+    compileOnly project.property('deps.xaeros') as String
+}
+
+// Chiseled builds compile generated sources, so the artifacts must be created first
+tasks.createMinecraftArtifacts { dependsOn 'stonecutterGenerate' }
+
+ext.artifactTask = tasks.named('jar')
+ext.requiredJava = requiredJava
+
+apply from: rootProject.file('build.common.gradle')
+
+processResources {
+    def props = [
+            mod_id                : project.property('mod.id'),
+            mod_name              : project.property('mod.name'),
+            mod_description       : project.property('mod.description'),
+            mod_author            : project.property('mod.author'),
+            mod_sources           : project.property('mod.sources'),
+            mod_version           : "${project.version}",
+            neoforge_version_range: project.property('mod.neoforge_range'),
+            minecraft_version_range: project.property('mod.mc_range'),
+            java_level            : "JAVA_${requiredJava.majorVersion}",
+    ]
+    inputs.properties(props)
+
+    filesMatching('META-INF/neoforge.mods.toml') { expand props }
+    filesMatching('easy_homes.mixins.json') { expand props }
+    exclude 'fabric.mod.json'
+}

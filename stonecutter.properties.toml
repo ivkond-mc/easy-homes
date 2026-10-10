@@ -1,0 +1,97 @@
+# Centralized properties for every version node.
+# https://stonecutter.kikugie.dev/wiki/v2/reference/gradle-api/structured-properties
+
+mod.id = "easy_homes"
+mod.name = "Easy Homes"
+mod.description = "Easy and lightweight /sethome mod"
+mod.author = "ivkond"
+mod.sources = "https://github.com/ivkond-mc/simple-homes"
+# Single mod version for all Minecraft versions; the node's MC version is appended by the build scripts
+mod.version = "1.0.0"
+mod.modrinth_id = "w4Z2NKqf"
+mod.curseforge_id = "1163866"
+
+# loom-back-compat applies fabric-loom-remap (obfuscated, <26.1) or fabric-loom (unobfuscated, 26.1+).
+# 1.18.x is required for MC 26.1: it bundles ASM 9.10 which can read Java 25 class files
+# (loom 1.16.3 silently drops all classes while merging, producing a resources-only jar).
+loomx.loom_version = "1.18.4"
+
+["1.21.4"]
+mod.mc_releases = ["1.21.4"]
+deps.fabric_loader = "0.16.9"
+deps.fabric_api = "0.112.2+1.21.4"
+deps.neo_loader = "21.4.39-beta"
+deps.midnightlib = "1.6.6"
+deps.modmenu = "13.0.0-beta.1"
+deps.xaeros = "curse.maven:xaeros-minimap-263420:6012867"
+
+[fabric."1.21.4"]
+mod.mc_compat = "~1.21.4"
+
+[neoforge."1.21.4"]
+mod.neoforge_range = "[21.4,)"
+mod.mc_range = "[1.21.4,)"
+
+["1.21.5"]
+mod.mc_releases = ["1.21.5"]
+deps.fabric_loader = "0.16.10"
+deps.fabric_api = "0.119.5+1.21.5"
+deps.neo_loader = "21.5.57-beta"
+deps.midnightlib = "1.7.3+1.21.4"
+deps.modmenu = "14.0.0-rc.2"
+deps.xaeros = "curse.maven:xaeros-minimap-263420:6012867"
+
+[fabric."1.21.5"]
+mod.mc_compat = "~1.21.5"
+
+[neoforge."1.21.5"]
+mod.neoforge_range = "[21.5,)"
+mod.mc_range = "[1.21.5,)"
+
+["1.21.9"]
+mod.mc_releases = ["1.21.9"]
+deps.fabric_loader = "0.17.2"
+deps.fabric_api = "0.134.1+1.21.9"
+deps.neo_loader = "21.9.5-beta"
+deps.midnightlib = "1.8.3+1.21.9"
+deps.modmenu = "16.0.0-rc.2"
+deps.xaeros = "curse.maven:xaeros-minimap-263420:6012867"
+
+[fabric."1.21.9"]
+mod.mc_compat = "~1.21.9"
+
+[neoforge."1.21.9"]
+mod.neoforge_range = "[21.9,)"
+mod.mc_range = "[1.21.9,)"
+
+["1.21.11"]
+mod.mc_releases = ["1.21.11"]
+deps.fabric_loader = "0.18.4"
+deps.fabric_api = "0.141.3+1.21.11"
+deps.neo_loader = "21.11.38-beta"
+deps.midnightlib = "1.9.2+1.21.11"
+deps.modmenu = "17.0.0"
+deps.xaeros = "curse.maven:xaeros-minimap-263420:6012867"
+
+[fabric."1.21.11"]
+mod.mc_compat = "~1.21.11"
+
+[neoforge."1.21.11"]
+mod.neoforge_range = "[21.11,)"
+mod.mc_range = "[1.21.11,)"
+
+["26.1.2"]
+mod.mc_releases = ["26.1.2"]
+deps.fabric_loader = "0.19.2"
+deps.fabric_api = "0.150.0+26.1.2"
+deps.neo_loader = "26.1.2.71"
+deps.midnightlib = "1.9.3+26.1"
+deps.modmenu = "18.0.0-beta.1"
+deps.xaeros = "xaero.minimap:xaerominimap-common-26.1.2:25.3.14"
+
+[fabric."26.1.2"]
+mod.mc_compat = "~26.1.2"
+
+[neoforge."26.1.2"]
+mod.neoforge_range = "[26.1.2,)"
+mod.mc_range = "[26.1.2,)"

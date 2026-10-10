@@ -1,0 +1,35 @@
+plugins {
+    id 'dev.kikugie.stonecutter'
+}
+
+stonecutter.active('26.1.2-fabric') /* [SC] DO NOT EDIT */
+
+// https://stonecutter.kikugie.dev/wiki/v2/reference/gradle-api/project-controller
+stonecutter.parameters {
+    def (mcVersion, loader) = current.project.split('-', 2)
+    properties { tags(mcVersion, loader) }
+    constants { match(loader, 'fabric', 'neoforge') }
+
+    replacements {
+        // MC 1.21.11 renamed ResourceLocation to Identifier and ResourceKey.location() to identifier().
+        // Sources are stored in the new spelling; older versions are downgraded at generation time.
+        string(current.parsed < '1.21.11') {
+            replace('Identifier', 'ResourceLocation')
+            replace('levelResourceKey.identifier()', 'levelResourceKey.location()')
+            replace('dimension().identifier()', 'dimension().location()')
+        }
+    }
+}
+
+// Builds every version x loader node (Stonecutter pre-processes the shared sources per node)
+tasks.register('chiseledBuild') {
+    group = 'build'
+    dependsOn stonecutter.tasks.named('build')
+}
+
+// Builds and uploads every node to Modrinth/CurseForge (requires MODRINTH_TOKEN/CURSE_TOKEN)
+tasks.register('publishAll') {
+    group = 'publishing'
+    dependsOn stonecutter.tasks.named('publishMod')
+    doLast { println('All mods have been successfully uploaded') }
+}
