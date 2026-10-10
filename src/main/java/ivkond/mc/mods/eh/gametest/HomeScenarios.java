@@ -6,6 +6,9 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
+//? if >=26.2 {
+/*import net.minecraft.world.entity.EntityTypes;
+*///? }
 //? if >=1.21.11 {
 import net.minecraft.world.entity.vehicle.boat.Boat;
 //? } else {
@@ -325,7 +328,11 @@ public final class HomeScenarios {
         place(helper, player, 1, 1, 1, 0, 0);
         assertCommand(helper, player, "sethome base", 1);
 
+        //? if >=26.2 {
+        /*Boat boat = helper.spawn(EntityTypes.OAK_BOAT, 3, 1, 3);
+        *///? } else {
         Boat boat = helper.spawn(EntityType.OAK_BOAT, 3, 1, 3);
+        //? }
         player.startRiding(boat);
         if (!player.isPassenger() || !player.canControlVehicle()) {
             fail(helper, "Precondition failed: player does not control the boat");
