@@ -7,7 +7,7 @@ mod.description = "Easy and lightweight /sethome mod"
 mod.author = "ivkond"
 mod.sources = "https://github.com/ivkond-mc/simple-homes"
 # Single mod version for all Minecraft versions; the node's MC version is appended by the build scripts
-mod.version = "1.0.0"
+mod.version = "1.0.1"
 mod.modrinth_id = "w4Z2NKqf"
 mod.curseforge_id = "1163866"
 

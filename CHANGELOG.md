@@ -52,3 +52,13 @@
 
 ### 21.11.1
 * Fixed crash in the Xaero's Minimap integration: the integration now detects the installed Xaero's API at runtime (Xaero 25.3+/26.x refactors) and disables itself gracefully instead of crashing on /sethome (#14)
+
+<!-- Historical entries above used Minecraft-era version numbers (e.g. 21.4.x = MC 1.21.4 era).
+     Since 1.0.1 the mod uses a single semantic version across all Minecraft versions,
+     published as `<mod version>+<mc version>` per loader. -->
+
+### 1.0.1
+* Rewritten as a single multi-version codebase: one jar per loader covers Minecraft 1.18.2 through 26.3 (Fabric and NeoForge)
+* Unified versioning across all Minecraft versions and loaders
+* Added an end-to-end GameTest suite and per-node build gates to CI
+* Robust, human-readable `/home` cooldown: remaining time heals itself if the system clock jumps backwards
