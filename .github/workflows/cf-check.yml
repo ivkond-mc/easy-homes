@@ -11,13 +11,15 @@ jobs:
         run: |
           for id in 9131517 9131518 9131519; do
             echo "=== file $id"
-            curl -fsS -H "x-api-key: ${{ secrets.CURSEFORGE_TOKEN }}" \
+            curl -sS -o /tmp/resp.json -w "http=%{http_code}\n" \
+              -H "x-api-key: ${{ secrets.CURSEFORGE_TOKEN }}" \
               -H "Accept: application/json" \
-              "https://api.curseforge.com/v1/mods/1163866/files/$id" \
-              | jq '{id: .data.id, displayName: .data.displayName, status: .data.status, gameVersions: .data.gameVersions}'
+              "https://api.curseforge.com/v1/mods/1163866/files/$id"
+            head -c 400 /tmp/resp.json; echo
           done
-          echo "=== total 1.0.1 files on CurseForge"
-          curl -fsS -H "x-api-key: ${{ secrets.CURSEFORGE_TOKEN }}" \
+          echo "=== files list probe"
+          curl -sS -o /tmp/list.json -w "http=%{http_code}\n" \
+            -H "x-api-key: ${{ secrets.CURSEFORGE_TOKEN }}" \
             -H "Accept: application/json" \
-            "https://api.curseforge.com/v1/mods/1163866/files?index=0&pageSize=60" \
-            | jq '[.data[] | select(.displayName | contains("1.0.1"))] | length'
+            "https://api.curseforge.com/v1/mods/1163866/files?index=0&pageSize=60"
+          head -c 400 /tmp/list.json; echo
