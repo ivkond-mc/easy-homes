@@ -140,7 +140,9 @@ jobs:
         if [ -n "$TASKS_INPUT" ]; then
           echo "Recovery mode: publishing selected tasks only (collision gate skipped)"
           TASKS=$(echo "$TASKS_INPUT" | tr -d ' ' | tr ',' ' ')
-          ./gradlew --continue $TASKS
+          # serialize uploads: parallel CurseForge version-list fetches trip its
+          # rate limit and come back empty ("Valid versions are: []")
+          ./gradlew --continue --max-workers 1 $TASKS
         else
           ./gradlew --continue publishAll
         fi
