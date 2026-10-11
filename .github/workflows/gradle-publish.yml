@@ -2,6 +2,11 @@ name: Build and publish
 
 on:
   workflow_dispatch:
+    inputs:
+      tasks:
+        description: 'Recovery only: comma-separated Gradle publish tasks to run instead of publishAll, e.g. "1.21.1-fabric:publishMod,1.21.10-fabric:publishModrinth". Skips the already-published collision gate — verify what you pass.'
+        required: false
+        default: ''
 
 jobs:
   build:
@@ -23,12 +28,122 @@ jobs:
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582
+      with:
+        validate-wrappers: true
 
     - name: Build all version nodes
       run: ./gradlew chiseledBuild
 
+    - name: Verify jar metadata
+      run: |
+        set -euo pipefail
+        errors=0
+        count=0
+        for jar in versions/*/build/libs/*.jar; do
+          case "$jar" in
+            *-sources.jar) continue ;;
+          esac
+          count=$((count + 1))
+          case "$jar" in
+            versions/*-fabric/build/libs/*)
+              required=("fabric.mod.json" "easy_homes.mixins.json")
+              ;;
+            versions/*-neoforge/build/libs/*)
+              required=("META-INF/neoforge.mods.toml" "easy_homes.mixins.json")
+              ;;
+            *)
+              echo "ERROR: $jar is not under a -fabric or -neoforge node directory"
+              errors=$((errors + 1))
+              continue
+              ;;
+          esac
+          entries=$(unzip -l "$jar" | awk '{ print $NF }')
+          for entry in "${required[@]}"; do
+            if ! grep -Fxq "$entry" <<< "$entries"; then
+              echo "ERROR: $jar is missing required entry: $entry"
+              errors=$((errors + 1))
+            fi
+          done
+        done
+        # settings.gradle declares 15 fabric + 11 neoforge nodes = 26; each node must
+        # produce exactly one publishable jar. A wrong count means a node was skipped
+        # or produced extra jars, which must not publish a half release.
+        if [ "$count" -ne 26 ]; then
+          echo "ERROR: expected 26 non-sources jars (one per version node), found $count"
+          errors=$((errors + 1))
+        fi
+        if [ "$errors" -ne 0 ]; then
+          echo "::error::Jar metadata verification failed with $errors problem(s)"
+          exit 1
+        fi
+        echo "${count} jars verified"
+
+    - name: Extract mod version
+      run: |
+        set -euo pipefail
+        MOD_VERSION=$(sed -n 's/^mod\.version[[:space:]]*=[[:space:]]*"\(.*\)"/\1/p' stonecutter.properties.toml)
+        if [ -z "$MOD_VERSION" ]; then
+          echo "::error::Could not extract mod.version from stonecutter.properties.toml"
+          exit 1
+        fi
+        echo "MOD_VERSION=$MOD_VERSION" >> "$GITHUB_ENV"
+        echo "Mod version: $MOD_VERSION"
+
+    - name: Check version not already published
+      if: ${{ !github.event.inputs.tasks }}
+      run: |
+        set -euo pipefail
+        # Modrinth (public, no auth): each node publishes version_number "<mod.version>+<mc>".
+        MODRINTH_COLLISIONS=$(curl -fsS "https://api.modrinth.com/v2/project/w4Z2NKqf/version" \
+          | jq -r --arg v "$MOD_VERSION" \
+            '[.[] | select(.version_number | startswith($v + "+")) | .version_number] | join(", ")')
+        if [ -n "$MODRINTH_COLLISIONS" ]; then
+          echo "::error::Modrinth already has version(s) starting with ${MOD_VERSION}+: ${MODRINTH_COLLISIONS}"
+          exit 1
+        fi
+        echo "Modrinth: no existing version starts with ${MOD_VERSION}+"
+
+        # CurseForge (auth required, cannot be tested locally): files are returned
+        # newest-first, so a duplicate of the version being published would be in the
+        # first page. Display names look like "Easy Homes 1.0.0+26.1.2 (fabric)".
+        CF_RESPONSE=$(curl -fsS -H "x-api-key: ${{ secrets.CURSEFORGE_TOKEN }}" \
+          "https://api.curseforge.com/v1/mods/1163866/files?index=0&pageSize=50") || {
+          echo "::error::CurseForge API request failed (is CURSEFORGE_TOKEN set and valid?)"
+          exit 1
+        }
+        CF_COLLISIONS=$(jq -r --arg v "$MOD_VERSION" \
+          '[.data[] | select(.displayName | contains($v + "+")) | .displayName] | join(", ")' <<< "$CF_RESPONSE")
+        if [ -n "$CF_COLLISIONS" ]; then
+          echo "::error::CurseForge already has file(s) containing ${MOD_VERSION}+: ${CF_COLLISIONS}"
+          exit 1
+        fi
+        echo "CurseForge: no existing file contains ${MOD_VERSION}+"
+
+    - name: Check changelog has entry for this version
+      run: |
+        set -euo pipefail
+        # This gate intentionally FAILS until a "### <MOD_VERSION>" section (currently
+        # "### 1.0.0") is added to CHANGELOG.md: release notes must be written before
+        # publishing. Do not weaken this check.
+        if ! grep -Eq "^### ${MOD_VERSION}" CHANGELOG.md; then
+          echo "::error::CHANGELOG.md has no '### ${MOD_VERSION}' section. Add release notes for ${MOD_VERSION} before publishing."
+          exit 1
+        fi
+        echo "CHANGELOG.md has an entry for ${MOD_VERSION}"
+
     - name: Publish artifacts
-      run: ./gradlew publishAll
+      run: |
+        set -euo pipefail
+        # --continue: a transient upload failure (e.g. CurseForge API hiccups)
+        # must not stop the remaining ~25 nodes from publishing
+        TASKS_INPUT="${{ github.event.inputs.tasks }}"
+        if [ -n "$TASKS_INPUT" ]; then
+          echo "Recovery mode: publishing selected tasks only (collision gate skipped)"
+          TASKS=$(echo "$TASKS_INPUT" | tr -d ' ' | sed 's/[^,]*/:&/g')
+          ./gradlew --continue $TASKS
+        else
+          ./gradlew --continue publishAll
+        fi
       env:
         MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
         CURSE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
