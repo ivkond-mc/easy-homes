@@ -51,8 +51,7 @@ public class I18N {
      * units are skipped and unit names come from lang files.
      */
     private static MutableComponent formatDuration(Duration duration) {
-        long seconds = duration.getSeconds();
-        long[] values = {seconds / 86400, (seconds % 86400) / 3600, (seconds % 3600) / 60, seconds % 60};
+        long[] values = Durations.breakdown(duration);
         String[] unitKeys = {
                 "easy_homes.time.days", "easy_homes.time.hours", "easy_homes.time.minutes", "easy_homes.time.seconds"
         };

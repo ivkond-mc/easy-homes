@@ -55,6 +55,12 @@ dependencies {
     }
 }
 
+// ModDevGradle attaches Minecraft and its libraries to the main source set only.
+// Surface them on the test classpath too, so unit tests run against the same
+// Gson/log4j/etc. the main code is compiled with (Loom does this for fabric).
+sourceSets.test.compileClasspath += sourceSets.main.compileClasspath
+sourceSets.test.runtimeClasspath += sourceSets.main.runtimeClasspath
+
 // Chiseled builds compile generated sources, so the artifacts must be created first
 tasks.createMinecraftArtifacts { dependsOn 'stonecutterGenerate' }
 
