@@ -139,7 +139,7 @@ jobs:
         TASKS_INPUT="${{ github.event.inputs.tasks }}"
         if [ -n "$TASKS_INPUT" ]; then
           echo "Recovery mode: publishing selected tasks only (collision gate skipped)"
-          TASKS=$(echo "$TASKS_INPUT" | tr -d ' ' | sed 's/[^,]*/:&/g')
+          TASKS=$(echo "$TASKS_INPUT" | tr -d ' ' | tr ',' ' ')
           ./gradlew --continue $TASKS
         else
           ./gradlew --continue publishAll
